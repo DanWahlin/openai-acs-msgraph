@@ -1,0 +1,17 @@
+.home-icon {
+    margin-top: 0px;
+    margin-right: 5px;
+}
+
+.title {
+    margin-top: 3px;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+mgt-login {
+    --button-background-color: #3f51b5;
+    --button-color--hover: #fff;
+}
