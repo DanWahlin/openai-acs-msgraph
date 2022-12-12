@@ -10,7 +10,7 @@
 
 1. After creating the app registration, go to the Overview screen and copy the `Application (client) ID` to your clipboard.
 
-1. Create a new file in the root of the project named `.env`. Add the following to the file:
+1. Open `src/app/app.component.ts` and paste the `Application (client) ID` value in your clipboard into the clientId 
 
     ```
     NG_AAD_CLIENT_ID=<YOUR_AAD_CLIENT_ID>
@@ -18,4 +18,4 @@
 
 1. Run `npm install`
 
-1. Run `ng serve -o`
+1. Run `npm start`

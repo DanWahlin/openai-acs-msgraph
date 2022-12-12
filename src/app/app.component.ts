@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
       Providers.globalProvider = new Msal2Provider({
-          clientId: process.env.NG_APP_CLIENT_ID
+          clientId: ''
       });
   }
 
