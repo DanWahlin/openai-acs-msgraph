@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Msal2Provider, Providers } from '@microsoft/mgt';
 
+// Retrieved from .env file value by using webpack.partial.js and ngx-build-plus
+declare const AAD_CLIENT_ID: string;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +15,7 @@ export class GraphService {
     if (!Providers.globalProvider) {
       console.log('Initializing Microsoft Graph global provider...');
       Providers.globalProvider = new Msal2Provider({
-        clientId: '',
+        clientId: AAD_CLIENT_ID,
         scopes: ['user.read', 'files.read.all']
       });
     }
