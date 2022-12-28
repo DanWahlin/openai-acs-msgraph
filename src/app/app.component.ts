@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Providers, Msal2Provider } from '@microsoft/mgt';
+import { GraphService } from './core/graph.service';
 
 @Component({
   selector: 'app-root',
@@ -10,14 +11,13 @@ export class AppComponent implements OnInit {
   title = 'angular-mgt';
   name = '';
 
-  ngOnInit() {
-      Providers.globalProvider = new Msal2Provider({
-          clientId: ''
-      });
+  constructor(private graphService: GraphService) {}
+
+  async ngOnInit() {
+    this.graphService.init();
   }
 
   userLoggedIn(e: any) {
-      console.log(e);
       this.name = e.displayName;
   }
 }
