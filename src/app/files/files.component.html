@@ -1,0 +1,5 @@
+<h2>Related Files</h2>
+<mgt-file-list (itemClick)="itemClick($event)" [files]="files"></mgt-file-list>
+<div *ngIf="!files.length">
+    <h3>No files found</h3>
+</div>

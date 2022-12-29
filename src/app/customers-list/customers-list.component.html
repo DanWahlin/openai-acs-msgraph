@@ -1,0 +1,27 @@
+<h2>Customers</h2>
+<app-filter-textbox (changed)="filter($event)"></app-filter-textbox>
+<br />
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th (click)="sort('name')">Name</th>
+            <th (click)="sort('city')">City</th>
+            <th (click)="sort('orderTotal')">Order Total</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let cust of filteredCustomers">
+            <td>{{ cust.name }}</td>
+            <td>{{ cust.city }}</td>
+            <td>{{ cust.orderTotal | currency:currencyCode:'symbol' }}</td>
+            <td>
+                <button type="button" class="btn btn-primary btn-sm" (click)="getRelatedData(cust)">View Related Data</button>
+            </td>
+        </tr>
+        <tr *ngIf="!filteredCustomers || !filteredCustomers.length">
+            <td colspan="4">No customers found</td>
+        </tr>
+    </tbody>    
+</table>

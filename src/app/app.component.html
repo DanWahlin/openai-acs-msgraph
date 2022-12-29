@@ -1,8 +1,10 @@
 <app-header (userLoggedIn)="userLoggedIn($event)"></app-header>
 
 <main>
-    <h1>Welcome {{name}}</h1>
-    <app-files></app-files>
+    <app-customers-list [customers]="customers" (customerSelected)="customerSelected($event)"></app-customers-list>
+    <div *ngIf="selectedCustomer">
+        <app-files [selectedCustomer]="selectedCustomer"></app-files>
+    </div>
 </main>
 
 <router-outlet></router-outlet>

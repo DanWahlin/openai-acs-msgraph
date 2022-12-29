@@ -1,0 +1,26 @@
+[
+      {
+            "id": 1,
+            "name": "Tailwind Traders",
+            "city": " Phoenix ",
+            "orderTotal": 400214.99
+      },
+      {
+            "id": 2,
+            "name": "Adatum Corporation",
+            "city": "Los Angeles ",
+            "orderTotal": 89553.99
+      },
+      {
+            "id": 3,
+            "name": "Adventure Works Cycles",
+            "city": " Las Vegas ",
+            "orderTotal": 9451.99
+      },
+      {
+            "id": 4,
+            "name": "Contoso Pharmaceuticals",
+            "city": "Seattle",
+            "orderTotal": 15850.99
+      }
+]

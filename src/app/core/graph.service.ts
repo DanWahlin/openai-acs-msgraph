@@ -44,9 +44,11 @@ export class GraphService {
 
     if (searchResults.value.length !== 0) {
       for (let hitContainer of searchResults.value[0].hitsContainers) {
-        for (let hit of hitContainer.hits) {
-          files.push(hit.resource);
-        };
+        if (hitContainer.hits) {
+          for (let hit of hitContainer.hits) {
+            files.push(hit.resource);
+          };
+        }
       };
     }
     return files;
