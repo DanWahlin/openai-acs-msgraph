@@ -7,10 +7,11 @@ import { Customer } from './shared/customer';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
   title = 'angular-mgt';
+  loggedIn = false;
   name = '';
   customers: Customer[] = [];
   selectedCustomer: Customer | null = null;
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit {
   }
 
   userLoggedIn(e: any) {
-      this.name = e.displayName;
+    this.loggedIn = true;
+    this.name = e.displayName;
   }
 }

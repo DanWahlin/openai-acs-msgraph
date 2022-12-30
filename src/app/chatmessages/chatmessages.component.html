@@ -1,0 +1,18 @@
+<section *ngIf="chatMessages">
+    <h2>Related Chats</h2>
+    <!-- Adding invalid file-list-query so it doesn't display "me" files on first load -->
+    <div class="scroller">
+        <mat-card *ngFor="let chatMessage of chatMessages">
+            <mat-card-header>
+              <mat-card-title [innerHTML]="chatMessage.summary"></mat-card-title>
+              <mat-card-subtitle [innerHTML]="chatMessage.body"></mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-actions>
+              <a mat-flat-button color="basic" [href]="chatMessage.webUrl" target="_blank">View</a>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div *ngIf="!chatMessages.length">
+        <h3>No chat messages found</h3>
+    </div>
+</section>

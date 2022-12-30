@@ -17,7 +17,7 @@
             <td>{{ cust.city }}</td>
             <td>{{ cust.orderTotal | currency:currencyCode:'symbol' }}</td>
             <td>
-                <button type="button" class="btn btn-primary btn-sm" (click)="getRelatedData(cust)">View Related Data</button>
+                <button mat-flat-button color="basic" (click)="getRelatedData(cust)">View Related Data</button>
             </td>
         </tr>
         <tr *ngIf="!filteredCustomers || !filteredCustomers.length">

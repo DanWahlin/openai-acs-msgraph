@@ -2,14 +2,15 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Customer } from '../shared/customer';
 import { SorterService } from '../core/sorter.service';
-import { EmitEvent, EventBusService } from 'src/app/core/eventbus.service';
+import { EventBusService } from 'src/app/core/eventbus.service';
 
 @Component({
     selector: 'app-customers-list',
     templateUrl: './customers-list.component.html',
-    styleUrls: ['./customers-list.component.css']
+    styleUrls: ['./customers-list.component.scss']
 })
 export class CustomersListComponent implements OnInit {
+    displayedColumns: string[] = ['id', 'name', 'city', 'orderTotal', 'actions'];
     private _customers: Customer[] = [];
     @Input() get customers(): Customer[] {
         return this._customers;

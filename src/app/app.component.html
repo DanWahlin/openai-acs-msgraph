@@ -1,9 +1,16 @@
 <app-header (userLoggedIn)="userLoggedIn($event)"></app-header>
 
 <main>
-    <app-customers-list [customers]="customers" (customerSelected)="customerSelected($event)"></app-customers-list>
-    <div *ngIf="selectedCustomer">
-        <app-files [selectedCustomer]="selectedCustomer"></app-files>
+    <div *ngIf="loggedIn">
+        <app-customers-list [customers]="customers" (customerSelected)="customerSelected($event)"></app-customers-list>
+        <div *ngIf="selectedCustomer">
+            <app-files [selectedCustomer]="selectedCustomer"></app-files>
+            <br />
+            <app-chatmessages [selectedCustomer]="selectedCustomer"></app-chatmessages>
+        </div>
+    </div>
+    <div *ngIf="!loggedIn">
+        Please Sign In
     </div>
 </main>
 

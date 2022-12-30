@@ -1,14 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { GraphService } from 'src/app/core/graph.service';
+import { GraphService } from '../core/graph.service';
 import { Customer } from '../shared/customer';
 
 @Component({
-  selector: 'app-files',
-  templateUrl: './files.component.html',
-  styleUrls: ['./files.component.scss']
+  selector: 'app-chatmessages',
+  templateUrl: './chatmessages.component.html',
+  styleUrls: ['./chatmessages.component.scss']
 })
-export class FilesComponent implements OnInit {
-  files: any[] = [];
+export class ChatmessagesComponent implements OnInit {
+  chatMessages: any[] = [];
 
   private _selectedCustomer: Customer | null = null;
   @Input() get selectedCustomer(): Customer | null {
@@ -18,7 +18,7 @@ export class FilesComponent implements OnInit {
   set selectedCustomer(customer: Customer | null) {
     this._selectedCustomer = customer;
     if (customer) {
-      this.searchFiles(customer);
+      this.searchChats(customer);
     }
   }
 
@@ -26,11 +26,7 @@ export class FilesComponent implements OnInit {
 
   ngOnInit() { }
 
-  async searchFiles(customer: Customer) {
-    this.files = await this.graphService.searchFiles(customer.name);
-  }
-
-  itemClick(e: any) {
-    window.open(e.detail.webUrl, '_blank');
+  async searchChats(customer: Customer) {
+    this.chatMessages = await this.graphService.searchChats(customer.name);
   }
 }
