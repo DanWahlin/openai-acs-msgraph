@@ -27,6 +27,7 @@ export class FilesComponent implements OnInit {
   ngOnInit() { }
 
   async searchFiles(customer: Customer) {
+    console.log(customer.name);
     this.files = await this.graphService.searchFiles(customer.name);
   }
 
