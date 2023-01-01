@@ -1,33 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { GraphService } from 'src/app/core/graph.service';
 import { Customer } from '../shared/customer';
+import { RelatedDataComponent } from '../shared/related-data.component';
 
 @Component({
   selector: 'app-files',
   templateUrl: './files.component.html',
   styleUrls: ['./files.component.scss']
 })
-export class FilesComponent implements OnInit {
-  files: any[] = [];
-
-  private _selectedCustomer: Customer | null = null;
-  @Input() get selectedCustomer(): Customer | null {
-    return this._selectedCustomer;
-  }
-
-  set selectedCustomer(customer: Customer | null) {
-    this._selectedCustomer = customer;
-    if (customer) {
-      this.searchFiles(customer);
-    }
-  }
-
-  constructor(private graphService: GraphService) {}
+export class FilesComponent extends RelatedDataComponent implements OnInit {
 
   ngOnInit() { }
 
-  async searchFiles(customer: Customer) {
-    this.files = await this.graphService.searchFiles(customer.name);
+  override async search(query: string) {
+    this.data = await this.graphService.searchFiles(query);
   }
 
   itemClick(e: any) {

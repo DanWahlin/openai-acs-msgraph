@@ -1,6 +1,5 @@
 import { Component, Input } from "@angular/core";
 import { GraphService } from "../core/graph.service";
-import { Customer } from "./customer";
 
 @Component({
     template: ``
@@ -8,19 +7,19 @@ import { Customer } from "./customer";
 export abstract class RelatedDataComponent {
     data: any[] = [];
 
-    private _selectedCustomer: Customer | null = null;
-    @Input() get selectedCustomer(): Customer | null {
-      return this._selectedCustomer;
+    private _searchText: string | null = null;
+    @Input() get searchText(): string | null {
+      return this._searchText;
     }
   
-    set selectedCustomer(customer: Customer | null) {
-      this._selectedCustomer = customer;
-      if (customer) {
-        this.search(customer.name);
+    set searchText(value: string | null) {
+      this._searchText = value;
+      if (value) {
+        this.search(value);
       }
     }
 
-    abstract search(query: string) : Promise<any>;
+    abstract search(searchText: string) : Promise<any>;
   
     constructor(public graphService: GraphService) {}
 }

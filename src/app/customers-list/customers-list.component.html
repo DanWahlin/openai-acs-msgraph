@@ -12,12 +12,12 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let cust of filteredCustomers">
+        <tr *ngFor="let cust of filteredCustomers" (click)="getRelatedData(cust)">
             <td>{{ cust.name }}</td>
             <td>{{ cust.city }}</td>
             <td>{{ cust.orderTotal | currency:currencyCode:'symbol' }}</td>
             <td>
-                <button mat-flat-button color="basic" (click)="getRelatedData(cust)">View Related Data</button>
+                <button mat-flat-button color="basic" (click)="getRelatedData(cust)">View Related Content</button>
             </td>
         </tr>
         <tr *ngIf="!filteredCustomers || !filteredCustomers.length">

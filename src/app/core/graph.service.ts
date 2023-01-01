@@ -16,7 +16,7 @@ export class GraphService {
       console.log('Initializing Microsoft Graph global provider...');
       Providers.globalProvider = new Msal2Provider({
         clientId: AAD_CLIENT_ID,
-        scopes: ['User.Read', 'Files.Read.All', 'Chat.ReadWrite', 'ChannelMessage.Read.All', 'Mail.Read']
+        scopes: ['User.Read', 'Chat.ReadWrite', 'ChannelMessage.Read.All', 'Calendars.Read', 'Files.Read.All', 'Mail.Read',]
       });
     }
     else {

@@ -1,8 +1,7 @@
-<section *ngIf="files">
-    <h2>Related Files</h2>
+<section *ngIf="data">
     <!-- Adding invalid file-list-query so it doesn't display "me" files on first load -->
-    <mgt-file-list (itemClick)="itemClick($event)" file-list-query="foo" [files]="files"></mgt-file-list>
-    <div *ngIf="!files.length">
+    <mgt-file-list (itemClick)="itemClick($event)" file-list-query="foo" [files]="data"></mgt-file-list>
+    <div *ngIf="!data.length">
         <h3>No files found</h3>
     </div>
 </section>

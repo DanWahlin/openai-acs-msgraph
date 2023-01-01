@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Customer } from '../shared/customer';
 import { RelatedDataComponent } from '../shared/related-data.component';
 
 @Component({

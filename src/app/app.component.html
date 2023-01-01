@@ -4,11 +4,45 @@
     <div *ngIf="loggedIn">
         <app-customers-list [customers]="customers" (customerSelected)="customerSelected($event)"></app-customers-list>
         <div *ngIf="selectedCustomer">
-            <app-files [selectedCustomer]="selectedCustomer"></app-files>
-            <br />
-            <app-chats [selectedCustomer]="selectedCustomer"></app-chats>
-            <br />
-            <app-emails [selectedCustomer]="selectedCustomer"></app-emails>
+            <h2>{{ selectedCustomer.name }} Content</h2>
+            <mat-accordion multi>
+                <mat-expansion-panel hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Files
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-files [searchText]="selectedCustomer.name"></app-files>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Chats
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-chats [searchText]="selectedCustomer.name"></app-chats>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Emails
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-emails [searchText]="selectedCustomer.name"></app-emails>
+                </mat-expansion-panel>
+
+
+                <mat-expansion-panel hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Agenda Items
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-agenda [searchText]="selectedCustomer.name"></app-agenda>
+                </mat-expansion-panel>
+            </mat-accordion>
         </div>
     </div>
     <div *ngIf="!loggedIn">
