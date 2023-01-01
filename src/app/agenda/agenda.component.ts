@@ -1,18 +1,31 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MgtAgenda, TemplateHelper } from '@microsoft/mgt';
 import { RelatedDataComponent } from '../shared/related-data.component';
-
+/* Based on the example found at:
+  https://github.com/microsoftgraph/microsoft-graph-toolkit/blob/main/samples/angular-app/src/app/angular-agenda/angular-agenda.component.ts
+*/
 @Component({
   selector: 'app-agenda',
   templateUrl: './agenda.component.html',
   styleUrls: ['./agenda.component.scss']
 })
 export class CalendarComponent extends RelatedDataComponent implements OnInit {
-  startDateTime = new Date(new Date().getTime() + (3 * 24 * 60 * 60 * 1000));
+  startDateTime = new Date();
   endDateTime = new Date(this.startDateTime.getTime() + (7 * 24 * 60 * 60 * 1000));
+  get queryUrl() {
+    return `/me/events?startdatetime=${this.startDateTime.toISOString()}&enddatetime=${this.endDateTime.toISOString()}&$filter=contains(subject,'${this.searchText}')&orderby=start/dateTime`;
+  }
 
   @ViewChild('agenda', {static: false})
   agendaElement: ElementRef<MgtAgenda> = {} as ElementRef<MgtAgenda>;
+
+  ngOnChanges() {
+    if (this.agendaElement.nativeElement) {
+      console.log(this.searchText);
+      this.agendaElement.nativeElement.eventQuery = this.queryUrl;
+      this.agendaElement.nativeElement.reload();
+    }
+  }
   
   ngOnInit() {
     // Changing binding syntax in mgt-agenda template to avoid build issues with Angular
@@ -20,6 +33,7 @@ export class CalendarComponent extends RelatedDataComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    this.agendaElement.nativeElement.eventQuery = this.queryUrl;
     this.agendaElement.nativeElement.templateContext = {
       openWebLink: (e: any, context: { event: { webLink: string | undefined; }; }, root: any) => {
           window.open(context.event.webLink, '_blank');
