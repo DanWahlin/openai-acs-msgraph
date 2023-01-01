@@ -4,3 +4,12 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #fafafa; }
 main { margin: 15px; }
 th { cursor: pointer; }
+
+.scroller {
+    max-height: 350px;;
+    overflow-y: auto;
+}
+
+mat-card {
+    margin-bottom: 10px;
+}

@@ -16,7 +16,7 @@ export class GraphService {
       console.log('Initializing Microsoft Graph global provider...');
       Providers.globalProvider = new Msal2Provider({
         clientId: AAD_CLIENT_ID,
-        scopes: ['User.Read', 'Files.Read.All', 'Chat.ReadWrite', 'ChannelMessage.Read.All']
+        scopes: ['User.Read', 'Files.Read.All', 'Chat.ReadWrite', 'ChannelMessage.Read.All', 'Mail.Read']
       });
     }
     else {
@@ -113,6 +113,14 @@ export class GraphService {
     }
 
     return messages;
+  }
+  
+  async searchEmail(query:string) {
+    query = "Azure AD";
+    // The $search operator will search the subject, body, and sender fields automatically
+    let url = `https://graph.microsoft.com/v1.0/me/messages?$search="${query}"&$select=subject,bodyPreview,from,toRecipients,receivedDateTime,webLink`;
+    const response = await Providers.globalProvider.graph.client.api(url).get();
+    return response.value;
   }
 
 }

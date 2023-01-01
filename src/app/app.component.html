@@ -6,7 +6,9 @@
         <div *ngIf="selectedCustomer">
             <app-files [selectedCustomer]="selectedCustomer"></app-files>
             <br />
-            <app-chatmessages [selectedCustomer]="selectedCustomer"></app-chatmessages>
+            <app-chats [selectedCustomer]="selectedCustomer"></app-chats>
+            <br />
+            <app-emails [selectedCustomer]="selectedCustomer"></app-emails>
         </div>
     </div>
     <div *ngIf="!loggedIn">

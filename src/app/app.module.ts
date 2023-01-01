@@ -14,7 +14,8 @@ import { CustomersListComponent } from './customers-list/customers-list.componen
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FilterTextboxComponent } from './customers-list/filter-textbox.component';
-import { ChatmessagesComponent } from './chatmessages/chatmessages.component';
+import { ChatsComponent } from './chats/chats.component';
+import { EmailsComponent } from './emails/emails.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ChatmessagesComponent } from './chatmessages/chatmessages.component';
     FilesComponent,
     CustomersListComponent,
     FilterTextboxComponent,
-    ChatmessagesComponent
+    ChatsComponent,
+    EmailsComponent
   ],
   imports: [
     BrowserModule,
