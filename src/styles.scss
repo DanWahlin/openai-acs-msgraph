@@ -9,25 +9,3 @@ th { cursor: pointer; }
     max-height: 350px;;
     overflow-y: auto;
 }
-
-mat-card {
-    margin-bottom: 10px;
-}
-
-.mat-mdc-card-title {
-    font-size: 1.2em;
-}
-
-mat-panel-title {
-    font-size: 1.2em;
-}
-
-mat-icon[svgIcon] {
-    margin-right: 5px;
-    width: 1.2em;
-}
-
-.mat-badge-medium.mat-badge-after .mat-badge-content {
-    right: -28px;
-    top: -1px;
-}
