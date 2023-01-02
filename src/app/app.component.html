@@ -9,7 +9,7 @@
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            Files
+                            <mat-icon svgIcon="email"></mat-icon> Files
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-files [searchText]="selectedCustomer.name"></app-files>
@@ -18,7 +18,7 @@
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            Chats
+                            <mat-icon svgIcon="chat"></mat-icon> Chats
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-chats [searchText]="selectedCustomer.name"></app-chats>
@@ -27,17 +27,16 @@
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            Emails
+                            <mat-icon svgIcon="email"></mat-icon> Emails
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-emails [searchText]="selectedCustomer.name"></app-emails>
                 </mat-expansion-panel>
 
-
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            Agenda Items
+                            <mat-icon svgIcon="agenda"></mat-icon> Agenda Items
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-agenda [searchText]="selectedCustomer.name"></app-agenda>
