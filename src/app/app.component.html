@@ -4,7 +4,11 @@
     <div *ngIf="loggedIn">
         <app-customers-list [customers]="customers" (customerSelected)="customerSelected($event)"></app-customers-list>
         <div *ngIf="selectedCustomer">
-            <h2>{{ selectedCustomer.name }} Content</h2>
+            <h2>{{ selectedQueryText }} Content</h2>
+
+            <app-filter-textbox [filter]="selectedQueryText" [label]="'Content Filter:'" (changed)="filter($event)"></app-filter-textbox>
+            <br /><br />
+
             <mat-accordion multi>
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
@@ -12,7 +16,7 @@
                             <mat-icon svgIcon="email"></mat-icon> Files
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-files [searchText]="selectedCustomer.name"></app-files>
+                    <app-files [searchText]="selectedQueryText"></app-files>
                 </mat-expansion-panel>
 
                 <mat-expansion-panel hideToggle>
@@ -21,7 +25,7 @@
                             <mat-icon svgIcon="chat"></mat-icon> Chats
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-chats [searchText]="selectedCustomer.name"></app-chats>
+                    <app-chats [searchText]="selectedQueryText"></app-chats>
                 </mat-expansion-panel>
 
                 <mat-expansion-panel hideToggle>
@@ -30,7 +34,7 @@
                             <mat-icon svgIcon="email"></mat-icon> Emails
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-emails [searchText]="selectedCustomer.name"></app-emails>
+                    <app-emails [searchText]="selectedQueryText"></app-emails>
                 </mat-expansion-panel>
 
                 <mat-expansion-panel hideToggle>
@@ -39,7 +43,7 @@
                             <mat-icon svgIcon="agenda"></mat-icon> Agenda Items
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-agenda [searchText]="selectedCustomer.name"></app-agenda>
+                    <app-agenda [searchText]="selectedQueryText"></app-agenda>
                 </mat-expansion-panel>
             </mat-accordion>
         </div>

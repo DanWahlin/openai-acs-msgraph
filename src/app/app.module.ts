@@ -15,7 +15,7 @@ import { FilesComponent } from './files/files.component';
 import { CustomersListComponent } from './customers-list/customers-list.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { FilterTextboxComponent } from './customers-list/filter-textbox.component';
+import { FilterTextboxComponent } from './shared/filter-textbox.component';
 import { ChatsComponent } from './chats/chats.component';
 import { EmailsComponent } from './emails/emails.component';
 import { CalendarComponent } from './agenda/agenda.component';

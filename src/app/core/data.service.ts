@@ -15,6 +15,18 @@ export class DataService {
     getCustomers(): Observable<Customer[]> {
       return this.http.get<Customer[]>(this.customersUrl)
         .pipe(
+          map(customers => {
+            // Sort by name
+            return customers.sort((a: Customer, b: Customer) => {
+              if (a.name < b.name) {
+                return -1;
+              } 
+              if (a.name > b.name) {
+                return 1;
+              }
+              return 0;
+            });
+          }),
           catchError(this.handleError)
         );
 

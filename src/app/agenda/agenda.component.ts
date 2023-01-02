@@ -21,7 +21,6 @@ export class CalendarComponent extends RelatedDataComponent implements OnInit {
 
   ngOnChanges() {
     if (this.agendaElement.nativeElement) {
-      console.log(this.searchText);
       this.agendaElement.nativeElement.eventQuery = this.queryUrl;
       this.agendaElement.nativeElement.reload();
     }

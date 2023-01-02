@@ -3,10 +3,12 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 @Component({
     selector: 'app-filter-textbox',
     template: `
-        Filter: <input type="text" [(ngModel)]="filter" />
+        {{ label }} <input type="text" [(ngModel)]="filter" style="width: 250px" />
     `
 })
 export class FilterTextboxComponent implements OnInit {
+
+    @Input() label = 'Filter:';
 
     private _filter = '';
     @Input() get filter() {
