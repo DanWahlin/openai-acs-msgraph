@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { GraphService } from 'src/app/core/graph.service';
 import { Customer } from '../shared/customer';
-import { RelatedDataComponent } from '../shared/related-data.component';
+import { RelatedDataComponent } from '../shared/related-content.component';
 
 @Component({
   selector: 'app-files',

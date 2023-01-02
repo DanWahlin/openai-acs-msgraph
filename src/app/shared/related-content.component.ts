@@ -1,11 +1,23 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { GraphService } from "../core/graph.service";
 
 @Component({
     template: ``
 })
 export abstract class RelatedDataComponent {
-    data: any[] = [];
+
+    @Output()
+    dataLoaded: EventEmitter<any> = new EventEmitter();
+
+    private _data: any[] = [];
+    @Input() get data(): any[] {
+      return this._data;
+    }
+
+    set data(value: any[]) {
+      this._data = value;
+      this.dataLoaded.emit(value);
+    }
 
     private _searchText: string | null = null;
     @Input() get searchText(): string | null {

@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MgtAgenda, TemplateHelper } from '@microsoft/mgt';
-import { RelatedDataComponent } from '../shared/related-data.component';
+import { RelatedDataComponent } from '../shared/related-content.component';
 /* Based on the example found at:
   https://github.com/microsoftgraph/microsoft-graph-toolkit/blob/main/samples/angular-app/src/app/angular-agenda/angular-agenda.component.ts
 */
@@ -16,7 +16,7 @@ export class CalendarComponent extends RelatedDataComponent implements OnInit {
     return `/me/events?startdatetime=${this.startDateTime.toISOString()}&enddatetime=${this.endDateTime.toISOString()}&$filter=contains(subject,'${this.searchText}')&orderby=start/dateTime`;
   }
 
-  @ViewChild('agenda', {static: false})
+  @ViewChild('agenda', { static: false })
   agendaElement: ElementRef<MgtAgenda> = {} as ElementRef<MgtAgenda>;
 
   ngOnChanges() {
@@ -25,34 +25,36 @@ export class CalendarComponent extends RelatedDataComponent implements OnInit {
       this.agendaElement.nativeElement.reload();
     }
   }
-  
+
   ngOnInit() {
     // Changing binding syntax in mgt-agenda template to avoid build issues with Angular
-    TemplateHelper.setBindingSyntax('[[',']]');
+    TemplateHelper.setBindingSyntax('[[', ']]');
   }
 
   ngAfterViewInit() {
     this.agendaElement.nativeElement.eventQuery = this.queryUrl;
     this.agendaElement.nativeElement.templateContext = {
-      openWebLink: (e: any, context: { event: { webLink: string | undefined; }; }, root: any) => {
-          window.open(context.event.webLink, '_blank');
+      // Hacky way to get to the events array to report the data back to the parent component
+      // mgt components need a dataLoaded type of event to easily identify when data is loaded
+      dataLoaded: (events: any[]) => {
+        this.dataLoaded.emit(events);
       },
       dayFromDateTime: (dateTimeString: string) => {
         let date = new Date(dateTimeString);
         date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
         let monthNames = [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-            'July',
-            'August',
-            'September',
-            'October',
-            'November',
-            'December'
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December'
         ];
 
         let monthIndex = date.getMonth();
@@ -60,34 +62,37 @@ export class CalendarComponent extends RelatedDataComponent implements OnInit {
         let year = date.getFullYear();
 
         return monthNames[monthIndex] + ' ' + day + ' ' + year;
-    },
+      },
 
-    timeRangeFromEvent: (event: any) => {
+      timeRangeFromEvent: (event: any) => {
         if (event.isAllDay) {
-            return 'ALL DAY';
+          return 'ALL DAY';
         }
 
         let prettyPrintTimeFromDateTime = (date: Date) => {
-            date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-            let hours = date.getHours();
-            let minutes = date.getMinutes();
-            let ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            hours = hours ? hours : 12;
-            let minutesStr = minutes < 10 ? '0' + minutes : minutes;
-            return hours + ':' + minutesStr + ' ' + ampm;
+          date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+          let hours = date.getHours();
+          let minutes = date.getMinutes();
+          let ampm = hours >= 12 ? 'PM' : 'AM';
+          hours = hours % 12;
+          hours = hours ? hours : 12;
+          let minutesStr = minutes < 10 ? '0' + minutes : minutes;
+          return hours + ':' + minutesStr + ' ' + ampm;
         };
 
         let start = prettyPrintTimeFromDateTime(new Date(event.start.dateTime));
         let end = prettyPrintTimeFromDateTime(new Date(event.end.dateTime));
 
         return start + ' - ' + end;
-    }
+      },
+      noEventsCount: (event: any) => {
+        this.dataLoaded.emit([]);
+      }
     };
   }
 
   override async search(query: string) {
-    
+
   }
 
 }

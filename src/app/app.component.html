@@ -13,37 +13,37 @@
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <mat-icon svgIcon="email"></mat-icon> Files
+                            <mat-icon svgIcon="email"></mat-icon> Files ({{ contentCounts.files }})
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-files [searchText]="selectedQueryText"></app-files>
+                    <app-files [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('files', $event)"></app-files>
                 </mat-expansion-panel>
 
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <mat-icon svgIcon="chat"></mat-icon> Chats
+                            <mat-icon svgIcon="chat"></mat-icon> Chats ({{ contentCounts.chats }})
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-chats [searchText]="selectedQueryText"></app-chats>
+                    <app-chats [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('chats', $event)"></app-chats>
                 </mat-expansion-panel>
 
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <mat-icon svgIcon="email"></mat-icon> Emails
+                            <mat-icon svgIcon="email"></mat-icon> Emails ({{ contentCounts.emails }})
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-emails [searchText]="selectedQueryText"></app-emails>
+                    <app-emails [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('emails', $event)"></app-emails>
                 </mat-expansion-panel>
 
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <mat-icon svgIcon="agenda"></mat-icon> Agenda Items
+                            <mat-icon svgIcon="agenda"></mat-icon> Agenda Items ({{ contentCounts.agendaEvents }})
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-agenda [searchText]="selectedQueryText"></app-agenda>
+                    <app-agenda [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('agendaEvents', $event)"></app-agenda>
                 </mat-expansion-panel>
             </mat-accordion>
         </div>

@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DataService } from './core/data.service';
 import { GraphService } from './core/graph.service';
 import { Customer } from './shared/customer';
+import { ProviderState } from '@microsoft/mgt';
 
 const PEOPLE_ICON = 
 `
@@ -37,11 +38,17 @@ const AGENDA_ICON =
 })
 export class AppComponent implements OnInit {
   title = 'angular-mgt';
-  loggedIn = false;
+  loggedIn = ProviderState.SignedIn;
   name = '';
   customers: Customer[] = [];
   selectedCustomer: Customer | null = null;
   selectedQueryText = '';
+  contentCounts: any = {
+    files: 0,
+    emails: 0,
+    chats: 0,
+    agendaEvents: 0
+  };
 
   constructor(private graphService: GraphService, private dataService: DataService, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) { }
 
@@ -62,10 +69,13 @@ export class AppComponent implements OnInit {
 
   filter(data: string) {
     this.selectedQueryText = data;
-}
+  }
+
+  dataLoaded(type: string, data: any) {
+    this.contentCounts[type] = data.length;
+  }
 
   userLoggedIn(e: any) {
-    this.loggedIn = true;
     this.name = e.displayName;
   }
 }

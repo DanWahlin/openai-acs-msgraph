@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RelatedDataComponent } from '../shared/related-data.component';
+import { RelatedDataComponent } from '../shared/related-content.component';
 
 @Component({
   selector: 'app-chats',
