@@ -1,6 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -37,6 +38,7 @@ import { CalendarComponent } from './agenda/agenda.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    MatBadgeModule,
     MatButtonModule,
     MatCardModule,
     MatExpansionModule,

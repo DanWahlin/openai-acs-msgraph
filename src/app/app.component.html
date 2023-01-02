@@ -6,14 +6,16 @@
         <div *ngIf="selectedCustomer">
             <h2>{{ selectedQueryText }} Content</h2>
 
-            <app-filter-textbox [filter]="selectedQueryText" [label]="'Content Filter:'" (changed)="filter($event)"></app-filter-textbox>
+            <app-filter-textbox [filter]="selectedQueryText" [label]="'Content Filter:'"
+                (changed)="filter($event)"></app-filter-textbox>
             <br /><br />
 
             <mat-accordion multi>
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <mat-icon svgIcon="email"></mat-icon> Files ({{ contentCounts.files }})
+                            <mat-icon svgIcon="email"></mat-icon> 
+                            <div matBadge="{{contentCounts.files}}" matBadgeOverlap="false" matBadgeColor="primary" matBadgePosition="after">Files</div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-files [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('files', $event)"></app-files>
@@ -22,7 +24,8 @@
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <mat-icon svgIcon="chat"></mat-icon> Chats ({{ contentCounts.chats }})
+                            <mat-icon svgIcon="chat"></mat-icon>
+                            <div matBadge="{{contentCounts.chats}}" matBadgeOverlap="false" matBadgeColor="primary" matBadgePosition="after">Chats</div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-chats [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('chats', $event)"></app-chats>
@@ -31,19 +34,23 @@
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <mat-icon svgIcon="email"></mat-icon> Emails ({{ contentCounts.emails }})
+                            <mat-icon svgIcon="email"></mat-icon>
+                            <div matBadge="{{contentCounts.emails}}" matBadgeOverlap="false" matBadgeColor="primary" matBadgePosition="after">Emails</div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-emails [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('emails', $event)"></app-emails>
+                    <app-emails [searchText]="selectedQueryText"
+                        (dataLoaded)="dataLoaded('emails', $event)"></app-emails>
                 </mat-expansion-panel>
 
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <mat-icon svgIcon="agenda"></mat-icon> Agenda Items ({{ contentCounts.agendaEvents }})
+                            <mat-icon svgIcon="agenda"></mat-icon>
+                            <div matBadge="{{contentCounts.agendaEvents}}" matBadgeOverlap="false" matBadgeColor="primary" matBadgePosition="after">Agenda Events</div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-agenda [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('agendaEvents', $event)"></app-agenda>
+                    <app-agenda [searchText]="selectedQueryText"
+                        (dataLoaded)="dataLoaded('agendaEvents', $event)"></app-agenda>
                 </mat-expansion-panel>
             </mat-accordion>
         </div>
