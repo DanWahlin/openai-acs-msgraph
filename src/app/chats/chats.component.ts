@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { RelatedDataComponent } from '../shared/related-content.component';
+import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
 
 @Component({
   selector: 'app-chats',
   templateUrl: './chats.component.html',
   styleUrls: ['./chats.component.scss']
 })
-export class ChatsComponent extends RelatedDataComponent implements OnInit {
+export class ChatsComponent extends RelatedContentBaseComponent implements OnInit {
   
   ngOnInit() { 
 

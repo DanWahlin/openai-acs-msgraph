@@ -20,6 +20,7 @@ import { FilterTextboxComponent } from './shared/filter-textbox.component';
 import { ChatsComponent } from './chats/chats.component';
 import { EmailsComponent } from './emails/emails.component';
 import { CalendarComponent } from './agenda/agenda.component';
+import { RelatedContentComponent } from './related-content/related-content.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { CalendarComponent } from './agenda/agenda.component';
     FilterTextboxComponent,
     ChatsComponent,
     EmailsComponent,
-    CalendarComponent
+    CalendarComponent,
+    RelatedContentComponent
   ],
   imports: [
     BrowserModule,

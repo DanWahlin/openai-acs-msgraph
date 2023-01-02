@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { RelatedDataComponent } from '../shared/related-content.component';
+import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
 
 @Component({
   selector: 'app-emails',
   templateUrl: './emails.component.html',
   styleUrls: ['./emails.component.scss']
 })
-export class EmailsComponent extends RelatedDataComponent implements OnInit {
+export class EmailsComponent extends RelatedContentBaseComponent implements OnInit {
 
   ngOnInit() { }
 

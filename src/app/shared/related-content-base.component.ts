@@ -4,7 +4,7 @@ import { GraphService } from "../core/graph.service";
 @Component({
     template: ``
 })
-export abstract class RelatedDataComponent {
+export abstract class RelatedContentBaseComponent {
 
     @Output()
     dataLoaded: EventEmitter<any> = new EventEmitter();
@@ -26,9 +26,9 @@ export abstract class RelatedDataComponent {
   
     set searchText(value: string | null) {
       this._searchText = value;
-      if (value) {
-        this.search(value);
-      }
+      //if (value) {
+        this.search(value as string);
+      //}
     }
 
     abstract search(searchText: string) : Promise<any>;

@@ -27,6 +27,8 @@ export class GraphService {
   async searchFiles(query: string) {
     const files: any[] = [];
 
+    if (!query) return files;
+
     const filter = {
       "requests": [
           {
@@ -58,6 +60,8 @@ export class GraphService {
     const chatIds: any[] = [];
     const promises: any[] = [];
     const messages: any[] = [];
+
+    if (!query) return messages;
 
     const filter = {
       "requests": [
@@ -116,6 +120,7 @@ export class GraphService {
   }
   
   async searchEmail(query:string) {
+    if (!query) return [];
     // The $search operator will search the subject, body, and sender fields automatically
     let url = `https://graph.microsoft.com/v1.0/me/messages?$search="${query}"&$select=subject,bodyPreview,from,toRecipients,receivedDateTime,webLink`;
     const response = await Providers.globalProvider.graph.client.api(url).get();

@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MgtAgenda, TemplateHelper } from '@microsoft/mgt';
-import { RelatedDataComponent } from '../shared/related-content.component';
+import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
 /* Based on the example found at:
   https://github.com/microsoftgraph/microsoft-graph-toolkit/blob/main/samples/angular-app/src/app/angular-agenda/angular-agenda.component.ts
 */
@@ -9,11 +9,15 @@ import { RelatedDataComponent } from '../shared/related-content.component';
   templateUrl: './agenda.component.html',
   styleUrls: ['./agenda.component.scss']
 })
-export class CalendarComponent extends RelatedDataComponent implements OnInit {
+export class CalendarComponent extends RelatedContentBaseComponent implements OnInit {
   startDateTime = new Date();
   endDateTime = new Date(this.startDateTime.getTime() + (7 * 24 * 60 * 60 * 1000));
   get queryUrl() {
-    return `/me/events?startdatetime=${this.startDateTime.toISOString()}&enddatetime=${this.endDateTime.toISOString()}&$filter=contains(subject,'${this.searchText}')&orderby=start/dateTime`;
+    if (this.searchText) {
+      return `/me/events?startdatetime=${this.startDateTime.toISOString()}&enddatetime=${this.endDateTime.toISOString()}&$filter=contains(subject,'${this.searchText}')&orderby=start/dateTime`;
+    }
+    // No searchText so don't return any events
+    return '/me/noevents';
   }
 
   @ViewChild('agenda', { static: false })
