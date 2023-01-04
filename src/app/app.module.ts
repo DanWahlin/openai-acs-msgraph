@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -21,6 +22,7 @@ import { ChatsComponent } from './chats/chats.component';
 import { EmailsComponent } from './emails/emails.component';
 import { CalendarComponent } from './agenda/agenda.component';
 import { RelatedContentComponent } from './related-content/related-content.component';
+import { ChatDialogComponent } from './chats/chat-dialog/chat-dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { RelatedContentComponent } from './related-content/related-content.compo
     ChatsComponent,
     EmailsComponent,
     CalendarComponent,
-    RelatedContentComponent
+    RelatedContentComponent,
+    ChatDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,7 @@ import { RelatedContentComponent } from './related-content/related-content.compo
     MatBadgeModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatExpansionModule,
     MatTableModule,
     MatToolbarModule,

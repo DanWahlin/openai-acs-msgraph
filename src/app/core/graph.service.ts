@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Msal2Provider, Providers } from '@microsoft/mgt';
+import { DialogData } from '../chats/chat-dialog/chat-dialog.component';
 
 // Retrieved from .env file value by using webpack.partial.js and ngx-build-plus
 declare const AAD_CLIENT_ID: string;
+declare const TEAM_ID: string;
+declare const CHANNEL_ID: string;
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +19,7 @@ export class GraphService {
       console.log('Initializing Microsoft Graph global provider...');
       Providers.globalProvider = new Msal2Provider({
         clientId: AAD_CLIENT_ID,
-        scopes: ['User.Read', 'Chat.ReadWrite', 'ChannelMessage.Read.All', 'Calendars.Read', 'Files.Read.All', 'Mail.Read',]
+        scopes: ['User.Read', 'Chat.ReadWrite', 'Calendars.Read', 'ChannelMessage.Read.All', 'ChannelMessage.Send', 'Files.Read.All', 'Mail.Read',]
       });
     }
     else {
@@ -122,9 +125,30 @@ export class GraphService {
   async searchEmail(query:string) {
     if (!query) return [];
     // The $search operator will search the subject, body, and sender fields automatically
-    let url = `https://graph.microsoft.com/v1.0/me/messages?$search="${query}"&$select=subject,bodyPreview,from,toRecipients,receivedDateTime,webLink`;
+    const url = `https://graph.microsoft.com/v1.0/me/messages?$search="${query}"&$select=subject,bodyPreview,from,toRecipients,receivedDateTime,webLink`;
     const response = await Providers.globalProvider.graph.client.api(url).get();
     return response.value;
+  }
+
+  async sendTeamsChat(message: string) : Promise<DialogData> {
+    if (!message) new Error('No message to send.');
+    if (!TEAM_ID || !CHANNEL_ID) new Error('Team ID or Channel ID not set in environment variables. Please set TEAM_ID and CHANNEL_ID in the .env file.');
+
+    const url = `https://graph.microsoft.com/v1.0/teams/${TEAM_ID}/channels/${CHANNEL_ID}/messages`;
+    const body = {
+      "body": {
+        "contentType": "html",
+        "content": message
+      }
+    };
+    const response = await Providers.globalProvider.graph.client.api(url).post(body);
+    return {
+      id: response.id,
+      teamId: response.channelIdentity.teamId,
+      channelId: response.channelIdentity.channelId,
+      body: response.body.content,
+      webUrl: response.webUrl
+    };
   }
 
 }

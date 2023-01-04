@@ -22,8 +22,15 @@ This application demonstrates how Microsoft Graph and the Microsoft Graph Toolki
     AAD_CLIENT_ID=<YOUR_AAD_CLIENT_ID>
     ```
 
+1. If you'd like to try out sending a message from the app into a Teams Channel (optional), create a new Team in Microsoft Teams using your dev tenant account, and add the team Id and channel Id into the `.env` file:
+
+    ```
+    TEAMS_ID=<ID_OF_YOUR_TEAM_IN_TEAMS>
+    CHANNEL_ID=<ID_OF_YOUR_CHANNEL_IN_TEAMS>
+    ```
+
 1. Run `npm install`.
 
 1. Run `npm start`.
 
-1. Login using one of your developer tenant accounts. Note that currently you'll have to add files, Teams chats, emails, calendar events, etc. that use the company names shown in the app manually to see them pulled into the app, but I hope to provide an automated way to do that soon.
+1. Login using your Microsoft 365 Developer tenant account. Note that currently, you'll have to add files, Teams chats, emails, calendar events, etc. (that use the company names shown in the app) manually to see them pulled into the app. You won't see any results at all when you load the app otherwise - aside from the app's customers. I'm planning to provide an automated way to add the other items in the future.

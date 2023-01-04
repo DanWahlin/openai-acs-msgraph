@@ -19,12 +19,12 @@ export abstract class RelatedContentBaseComponent {
       this.dataLoaded.emit(value);
     }
 
-    private _searchText: string | null = null;
-    @Input() get searchText(): string | null {
+    private _searchText: string = '';
+    @Input() get searchText(): string {
       return this._searchText;
     }
   
-    set searchText(value: string | null) {
+    set searchText(value: string) {
       this._searchText = value;
       //if (value) {
         this.search(value as string);
