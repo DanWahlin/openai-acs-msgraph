@@ -130,7 +130,7 @@ export class GraphService {
     return response.value;
   }
 
-  async sendTeamsChat(message: string) : Promise<DialogData> {
+  async sendTeamsChat(message: string) : Promise<DialogData> { 
     if (!message) new Error('No message to send.');
     if (!TEAM_ID || !CHANNEL_ID) new Error('Team ID or Channel ID not set in environment variables. Please set TEAM_ID and CHANNEL_ID in the .env file.');
 
