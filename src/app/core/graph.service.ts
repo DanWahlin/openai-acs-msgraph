@@ -130,6 +130,16 @@ export class GraphService {
     return response.value;
   }
 
+  async searchAgendaEvents(query:string) {
+    if (!query) return [];
+    const startDateTime = new Date();
+    const endDateTime = new Date(startDateTime.getTime() + (7 * 24 * 60 * 60 * 1000));
+    const url = `/me/events?startdatetime=${startDateTime.toISOString()}&enddatetime=${endDateTime.toISOString()}&$filter=contains(subject,'${query}')&orderby=start/dateTime`;
+
+    const response = await Providers.globalProvider.graph.client.api(url).get();
+    return response.value;
+  }
+
   async sendTeamsChat(message: string) : Promise<DialogData> {
     if (!message) new Error('No message to send.');
     if (!TEAM_ID || !CHANNEL_ID) new Error('Team ID or Channel ID not set in environment variables. Please set TEAM_ID and CHANNEL_ID in the .env file.');

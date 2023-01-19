@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -48,7 +48,7 @@ import { ChatDialogComponent } from './chats/chat-dialog/chat-dialog.component';
     MatCardModule,
     MatDialogModule,
     MatExpansionModule,
-    MatTableModule,
+    MatTabsModule,
     MatToolbarModule,
     MatIconModule
   ],
