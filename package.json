@@ -6,7 +6,8 @@
     "start": "ng serve --extra-webpack-config webpack.partial.js -o",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "start-server": "node ./server.mjs"
   },
   "private": true,
   "dependencies": {
@@ -21,7 +22,10 @@
     "@angular/platform-browser-dynamic": "^15.0.0",
     "@angular/router": "^15.0.0",
     "@microsoft/mgt": "^2.8.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "ngx-build-plus": "^15.0.0",
+    "node-fetch": "^3.3.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
@@ -31,7 +35,6 @@
     "@angular/cli": "~15.0.1",
     "@angular/compiler-cli": "^15.0.0",
     "@types/jasmine": "~4.3.0",
-    "dotenv": "^16.0.3",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
