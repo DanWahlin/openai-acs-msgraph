@@ -23,6 +23,8 @@ import { EmailsComponent } from './emails/emails.component';
 import { CalendarComponent } from './agenda/agenda.component';
 import { RelatedContentComponent } from './related-content/related-content.component';
 import { ChatDialogComponent } from './chats/chat-dialog/chat-dialog.component';
+import { DynamicPipe } from './shared/dynamic.pipe';
+import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { ChatDialogComponent } from './chats/chat-dialog/chat-dialog.component';
     EmailsComponent,
     CalendarComponent,
     RelatedContentComponent,
-    ChatDialogComponent
+    ChatDialogComponent,
+    DynamicPipe
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,7 @@ import { ChatDialogComponent } from './chats/chat-dialog/chat-dialog.component';
     MatIconModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [],
+  providers: [CurrencyPipe, DatePipe, DecimalPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

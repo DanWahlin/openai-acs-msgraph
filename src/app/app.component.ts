@@ -17,10 +17,9 @@ export class AppComponent implements OnInit {
   title = 'angular-mgt';
   loggedIn = ProviderState.SignedIn;
   name = '';
-  customers: Customer[] = [];
   selectedCustomer: Customer | null = null;
 
-  constructor(private graphService: GraphService, private dataService: DataService, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) { }
+  constructor(private graphService: GraphService, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) { }
 
   async ngOnInit() {
     this.iconRegistry.addSvgIconLiteral('people', this.sanitizer.bypassSecurityTrustHtml(PEOPLE_ICON));
@@ -29,7 +28,6 @@ export class AppComponent implements OnInit {
     this.iconRegistry.addSvgIconLiteral('email', this.sanitizer.bypassSecurityTrustHtml(EMAIL_ICON));
     this.iconRegistry.addSvgIconLiteral('agenda', this.sanitizer.bypassSecurityTrustHtml(AGENDA_ICON));
     this.graphService.init();
-    this.dataService.getCustomers().subscribe((customers: Customer[]) => this.customers = customers);
   }
 
   customerSelected(customer: Customer) {

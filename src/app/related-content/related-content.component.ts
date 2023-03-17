@@ -18,7 +18,7 @@ export class RelatedContentComponent implements OnInit {
   set selectedCustomer(value: Customer | null) {
     this._selectedCustomer = value;
     if (value) {
-      this.selectedQueryText = value.name;
+      this.selectedQueryText = value.company;
     }
   }
 

@@ -29,8 +29,12 @@ This application demonstrates how Microsoft Graph and the Microsoft Graph Toolki
     CHANNEL_ID=<ID_OF_YOUR_CHANNEL_IN_TEAMS>
     ```
 
-1. Run `npm install`.
+1. Run `npm install` to install dependencies.
 
-1. Run `npm start`.
+1. Run `docker-compose up` in a console window to start the Postgresql server.
 
-1. Login using your Microsoft 365 Developer tenant account. Note that currently, you'll have to add files, Teams chats, emails, calendar events, etc. (that use the company names shown in the app) manually to see them pulled into the app. You won't see any results at all when you load the app otherwise - aside from the app's customers. I'm planning to provide an automated way to add the other items in the future.
+1. Open a separate command window and run `npm start-api` to start the backend API service. This should automatically populate the database with sample data.
+
+1. Open a separate command window and run `npm start`.
+
+1. Go to the browser and login using your Microsoft 365 Developer tenant account. Note that currently, you'll have to add files, Teams chats, emails, calendar events, etc. (that use the company names shown in the app) manually to see them pulled into the app. You won't see any results at all when you load the app otherwise - aside from the app's customers. I'm planning to provide an automated way to add the other items in the future.

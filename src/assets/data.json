@@ -1,26 +1,30 @@
 [
       {
             "id": 1,
-            "name": "Tailwind Traders",
+            "company": "Tailwind Traders",
             "city": " Phoenix ",
-            "orderTotal": 400214.99
+            "email": "jane.doe@example.com",
+            "order-total": 400214.99
       },
       {
             "id": 2,
-            "name": "Adatum Corporation",
+            "company": "Adatum Corporation",
             "city": "Los Angeles ",
-            "orderTotal": 89553.99
+            "email": "john.smith@example.com",
+            "order-total": 89553.99
       },
       {
             "id": 3,
-            "name": "Adventure Works Cycles",
+            "company": "Adventure Works Cycles",
             "city": " Las Vegas ",
-            "orderTotal": 9451.99
+            "email": "peter.gibbons@example.com",
+            "order-total": 9451.99
       },
       {
             "id": 4,
-            "name": "Contoso Pharmaceuticals",
+            "company": "Contoso Pharmaceuticals",
             "city": "Seattle",
-            "orderTotal": 15850.99
+            "email": "gene.david@example.com",
+            "order-total": 15850.99
       }
 ]

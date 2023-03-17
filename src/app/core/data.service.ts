@@ -9,19 +9,20 @@ import { Customer } from '../../app/shared/customer';
 @Injectable({providedIn: 'root'})
 export class DataService {
     customersUrl = 'assets/data.json';
+    apiBaseUrl = 'http://localhost:3000/api/';
 
     constructor(private http: HttpClient) { }
 
     getCustomers(): Observable<Customer[]> {
-      return this.http.get<Customer[]>(this.customersUrl)
+      return this.http.get<any[]>(this.apiBaseUrl + 'customers')
         .pipe(
-          map(customers => {
+          map(data => {
             // Sort by name
-            return customers.sort((a: Customer, b: Customer) => {
-              if (a.name < b.name) {
+            return data.sort((a: Customer, b: Customer) => {
+              if (a.company < b.company) {
                 return -1;
               } 
-              if (a.name > b.name) {
+              if (a.company > b.company) {
                 return 1;
               }
               return 0;
@@ -42,6 +43,31 @@ export class DataService {
           catchError(this.handleError)
         );
     }
+
+    generateSql(query: string) : Observable<any> {
+      return this.http.post<any>(this.apiBaseUrl + 'generatesql', { query })
+        .pipe(
+          catchError(this.handleError)
+        );
+    }
+
+    filter(val: string, data: any[]) {
+      if (val) {
+          val = val.toLowerCase();
+          const filteredData = data.filter((data: any) => {
+              for (const property in data) {
+                  const propValue = data ? data[property].toString().toLowerCase() : '';
+                  if (propValue && propValue.indexOf(val) > -1) {
+                      return true;
+                  }
+              }
+              return false;
+          });
+          return filteredData;
+      } else {
+          return null;
+      }
+  }
 
     private handleError(error: HttpErrorResponse) {
       console.error('server error:', error);

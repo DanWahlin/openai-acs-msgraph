@@ -2,26 +2,58 @@
 <app-filter-textbox (changed)="filter($event)"></app-filter-textbox>
 <br />
 <br />
-<table class="table">
+<table *ngIf="filteredData.length > 0; else noData" class="table">
     <thead>
         <tr>
-            <th (click)="sort('name')">Name</th>
+            <th (click)="sort(header)" *ngFor="let header of headers">{{ header | titlecase }}</th>
+            <th *ngIf="headers.includes('company')">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of filteredData">
+            <td *ngFor="let header of headers">
+                {{ row[header] | dynamic:header }}
+            </td>
+            <td *ngIf="headers.includes('company')">
+                <button mat-stroked-button color="basic" (click)="getRelatedData(row)">View Related Content</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<ng-template #noData>
+    <p>No data available.</p>
+</ng-template>
+
+<br />
+<label>Custom Query:</label>
+<div
+    style="display: grid; grid-template-columns: auto auto auto; align-items: center; justify-content: left; grid-gap: 10px;">
+    <textarea title="query" [(ngModel)]="queryText" placeholder="Query text (example: Get the total revenue for all orders)"></textarea>
+    <button mat-stroked-button color="basic" (click)="getQueryData()">Run Query</button>
+    <button mat-stroked-button color="basic" (click)="reset()">Reset Data</button>
+</div>
+
+
+<!-- <table class="table">
+    <thead>
+        <tr>
+            <th (click)="sort('company')">Company</th>
             <th (click)="sort('city')">City</th>
             <th (click)="sort('orderTotal')">Order Total</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let cust of filteredCustomers" (click)="getRelatedData(cust)">
-            <td>{{ cust.name }}</td>
+        <tr *ngFor="let cust of filteredData" (click)="getRelatedData(cust)">
+            <td>{{ cust.company }}</td>
             <td>{{ cust.city }}</td>
             <td>{{ cust.orderTotal | currency:currencyCode:'symbol' }}</td>
             <td>
                 <button mat-stroked-button color="basic" (click)="getRelatedData(cust)">View Related Content</button>
             </td>
         </tr>
-        <tr *ngIf="!filteredCustomers || !filteredCustomers.length">
-            <td colspan="4">No customers found</td>
+        <tr *ngIf="!filteredData || !filteredData.length">
+            <td colspan="4">No data found</td>
         </tr>
     </tbody>    
-</table>
+</table> -->
