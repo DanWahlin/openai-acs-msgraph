@@ -65,13 +65,13 @@ async function generateSQLQuery(userQuery) {
             apiKey: process.env.OPENAI_API_KEY
         });
         const openai = new OpenAIApi(configuration);
-        const completion = await openai.createCompletion({
-            model: 'text-davinci-003',
+        const completion = await openai.createChatCompletion({
+            model: 'gpt-4', // gpt-3.5-turbo
             max_tokens: 1024,
             temperature: 0,
-            prompt: prompt
+            messages: [{ role: 'user', content: prompt }]
         });
-        const sqlCommandObject = completion.data.choices[0].text.trim();
+        const sqlCommandObject = completion.data.choices[0].message.content.trim();
         console.log(sqlCommandObject);
         return sqlCommandObject;
     } catch (error) {
