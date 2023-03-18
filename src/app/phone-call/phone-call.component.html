@@ -1,0 +1,8 @@
+<div>
+    <br />
+    <input [(ngModel)]="customerPhoneNumber" class="phone-number-input" type="text" title="Customer Phone Number" />
+    &nbsp;
+    <button mat-stroked-button color="basic" (click)="startCall()" [disabled]="inCall">Call</button>
+        &nbsp;
+    <button mat-stroked-button color="basic" (click)="endCall()" [disabled]="!inCall">Hang Up</button>
+</div>

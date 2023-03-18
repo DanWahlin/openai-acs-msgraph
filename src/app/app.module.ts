@@ -25,6 +25,7 @@ import { RelatedContentComponent } from './related-content/related-content.compo
 import { ChatDialogComponent } from './chats/chat-dialog/chat-dialog.component';
 import { DynamicPipe } from './shared/dynamic.pipe';
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { PhoneCallComponent } from './phone-call/phone-call.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
     CalendarComponent,
     RelatedContentComponent,
     ChatDialogComponent,
-    DynamicPipe
+    DynamicPipe,
+    PhoneCallComponent
   ],
   imports: [
     BrowserModule,

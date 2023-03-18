@@ -6,7 +6,8 @@ module.exports = {
         new webpack.DefinePlugin({
             "AAD_CLIENT_ID": JSON.stringify(process.env.AAD_CLIENT_ID),
             "TEAM_ID": JSON.stringify(process.env.TEAM_ID),
-            "CHANNEL_ID": JSON.stringify(process.env.CHANNEL_ID)
+            "CHANNEL_ID": JSON.stringify(process.env.CHANNEL_ID),
+            "ACS_PHONE_NUMBER": JSON.stringify(process.env.ACS_PHONE_NUMBER)
         })
     ]
 }

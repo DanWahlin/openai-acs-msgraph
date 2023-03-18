@@ -13,3 +13,11 @@ th { cursor: pointer; }
 .mat-mdc-tab-body-content {
     padding-top: 10px;
 }
+
+.three-column {
+    display: grid; 
+    grid-template-columns: auto auto auto; 
+    align-items: center; 
+    justify-content: left; 
+    grid-gap: 10px;
+}

@@ -24,7 +24,8 @@ async function createTables() {
     id SERIAL PRIMARY KEY,
     company VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) NOT NULL
   );`;
 
   const createOrdersTable = `CREATE TABLE orders (
@@ -60,12 +61,12 @@ async function createTables() {
 }
 
 async function seedData() {
-  const insertCustomers = `INSERT INTO customers (company, city, email)
+  const insertCustomers = `INSERT INTO customers (company, city, email, phone)
     VALUES
-      ('Adatum Corporation', 'New York', 'jane.doe@example.com'),
-      ('Adventure Works Cycles', 'London', 'john.smith@example.com'),
-      ('Contoso Pharmaceuticals', 'Austin', 'peter.gibbons@example.com'),
-      ('Tailwind Traders', 'Sydney', 'lisa.taylor@example.com');`;
+      ('Adatum Corporation', 'New York', 'jane.doe@example.com', '+11231111234'),
+      ('Adventure Works Cycles', 'London', 'john.smith@example.com', '+14561111234'),
+      ('Contoso Pharmaceuticals', 'Austin', 'peter.gibbons@example.com', '+17891111234'),
+      ('Tailwind Traders', 'Sydney', 'lisa.taylor@example.com', '+10121111234');`;
 
   const insertOrders = `INSERT INTO orders (customer_id, date, total)
     VALUES
@@ -102,7 +103,7 @@ async function seedData() {
       RETURNS SETOF customers 
       LANGUAGE SQL 
   AS $$
-  SELECT id, company, city, email FROM customers
+  SELECT id, company, city, email, phone FROM customers
   $$;`
 
   await pool.query(insertCustomers);
