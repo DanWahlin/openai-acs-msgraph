@@ -70,6 +70,15 @@ Adding these features eliminates the need for the user to switch to Outlook, Tea
     ACS_PHONE_NUMBER=<ACS_PHONE_NUMBER>
     ```
 
+1. The backend API is currently using `gpt-4` which isn't broadly available as of today. If you don't have access to it in your OpenAI account, open `apiRoutes.mjs`, locate the following code, and change the model to `gpt-3.5.turbo` if needed.
+
+    ```javascript
+    const completion = await openai.createChatCompletion({
+    model: 'gpt-3.5-turbo', 
+    ...
+    });
+    ```
+
 1. Run `npm install` to install dependencies.
 
 1. Run `docker-compose up` in a console window to start the Postgresql server.
