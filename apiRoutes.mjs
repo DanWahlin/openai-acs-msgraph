@@ -1,7 +1,8 @@
 import pkg from 'express';
 import pgPkg from 'pg';
-import { OpenAIApi, Configuration } from "openai";
+import { OpenAIApi, Configuration } from 'openai';
 import dotenv from 'dotenv';
+import { CommunicationIdentityClient } from '@azure/communication-identity';
 import { initializeDb } from './initDatabase.mjs';
 const { Router } = pkg;
 const { Pool } = pgPkg;
@@ -34,6 +35,14 @@ router.get('/customers', async (req, res) => {
         console.error('Error retrieving customers:', error);
         res.status(500).json({ error: 'Error retrieving customers.' });
     }
+});
+
+router.get('/acstoken', async(req, res) => {
+    const connectionString = process.env.ACS_CONNECTION_STRING;
+    let tokenClient = new CommunicationIdentityClient(connectionString);
+    const user = await tokenClient.createUser();
+    const userToken = await tokenClient.getToken(user, ["voip"]);
+    res.json({ userId: user.communicationUserId, ...userToken });
 });
 
 async function generateSQLQuery(userQuery) {

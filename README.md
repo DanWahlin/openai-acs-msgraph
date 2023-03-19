@@ -38,6 +38,7 @@ Adding these features eliminates the need for the user to switch to Outlook, Tea
     OPENAI_API_KEY=<OPENAI_SECRET_KEY>
     POSTGRES_USER=web
     POSTGRES_PASSWORD=web-password
+    ACS_CONNECTION_STRING=<ACS_CONNECTION_STRING>
     ACS_PHONE_NUMBER=<ACS_PHONE_NUMBER>
     ```
 
@@ -62,9 +63,10 @@ Adding these features eliminates the need for the user to switch to Outlook, Tea
 
 1. If you'd like to use the Azure Communication Services (ACS) phone calling functionality, visit https://portal.azure.com, create an ACS resource, and add a phone number. Ensure that the phone number has calling capabilities enabled. 
 
-1. Update the ACS phone number in the `.env` file:
+1. Update the ACS connection string and phone number in the `.env` file. You can get the connection string from the Azure Portal by going to your ACS resource, selecting `Keys` from the left-hand menu, and copying the `connection string` value.
 
     ```
+    ACS_CONNECTION_STRING=<ACS_CONNECTION_STRING>
     ACS_PHONE_NUMBER=<ACS_PHONE_NUMBER>
     ```
 

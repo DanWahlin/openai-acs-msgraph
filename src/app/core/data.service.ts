@@ -51,6 +51,13 @@ export class DataService {
         );
     }
 
+    getAcsToken() : Observable<any> {
+      return this.http.get<any>(this.apiBaseUrl + 'acstoken')
+        .pipe(
+          catchError(this.handleError)
+        );
+    }
+
     filter(val: string, data: any[]) {
       if (val) {
           val = val.toLowerCase();

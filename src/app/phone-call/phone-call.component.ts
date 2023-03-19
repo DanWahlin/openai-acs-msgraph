@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CallClient, CallAgent, Call } from "@azure/communication-calling";
 import { AzureCommunicationTokenCredential } from '@azure/communication-common';
+import { DataService } from '../core/data.service';
 
 declare const ACS_PHONE_NUMBER: string;
 
@@ -18,10 +19,15 @@ export class PhoneCallComponent implements OnInit {
   @Input() customerPhoneNumber = '';
   @Output() hangup = new EventEmitter();
 
+  constructor(private dataService: DataService) { }
+
   async ngOnInit() {
-    const callClient = new CallClient();
-    const tokenCredential = new AzureCommunicationTokenCredential('<ADD_ACS_TOKEN_HERE>');
-    this.callAgent = await callClient.createCallAgent(tokenCredential);
+    this.dataService.getAcsToken().subscribe(async (user: any) => {
+      const callClient = new CallClient();
+      const tokenCredential = new AzureCommunicationTokenCredential(user.token);
+      this.callAgent = await callClient.createCallAgent(tokenCredential);
+    });
+
   }
 
   startCall() {
