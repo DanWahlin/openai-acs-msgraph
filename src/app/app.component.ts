@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DataService } from './core/data.service';
+import { Providers, ProviderState } from '@microsoft/mgt';
 import { GraphService } from './core/graph.service';
 import { Customer } from './shared/customer';
-import { ProviderState } from '@microsoft/mgt';
 import { PEOPLE_ICON, FILE_ICON, CHAT_ICON, EMAIL_ICON, AGENDA_ICON, PHONE_ICON, CONTENT_ICON, SEARCH_ICON, RESET_ICON } from './shared/svg-icons';
 
 
@@ -15,7 +14,12 @@ import { PEOPLE_ICON, FILE_ICON, CHAT_ICON, EMAIL_ICON, AGENDA_ICON, PHONE_ICON,
 })
 export class AppComponent implements OnInit {
   title = 'angular-mgt';
-  loggedIn = ProviderState.SignedIn;
+  get loggedIn() {
+    if (Providers.globalProvider) {
+      return Providers.globalProvider.state === ProviderState.SignedIn;
+    }
+    return false;
+  }
   name = '';
   selectedCustomer: Customer | null = null;
 
