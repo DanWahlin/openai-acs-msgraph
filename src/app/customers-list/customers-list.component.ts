@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { SorterService } from '../core/sorter.service';
-import { EventBusService } from 'src/app/core/eventbus.service';
+import { EventBusService, Events } from 'src/app/core/eventbus.service';
 import { DataService } from '../core/data.service';
 
 @Component({
@@ -10,8 +10,6 @@ import { DataService } from '../core/data.service';
     styleUrls: ['./customers-list.component.scss']
 })
 export class CustomersListComponent implements OnInit {
-    isNaN: Function = Number.isNaN;
-    Number: Function = Number;
     // Due to dynamic OpenAI query we're going with any[] for type of the data property
     private _data: any[] = [];
     get data(): any[] {
@@ -67,6 +65,10 @@ export class CustomersListComponent implements OnInit {
 
     getRelatedData(data: any) {
         this.customerSelected.emit(data);
+    }
+
+    call(data: any) {
+        this.eventBus.emit({ name: Events.CustomerCall, value: data });
     }
 
 }

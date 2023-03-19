@@ -1,4 +1,25 @@
+.phone-container {
+    margin-top: 12px;
+    margin-right: 25px;
+}
+
 .phone-number-input {
     margin-bottom:1em; 
     width: 230px;
+    font-size: .75em;
+}
+
+.call-button {
+    color: #fff !important;
+    background-color: green !important;
+}
+
+.hangup-button {
+    color: #fff !important;
+    background-color: red !important;
+}
+
+.hangup-button:disabled {
+    color: #ccc !important;
+    background-color: transparent !important;
 }

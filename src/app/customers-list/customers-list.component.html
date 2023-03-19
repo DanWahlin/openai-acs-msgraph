@@ -2,11 +2,11 @@
 <app-filter-textbox (changed)="filter($event)"></app-filter-textbox>
 <br />
 <br />
-<table *ngIf="filteredData.length > 0; else noData" class="table">
-    <thead>
+<table *ngIf="filteredData.length > 0; else noData" class="table table-hover">
+    <thead class="table-dark">
         <tr>
-            <th (click)="sort(header)" *ngFor="let header of headers">{{ header | titlecase }}</th>
-            <th *ngIf="headers.includes('company')">&nbsp;</th>
+            <th scope="col" (click)="sort(header)" *ngFor="let header of headers">{{ header | titlecase }}</th>
+            <th scope="col">&nbsp;</th>
         </tr>
     </thead>
     <tbody>
@@ -14,8 +14,12 @@
             <td *ngFor="let header of headers">
                 {{ row[header] | dynamic:header }}
             </td>
-            <td *ngIf="headers.includes('company')">
-                <button mat-stroked-button color="basic" (click)="getRelatedData(row)">View Related Content</button>
+            <td>
+                <button mat-stroked-button color="basic" *ngIf="headers.includes('company')"
+                    (click)="getRelatedData(row)"><mat-icon svgIcon="content"></mat-icon> View Related Content</button>
+                &nbsp;&nbsp;
+                <button mat-stroked-button color="basic" *ngIf="headers.includes('phone')"
+                    (click)="call(row)"><mat-icon svgIcon="phone"></mat-icon> Call Customer</button>
             </td>
         </tr>
     </tbody>
@@ -28,12 +32,9 @@
 <label>Custom Query:</label>
 <div class="three-column">
     <textarea title="query" [(ngModel)]="queryText" placeholder="Query text (example: Get the total revenue for all orders)"></textarea>
-    <button mat-stroked-button color="accent" (click)="getQueryData()">Run Query</button>
-    <button mat-stroked-button color="basic" (click)="reset()">Reset Data</button>
+    <button mat-stroked-button color="basic" (click)="getQueryData()"><mat-icon svgIcon="search"></mat-icon> Run Query</button>
+    <button mat-stroked-button color="basic" (click)="reset()"><mat-icon svgIcon="reset"></mat-icon> Reset Data</button>
 </div>
-
-<br />
-<app-phone-call></app-phone-call>
 
 
 <!-- <table class="table">

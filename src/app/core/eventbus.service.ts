@@ -34,5 +34,6 @@ export class EmitEvent {
 }
 
 export enum Events {
-  customerSelected
+  CustomerSelected,
+  CustomerCall
 }

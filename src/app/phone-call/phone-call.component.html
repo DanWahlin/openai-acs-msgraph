@@ -1,8 +1,7 @@
-<div>
-    <br />
-    <input [(ngModel)]="customerPhoneNumber" class="phone-number-input" type="text" title="Customer Phone Number" />
+<div class="phone-container">
+    <input [(ngModel)]="customerPhoneNumber" class="phone-number-input" type="text" placeholder="Customer phone number" title="Customer Phone Number" />
+    &nbsp; 
+    <button mat-button class="call-button" (click)="startCall()" [disabled]="inCall">Call</button>
     &nbsp;
-    <button mat-stroked-button color="basic" (click)="startCall()" [disabled]="inCall">Call</button>
-        &nbsp;
-    <button mat-stroked-button color="basic" (click)="endCall()" [disabled]="!inCall">Hang Up</button>
+    <button mat-button class="hangup-button" (click)="endCall()">{{ inCall ? 'Hang Up' : 'Close' }}</button>
 </div>
