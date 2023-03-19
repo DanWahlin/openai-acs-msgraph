@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Msal2Provider, Providers } from '@microsoft/mgt';
+import { Msal2Provider, Providers, ProviderState } from '@microsoft/mgt';
 import { DialogData } from '../chats/chat-dialog/chat-dialog.component';
 
 // Retrieved from .env file value by using webpack.partial.js and ngx-build-plus
@@ -25,6 +25,13 @@ export class GraphService {
     else {
       console.log('Global provider already initialized');
     }
+  }
+
+  loggedIn() {
+    if (Providers.globalProvider) {
+      return Providers.globalProvider.state === ProviderState.SignedIn;
+    }
+    return false;
   }
 
   async searchFiles(query: string) {
