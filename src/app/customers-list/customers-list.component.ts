@@ -1,8 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 
 import { SorterService } from '../core/sorter.service';
 import { EventBusService, Events } from 'src/app/core/eventbus.service';
 import { DataService } from '../core/data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogData } from '../shared/textarea-dialog/dialog-data';
+import { TextAreaDialogComponent } from '../shared/textarea-dialog/textarea-dialog.component';
 
 @Component({
     selector: 'app-customers-list',
@@ -29,6 +32,8 @@ export class CustomersListComponent implements OnInit {
     filteredData: any[] = [];
     queryText = 'Get the total revenue for all orders';
     @Output() customerSelected = new EventEmitter<any>();
+
+    dialog: MatDialog = inject(MatDialog);
 
     constructor(private dataService: DataService, private sorterService: SorterService, private eventBus: EventBusService) {
         this.getData();
@@ -67,8 +72,37 @@ export class CustomersListComponent implements OnInit {
         this.customerSelected.emit(data);
     }
 
-    call(data: any) {
+    openCallDialog(data: any) {
         this.eventBus.emit({ name: Events.CustomerCall, value: data });
+    }
+
+    openSmsDialog(data: any) {
+        let dialogData: DialogData = {
+            id: '',
+            teamId: '',
+            channelId: '',
+            body: '',
+            webUrl: 'response.webUrl',
+            title: 'Send SMS Message',
+            action: this.sendSms
+        }
+        dialogData.body = data.company;
+        const dialogRef = this.dialog.open(TextAreaDialogComponent, {
+          data: dialogData
+        });
+    
+        dialogRef.afterClosed().subscribe(response => {
+          console.log('SMS dialog result:', response);
+          if (response) {
+            dialogData = response;            
+          }
+        });
+    }
+
+    sendSms(message: string) {
+        return new Promise((resolve, reject) => {
+            return resolve({ message: 'Message sent' });
+        });
     }
 
 }

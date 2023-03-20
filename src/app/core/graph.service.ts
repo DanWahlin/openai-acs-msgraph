@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Msal2Provider, Providers, ProviderState } from '@microsoft/mgt';
-import { DialogData } from '../chats/chat-dialog/chat-dialog.component';
+import { DialogData } from '../shared/textarea-dialog/dialog-data';
 
 // Retrieved from .env file value by using webpack.partial.js and ngx-build-plus
 declare const AAD_CLIENT_ID: string;
@@ -164,7 +164,8 @@ export class GraphService {
       teamId: response.channelIdentity.teamId,
       channelId: response.channelIdentity.channelId,
       body: response.body.content,
-      webUrl: response.webUrl
+      webUrl: response.webUrl,
+      title: 'Send Teams Chat'
     };
   }
 

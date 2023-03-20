@@ -18,8 +18,13 @@
                 <button mat-stroked-button color="basic" *ngIf="headers.includes('company')"
                     (click)="getRelatedData(row)"><mat-icon svgIcon="content"></mat-icon> View Related Content</button>
                 &nbsp;&nbsp;
-                <button mat-stroked-button color="basic" *ngIf="headers.includes('phone')"
-                    (click)="call(row)"><mat-icon svgIcon="phone"></mat-icon> Call Customer</button>
+                <span *ngIf="headers.includes('phone')">
+                    <button mat-stroked-button [matMenuTriggerFor]="menu"><mat-icon svgIcon="contact"></mat-icon>Contact Customer</button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="openCallDialog(row)"><mat-icon svgIcon="phone"></mat-icon> Call Customer</button>
+                        <button mat-menu-item (click)="openSmsDialog(row)"><mat-icon svgIcon="sms"></mat-icon> Text Customer</button>
+                    </mat-menu>
+                </span>
             </td>
         </tr>
     </tbody>

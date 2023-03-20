@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
-import { ChatDialogComponent, DialogData } from './chat-dialog/chat-dialog.component';
+import { DialogData } from '../shared/textarea-dialog/dialog-data';
+import { TextAreaDialogComponent } from '../shared/textarea-dialog/textarea-dialog.component';
 
 @Component({
   selector: 'app-chats',
@@ -16,19 +17,21 @@ export class ChatsComponent extends RelatedContentBaseComponent implements OnIni
     teamId: '',
     channelId: '',
     body: '',
-    webUrl: 'response.webUrl'
+    webUrl: 'response.webUrl',
+    title: 'Send Teams Chat',
+    action: this.graphService.sendTeamsChat
   }
 
   ngOnInit() {}
 
   openDialog() {
     this.dialogData.body = this.searchText;
-    const dialogRef = this.dialog.open(ChatDialogComponent, {
+    const dialogRef = this.dialog.open(TextAreaDialogComponent, {
       data: this.dialogData
     });
 
     dialogRef.afterClosed().subscribe(response => {
-      console.log(`Dialog result: ${response}`);
+      console.log('Teams chat dialog result:', response);
       if (response) {
         this.dialogData = response;
         this.search(this.searchText);

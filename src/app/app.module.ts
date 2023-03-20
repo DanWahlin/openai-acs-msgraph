@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,7 +23,7 @@ import { ChatsComponent } from './chats/chats.component';
 import { EmailsComponent } from './emails/emails.component';
 import { CalendarComponent } from './agenda/agenda.component';
 import { RelatedContentComponent } from './related-content/related-content.component';
-import { ChatDialogComponent } from './chats/chat-dialog/chat-dialog.component';
+import { TextAreaDialogComponent } from './shared/textarea-dialog/textarea-dialog.component';
 import { DynamicPipe } from './shared/dynamic.pipe';
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { PhoneCallComponent } from './phone-call/phone-call.component';
@@ -38,7 +39,7 @@ import { PhoneCallComponent } from './phone-call/phone-call.component';
     EmailsComponent,
     CalendarComponent,
     RelatedContentComponent,
-    ChatDialogComponent,
+    TextAreaDialogComponent,
     DynamicPipe,
     PhoneCallComponent
   ],
@@ -53,6 +54,7 @@ import { PhoneCallComponent } from './phone-call/phone-call.component';
     MatCardModule,
     MatDialogModule,
     MatExpansionModule,
+    MatMenuModule,
     MatTabsModule,
     MatToolbarModule,
     MatIconModule
