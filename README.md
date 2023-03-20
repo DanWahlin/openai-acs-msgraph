@@ -49,7 +49,7 @@ Adding these features eliminates the need for the user to switch to Outlook, Tea
     AAD_CLIENT_ID=<AAD_CLIENT_ID>
     ```
 
-1. To send a message from the app into a Teams Channel, create a new Team in [Microsoft Teams](https://teams.microsoft.com) using your Microsoft 365 dev tenant account, and add the team Id and channel Id values into the `.env` file:
+1. To send a message from the app into a Teams Channel, create a new Team in [Microsoft Teams](https://teams.microsoft.com) using your Microsoft 365 dev tenant account, and add the team Id and channel Id values (you can use the "General" channel to get the channel Id or create your own channel) into the `.env` file:
 
     ```
     TEAM_ID=<TEAMS_TEAM_ID>
@@ -75,8 +75,8 @@ Adding these features eliminates the need for the user to switch to Outlook, Tea
 
     ```javascript
     const completion = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo', 
-    ...
+      model: 'gpt-3.5-turbo', 
+      ...
     });
     ```
 
