@@ -3,6 +3,7 @@ import pgPkg from 'pg';
 import { OpenAIApi, Configuration } from 'openai';
 import dotenv from 'dotenv';
 import { CommunicationIdentityClient } from '@azure/communication-identity';
+import { SmsClient } from '@azure/communication-sms';
 import { initializeDb } from './initDatabase.mjs';
 const { Router } = pkg;
 const { Pool } = pgPkg;
@@ -30,14 +31,14 @@ router.get('/customers', async (req, res) => {
         else {
             res.json([]);
         }
-    } 
+    }
     catch (error) {
         console.error('Error retrieving customers:', error);
         res.status(500).json({ error: 'Error retrieving customers.' });
     }
 });
 
-router.get('/acstoken', async(req, res) => {
+router.get('/acstoken', async (req, res) => {
     const connectionString = process.env.ACS_CONNECTION_STRING;
     let tokenClient = new CommunicationIdentityClient(connectionString);
     const user = await tokenClient.createUser();
@@ -54,7 +55,7 @@ async function generateSQLQuery(userQuery) {
 
     try {
         const prompt =
-        `### Postgres SQL tables, with their properties:
+            `### Postgres SQL tables, with their properties:
          #
          # customers (id, company, city, email)
          # orders (id, customer_id, date, total)
@@ -89,12 +90,46 @@ async function generateSQLQuery(userQuery) {
     }
 }
 
+router.post('/sendsms', async (req, res) => {
+    const message = req.body.message;
+    const toPhone = req.body.toPhone;
+
+    if (!message || !toPhone) {
+        return res.status(400).json({  
+            status: false,
+            message: 'Message and toPhone must be provided!'
+        });
+    }
+
+    try {
+        const connectionString = process.env.ACS_CONNECTION_STRING;
+        const smsClient = new SmsClient(connectionString);
+    
+        const sendResults = await smsClient.send({
+            from: process.env.ACS_PHONE_NUMBER,
+            to: [toPhone],
+            message: message
+        });
+        res.json({
+            status: sendResults[0].successful,
+            messageId: sendResults[0].messageId,
+            message: ''
+        });
+    }
+    catch (e) {
+        res.status(500).json({
+            status: false,
+            messageId: '',
+            message: e.message
+        });
+    }
+});
+
 router.post('/generatesql', async (req, res) => {
     const userQuery = req.body.query; // 'Get the total revenue for all orders';
 
     if (!userQuery) {
-        res.status(400).json({ error: 'Missing parameter "query".' });
-        return;
+        return res.status(400).json({ error: 'Missing parameter "query".' });
     }
 
     try {
@@ -102,7 +137,7 @@ router.post('/generatesql', async (req, res) => {
         let result = [];
         if (sqlCommandObject) {
             result = await queryDb(JSON.parse(sqlCommandObject));
-        }        
+        }
         res.json(result);
     } catch (error) {
         res.status(500).json({ error: 'Error generating SQL query.' });
@@ -129,7 +164,7 @@ async function queryDb(sqlCommandObject) {
         if (typeof result.rows === 'object') {
             return [result.rows];
         }
-    } 
+    }
     catch (error) {
         console.error('Error executing query:', error);
         res.status(500).json({ error: 'Error executing query.' });

@@ -40,6 +40,7 @@ Adding these features eliminates the need for the user to switch to Outlook, Tea
     POSTGRES_PASSWORD=web-password
     ACS_CONNECTION_STRING=<ACS_CONNECTION_STRING>
     ACS_PHONE_NUMBER=<ACS_PHONE_NUMBER>
+    API_BASE_URL=http://localhost:3000/api/
     ```
 
 1. Replace <AAD_CLIENT_ID> with the value from your Azure Active Directory app registration.

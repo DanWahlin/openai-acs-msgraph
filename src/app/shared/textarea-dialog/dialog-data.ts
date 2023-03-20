@@ -1,9 +1,13 @@
-export interface DialogData {
+export interface DialogBase {
+  title: string;
+  body: string;
+  toPhone?: string;
+  action?: (message: string, data: any) => any
+}
+
+export interface TeamsDialogData extends DialogBase {
   id: string,
   teamId: string,
   channelId: string,
-  body: string,
-  webUrl: string,
-  title: string,
-  action?: (message: string) => Promise<any>
+  webUrl: string
 }

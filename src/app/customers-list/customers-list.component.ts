@@ -4,8 +4,10 @@ import { SorterService } from '../core/sorter.service';
 import { EventBusService, Events } from 'src/app/core/eventbus.service';
 import { DataService } from '../core/data.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogData } from '../shared/textarea-dialog/dialog-data';
+import { DialogBase, TeamsDialogData } from '../shared/textarea-dialog/dialog-data';
 import { TextAreaDialogComponent } from '../shared/textarea-dialog/textarea-dialog.component';
+import { AcsService } from '../core/acs.service';
+import { PhonePipe } from '../shared/phone.pipe';
 
 @Component({
     selector: 'app-customers-list',
@@ -31,11 +33,13 @@ export class CustomersListComponent implements OnInit {
     headers: string[] = [];
     filteredData: any[] = [];
     queryText = 'Get the total revenue for all orders';
+    phonePipe = new PhonePipe();
     @Output() customerSelected = new EventEmitter<any>();
 
     dialog: MatDialog = inject(MatDialog);
 
-    constructor(private dataService: DataService, private sorterService: SorterService, private eventBus: EventBusService) {
+    constructor(private dataService: DataService, private sorterService: SorterService, 
+        private eventBus: EventBusService, private acsService: AcsService) {
         this.getData();
     }
 
@@ -77,31 +81,34 @@ export class CustomersListComponent implements OnInit {
     }
 
     openSmsDialog(data: any) {
-        let dialogData: DialogData = {
-            id: '',
-            teamId: '',
-            channelId: '',
-            body: '',
-            webUrl: 'response.webUrl',
-            title: 'Send SMS Message',
-            action: this.sendSms
+        if (data.phone) {
+            const formattedPhone = this.phonePipe.transform(data.phone);
+            let dialogData: DialogBase = {
+                body: '',
+                title: `Send SMS Message to ${formattedPhone} at ${data.company}`,
+                toPhone: data.phone,
+                action: this.sendSms.bind(this)
+            }
+
+            const dialogRef = this.dialog.open(TextAreaDialogComponent<DialogBase>, {
+                data: dialogData
+            });
+
+            dialogRef.afterClosed().subscribe(response => {
+                console.log('SMS dialog result:', response);
+                if (response) {
+                    dialogData = response;
+                }
+            });
         }
-        dialogData.body = data.company;
-        const dialogRef = this.dialog.open(TextAreaDialogComponent, {
-          data: dialogData
-        });
-    
-        dialogRef.afterClosed().subscribe(response => {
-          console.log('SMS dialog result:', response);
-          if (response) {
-            dialogData = response;            
-          }
-        });
+        else {
+            alert('No phone number available.');
+        }
     }
 
-    sendSms(message: string) {
-        return new Promise((resolve, reject) => {
-            return resolve({ message: 'Message sent' });
+    sendSms(message: string, data: DialogBase) {
+        this.acsService.sendSms(message, '+1607415234' /* data.toPhone as string */).subscribe(res => {
+            console.log('SMS sent:', res);
         });
     }
 

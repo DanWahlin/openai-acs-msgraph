@@ -7,7 +7,8 @@ module.exports = {
             "AAD_CLIENT_ID": JSON.stringify(process.env.AAD_CLIENT_ID),
             "TEAM_ID": JSON.stringify(process.env.TEAM_ID),
             "CHANNEL_ID": JSON.stringify(process.env.CHANNEL_ID),
-            "ACS_PHONE_NUMBER": JSON.stringify(process.env.ACS_PHONE_NUMBER)
+            "ACS_PHONE_NUMBER": JSON.stringify(process.env.ACS_PHONE_NUMBER),
+            "API_BASE_URL": JSON.stringify(process.env.API_BASE_URL)
         })
     ]
 }

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
-import { DialogData } from '../shared/textarea-dialog/dialog-data';
+import { TeamsDialogData } from '../shared/textarea-dialog/dialog-data';
 import { TextAreaDialogComponent } from '../shared/textarea-dialog/textarea-dialog.component';
 
 @Component({
@@ -12,7 +12,7 @@ import { TextAreaDialogComponent } from '../shared/textarea-dialog/textarea-dial
 export class ChatsComponent extends RelatedContentBaseComponent implements OnInit {
 
   dialog: MatDialog = inject(MatDialog);
-  dialogData: DialogData = {
+  dialogData: TeamsDialogData = {
     id: '',
     teamId: '',
     channelId: '',
@@ -26,7 +26,7 @@ export class ChatsComponent extends RelatedContentBaseComponent implements OnIni
 
   openDialog() {
     this.dialogData.body = this.searchText;
-    const dialogRef = this.dialog.open(TextAreaDialogComponent, {
+    const dialogRef = this.dialog.open(TextAreaDialogComponent<TeamsDialogData>, {
       data: this.dialogData
     });
 

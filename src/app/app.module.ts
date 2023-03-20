@@ -27,6 +27,7 @@ import { TextAreaDialogComponent } from './shared/textarea-dialog/textarea-dialo
 import { DynamicPipe } from './shared/dynamic.pipe';
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { PhoneCallComponent } from './phone-call/phone-call.component';
+import { PhonePipe } from './shared/phone.pipe';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { PhoneCallComponent } from './phone-call/phone-call.component';
     RelatedContentComponent,
     TextAreaDialogComponent,
     DynamicPipe,
-    PhoneCallComponent
+    PhoneCallComponent,
+    PhonePipe
   ],
   imports: [
     BrowserModule,

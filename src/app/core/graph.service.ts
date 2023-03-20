@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Msal2Provider, Providers, ProviderState } from '@microsoft/mgt';
-import { DialogData } from '../shared/textarea-dialog/dialog-data';
+import { TeamsDialogData } from '../shared/textarea-dialog/dialog-data';
 
 // Retrieved from .env file value by using webpack.partial.js and ngx-build-plus
 declare const AAD_CLIENT_ID: string;
@@ -147,7 +147,7 @@ export class GraphService {
     return response.value;
   }
 
-  async sendTeamsChat(message: string) : Promise<DialogData> {
+  async sendTeamsChat(message: string) : Promise<TeamsDialogData> {
     if (!message) new Error('No message to send.');
     if (!TEAM_ID || !CHANNEL_ID) new Error('Team ID or Channel ID not set in environment variables. Please set TEAM_ID and CHANNEL_ID in the .env file.');
 
