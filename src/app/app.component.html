@@ -3,6 +3,7 @@
 <main>
     <div *ngIf="loggedIn">
         <app-customers-list (customerSelected)="customerSelected($event)"></app-customers-list>
+        <br />
         <app-related-content [selectedCustomer]="selectedCustomer"></app-related-content>
     </div>
     <div *ngIf="!loggedIn">
