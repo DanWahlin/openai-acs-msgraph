@@ -1,10 +1,44 @@
 <h2 mat-dialog-title>{{ title }}</h2>
 
-<mat-dialog-content class="mat-typography">
-    <span class="message-label">Message:</span> <textarea type="text" [(ngModel)]="message" title="Message"></textarea>
-</mat-dialog-content>
+<div *ngIf="mode === DialogMode.Default">
+    <mat-dialog-content class="mat-typography">
+        <span class="message-label">Message:</span> <textarea type="text" [(ngModel)]="message" title="Message"></textarea>
+    </mat-dialog-content>
 
-<div mat-dialog-actions>
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button cdkFocusInitial (click)="send()">Send</button>
+    <div mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button cdkFocusInitial (click)="send()">Send</button>
+    </div>
+</div>
+
+<div *ngIf="mode === DialogMode.EmailSms">
+    <mat-tab-group [animationDuration]="'0ms'">
+        <mat-tab label="Message Generator">
+            <mat-dialog-content class="mat-typography">
+                <div class="message-label">Message Rules:</div> <textarea type="text" [(ngModel)]="message" title="Message" placeholder="List the type of message you would like to send. Include any rules to be followed."></textarea>
+            </mat-dialog-content>
+        
+            <div mat-dialog-actions align="end">
+                <button mat-button cdkFocusInitial (click)="generateMessage()">Generate Messages</button>
+            </div>
+        </mat-tab>
+        <mat-tab label="Email">
+            <mat-dialog-content class="mat-typography">
+                <div class="message-label">Email Message:</div> <textarea type="text" [(ngModel)]="message" title="Message"></textarea>
+            </mat-dialog-content>
+        
+            <div mat-dialog-actions align="end">
+                <button mat-button cdkFocusInitial (click)="sendEmail()">Send Email</button>
+            </div>
+        </mat-tab>
+        <mat-tab label="SMS">
+            <mat-dialog-content class="mat-typography">
+                <div class="message-label">SMS Message:</div> <textarea type="text" [(ngModel)]="message" title="Message"></textarea>
+            </mat-dialog-content>
+        
+            <div mat-dialog-actions align="end">
+                <button mat-button cdkFocusInitial (click)="sendSMS()">Send SMS</button>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
 </div>

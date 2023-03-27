@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import apiRoutes from './apiRoutes.mjs';
+import apiRoutes from './server/apiRoutes.mjs';
 
 const app = express();
 const port = process.env.PORT || 3000;

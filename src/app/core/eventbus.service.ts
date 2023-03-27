@@ -35,5 +35,7 @@ export class EmitEvent {
 
 export enum Events {
   CustomerSelected,
-  CustomerCall
+  CustomerCall,
+  HttpRequest,
+  HttpResponse
 }

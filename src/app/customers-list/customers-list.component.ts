@@ -4,10 +4,12 @@ import { SorterService } from '../core/sorter.service';
 import { EventBusService, Events } from 'src/app/core/eventbus.service';
 import { DataService } from '../core/data.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogBase, TeamsDialogData } from '../shared/textarea-dialog/dialog-data';
+import { DialogBase, DialogMode, TeamsDialogData } from '../shared/textarea-dialog/dialog-data';
 import { TextAreaDialogComponent } from '../shared/textarea-dialog/textarea-dialog.component';
 import { AcsService } from '../core/acs.service';
 import { PhonePipe } from '../shared/phone.pipe';
+
+declare const ACS_CUSTOMER_NUMBER: string;
 
 @Component({
     selector: 'app-customers-list',
@@ -80,13 +82,14 @@ export class CustomersListComponent implements OnInit {
         this.eventBus.emit({ name: Events.CustomerCall, value: data });
     }
 
-    openSmsDialog(data: any) {
+    openEmailSmsDialog(data: any) {
         if (data.phone) {
             const formattedPhone = this.phonePipe.transform(data.phone);
             let dialogData: DialogBase = {
                 body: '',
-                title: `Send SMS Message to ${formattedPhone} at ${data.company}`,
+                title: `Contact ${data.company}`, // `Send SMS Message to ${formattedPhone} at ${data.company}`,
                 toPhone: data.phone,
+                mode: DialogMode.EmailSms,
                 action: this.sendSms.bind(this)
             }
 
@@ -107,7 +110,7 @@ export class CustomersListComponent implements OnInit {
     }
 
     sendSms(message: string, data: DialogBase) {
-        this.acsService.sendSms(message, '+1607415234' /* data.toPhone as string */).subscribe(res => {
+        this.acsService.sendSms(message, ACS_CUSTOMER_NUMBER /* data.toPhone as string */).subscribe(res => {
             console.log('SMS sent:', res);
         });
     }

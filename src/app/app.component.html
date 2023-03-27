@@ -9,6 +9,9 @@
     <div *ngIf="!loggedIn">
         Please Sign In
     </div>
+    <cm-overlay [delay]="300">
+        <span class="spinner"></span>&nbsp;&nbsp;&nbsp;Loading
+    </cm-overlay>
 </main>
 
 <router-outlet></router-outlet>

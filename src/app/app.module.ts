@@ -28,6 +28,7 @@ import { DynamicPipe } from './shared/dynamic.pipe';
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { PhoneCallComponent } from './phone-call/phone-call.component';
 import { PhonePipe } from './shared/phone.pipe';
+import { OverlayModule } from './core/overlay/overlay.module';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { PhonePipe } from './shared/phone.pipe';
     MatMenuModule,
     MatTabsModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    OverlayModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [CurrencyPipe, DatePipe, DecimalPipe],
