@@ -9,7 +9,7 @@ import { TextAreaDialogComponent } from '../shared/textarea-dialog/textarea-dial
 import { AcsService } from '../core/acs.service';
 import { PhonePipe } from '../shared/phone.pipe';
 
-declare const ACS_CUSTOMER_NUMBER: string;
+declare const CUSTOMER_PHONE_NUMBER: string;
 
 @Component({
     selector: 'app-customers-list',
@@ -110,7 +110,7 @@ export class CustomersListComponent implements OnInit {
     }
 
     sendSms(message: string, data: DialogBase) {
-        this.acsService.sendSms(message, ACS_CUSTOMER_NUMBER /* data.toPhone as string */).subscribe(res => {
+        this.acsService.sendSms(message, CUSTOMER_PHONE_NUMBER /* data.toPhone as string */).subscribe(res => {
             console.log('SMS sent:', res);
         });
     }

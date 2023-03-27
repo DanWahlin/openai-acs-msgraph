@@ -30,8 +30,8 @@ Adding these features reduces the need for the user to switch to Outlook, Teams,
     POSTGRES_USER=web
     POSTGRES_PASSWORD=web-password
     ACS_CONNECTION_STRING=<ACS_CONNECTION_STRING>
-    ACS_CUSTOMER_NUMBER=<UNITED_STATES_BASED_NUMBER_TO_SEND_SMS_TO>
     ACS_PHONE_NUMBER=<ACS_PHONE_NUMBER>
+    CUSTOMER_PHONE_NUMBER=<UNITED_STATES_BASED_NUMBER_TO_SEND_SMS_TO>
     API_BASE_URL=http://localhost:3000/api/
     ```
 
@@ -53,12 +53,12 @@ Adding these features reduces the need for the user to switch to Outlook, Teams,
 
     - Add a phone number and ensure that the phone number has calling capabilities enabled. 
 
-    - Update the **ACS_CONNECTION_STRING**, **ACS_CUSTOMER_NUMBER**, and **ACS_PHONE_NUMBER** in the `.env` file. For the **ACS_CUSTOMER_NUMBER**, you'll need to use a United States based phone number (as of today) due to additional verification that is required in other countries.
+    - Update the **ACS_CONNECTION_STRING**, **ACS_PHONE_NUMBER**, **CUSTOMER_PHONE_NUMBER** in the `.env` file. For the **CUSTOMER_PHONE_NUMBER**, you'll need to provide a United States based phone number (as of today) due to additional verification that is required in other countries.
 
         ```
         ACS_CONNECTION_STRING=<ACS_CONNECTION_STRING>
-        ACS_CUSTOMER_NUMBER=<UNITED_STATES_BASED_NUMBER_TO_SEND_SMS_TO>
         ACS_PHONE_NUMBER=<ACS_PHONE_NUMBER>
+        CUSTOMER_PHONE_NUMBER=<UNITED_STATES_BASED_NUMBER_TO_SEND_SMS_TO>
         ```
 
         **NOTE**: You can get the connection string from the Azure Portal by going to your ACS resource, selecting `Keys` from the left-hand menu, and copying the `connection string` value.
