@@ -34,7 +34,7 @@ export class CustomersListComponent implements OnInit {
     }
     headers: string[] = [];
     filteredData: any[] = [];
-    queryText = 'Get the total revenue for all orders';
+    queryText = 'Get the total revenue for all orders. Group by company and include the city.';
     phonePipe = new PhonePipe();
     @Output() customerSelected = new EventEmitter<any>();
 

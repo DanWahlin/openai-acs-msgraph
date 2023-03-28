@@ -64,7 +64,7 @@ import { OverlayModule } from './core/overlay/overlay.module';
     OverlayModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [CurrencyPipe, DatePipe, DecimalPipe],
+  providers: [CurrencyPipe, DatePipe, DecimalPipe, PhonePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

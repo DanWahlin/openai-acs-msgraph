@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 import { createACSToken, sendSms } from './acs.mjs';
 import { initializeDb } from './initDatabase.mjs';
-import { getOpenAICompletion } from './openai.mjs';
+import { getSQL } from './openai.mjs';
 import { getCustomers, queryDb } from './postgres.mjs';
 
 const { Router } = pkg;
@@ -35,32 +35,14 @@ router.get('/customers', async (req, res) => {
 });
 
 router.post('/generatesql', async (req, res) => {
-    const userQuery = req.body.query; // 'Get the total revenue for all orders';
+    const userQuery = req.body.query;
 
     if (!userQuery) {
         return res.status(400).json({ error: 'Missing parameter "query".' });
     }
 
-    const prompt =
-    `Postgres SQL tables, with their properties:
-
-    - customers (id, company, city, email)
-    - orders (id, customer_id, date, total)
-    - order_items (id, order_id, product_id, quantity, price)
-    - reviews (id, customer_id, review, date, comment)
-
-    Rules:
-    - Only allow SELECT queries. UPDATE, INSERT, DELETE are not allowed.
-    - Convert any strings to a Postgresql parameterized query value to avoid SQL injection attacks.
-
-    User query: ${userQuery}
-
-    Return a JSON object with the SQL query and the parameter values in it. 
-    Example: { "sql": "", "paramValues": [] } 
-    `;
-
     try {
-        const sqlCommandObject = await getOpenAICompletion(prompt);
+        const sqlCommandObject = await getSQL(userQuery);
         let result = [];
         if (sqlCommandObject) {
             result = await queryDb(JSON.parse(sqlCommandObject));

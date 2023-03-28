@@ -31,4 +31,27 @@ async function getOpenAICompletion(prompt) {
     }
 }
 
-export { getOpenAICompletion };
+async function getSQL(userQuery) {
+    const prompt =
+    `Postgres SQL tables, with their properties:
+
+    - customers (id, company, city, email)
+    - orders (id, customer_id, date, total)
+    - order_items (id, order_id, product_id, quantity, price)
+    - reviews (id, customer_id, review, date, comment)
+
+    Rules:
+    - Only allow SELECT queries. UPDATE, INSERT, DELETE are not allowed.
+    - Convert any strings to a Postgresql parameterized query value to avoid SQL injection attacks.
+
+    User query: ${userQuery}
+
+    Return a JSON object with the SQL query and the parameter values in it. 
+    Example: { "sql": "", "paramValues": [] } 
+    `;
+
+    const content = await getOpenAICompletion(prompt);
+    return content;
+}
+
+export { getSQL };
