@@ -4,12 +4,13 @@ import { SorterService } from '../core/sorter.service';
 import { EventBusService, Events } from 'src/app/core/eventbus.service';
 import { DataService } from '../core/data.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogBase, DialogMode, TeamsDialogData } from '../shared/textarea-dialog/dialog-data';
+import { DialogBase } from '../shared/textarea-dialog/dialog-data';
 import { TextAreaDialogComponent } from '../shared/textarea-dialog/textarea-dialog.component';
 import { AcsService } from '../core/acs.service';
 import { PhonePipe } from '../shared/phone.pipe';
-
-declare const CUSTOMER_PHONE_NUMBER: string;
+import { EmailSmsDialogData } from '../email-sms-dialog/email-sms-dialog-data';
+import { EmailSmsDialogComponent } from '../email-sms-dialog/email-sms-dialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-customers-list',
@@ -36,19 +37,22 @@ export class CustomersListComponent implements OnInit {
     filteredData: any[] = [];
     queryText = 'Get the total revenue for all orders. Group by company and include the city.';
     phonePipe = new PhonePipe();
+    private subscriptions: Subscription[] = [];
     @Output() customerSelected = new EventEmitter<any>();
 
     dialog: MatDialog = inject(MatDialog);
 
-    constructor(private dataService: DataService, private sorterService: SorterService, 
-        private eventBus: EventBusService, private acsService: AcsService) {
+    constructor(private dataService: DataService, private sorterService: SorterService,
+        private eventBus: EventBusService) {
         this.getData();
     }
 
     ngOnInit() { }
 
     getData() {
-        this.dataService.getCustomers().subscribe((data: any[]) => this.data = this.filteredData = data);
+        this.subscriptions.push(
+            this.dataService.getCustomers().subscribe((data: any[]) => this.data = this.filteredData = data)
+        );
     }
 
     filter(val: string) {
@@ -57,9 +61,11 @@ export class CustomersListComponent implements OnInit {
     }
 
     getQueryData() {
-        this.dataService.generateSql(this.queryText).subscribe((data: any) => {
-            this.data = data;
-        });
+        this.subscriptions.push(
+            this.dataService.generateSql(this.queryText).subscribe((data: any) => {
+                this.data = data;
+            })
+        );
     }
 
     reset() {
@@ -83,36 +89,36 @@ export class CustomersListComponent implements OnInit {
     }
 
     openEmailSmsDialog(data: any) {
-        if (data.phone) {
+        if (data.phone && data.email) {
             const formattedPhone = this.phonePipe.transform(data.phone);
-            let dialogData: DialogBase = {
-                body: '',
+            let dialogData: EmailSmsDialogData = {
+                prompt: '',
                 title: `Contact ${data.company}`, // `Send SMS Message to ${formattedPhone} at ${data.company}`,
-                toPhone: data.phone,
-                mode: DialogMode.EmailSms,
-                action: this.sendSms.bind(this)
+                customerPhoneNumber: data.phone,
+                contactName: data.first_name + ' ' + data.last_name,
+                company: data.company,
+                email: data.email
             }
 
-            const dialogRef = this.dialog.open(TextAreaDialogComponent<DialogBase>, {
+            const dialogRef = this.dialog.open(EmailSmsDialogComponent, {
                 data: dialogData
             });
 
-            dialogRef.afterClosed().subscribe(response => {
-                console.log('SMS dialog result:', response);
-                if (response) {
-                    dialogData = response;
-                }
-            });
+            this.subscriptions.push(
+                dialogRef.afterClosed().subscribe(response => {
+                    console.log('SMS dialog result:', response);
+                    if (response) {
+                        dialogData = response;
+                    }
+                })
+            );
         }
         else {
             alert('No phone number available.');
         }
     }
 
-    sendSms(message: string, data: DialogBase) {
-        this.acsService.sendSms(message, CUSTOMER_PHONE_NUMBER /* data.toPhone as string */).subscribe(res => {
-            console.log('SMS sent:', res);
-        });
+    ngOnDestroy() {
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
-
 }

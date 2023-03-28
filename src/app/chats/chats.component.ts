@@ -1,5 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
 import { TeamsDialogData } from '../shared/textarea-dialog/dialog-data';
 import { TextAreaDialogComponent } from '../shared/textarea-dialog/textarea-dialog.component';
@@ -9,14 +10,14 @@ import { TextAreaDialogComponent } from '../shared/textarea-dialog/textarea-dial
   templateUrl: './chats.component.html',
   styleUrls: ['./chats.component.scss']
 })
-export class ChatsComponent extends RelatedContentBaseComponent implements OnInit {
-
+export class ChatsComponent extends RelatedContentBaseComponent implements OnInit, OnDestroy {
+  subscription: Subscription = new Subscription();
   dialog: MatDialog = inject(MatDialog);
   dialogData: TeamsDialogData = {
     id: '',
     teamId: '',
     channelId: '',
-    body: '',
+    message: '',
     webUrl: 'response.webUrl',
     title: 'Send Teams Chat',
     action: this.graphService.sendTeamsChat
@@ -25,12 +26,12 @@ export class ChatsComponent extends RelatedContentBaseComponent implements OnIni
   ngOnInit() {}
 
   openDialog() {
-    this.dialogData.body = this.searchText;
+    this.dialogData.message = this.searchText;
     const dialogRef = this.dialog.open(TextAreaDialogComponent<TeamsDialogData>, {
       data: this.dialogData
     });
 
-    dialogRef.afterClosed().subscribe(response => {
+    this.subscription = dialogRef.afterClosed().subscribe(response => {
       console.log('Teams chat dialog result:', response);
       if (response) {
         this.dialogData = response;
@@ -41,6 +42,10 @@ export class ChatsComponent extends RelatedContentBaseComponent implements OnIni
 
   override async search(query: string) {
     this.data = await this.graphService.searchChats(query);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }

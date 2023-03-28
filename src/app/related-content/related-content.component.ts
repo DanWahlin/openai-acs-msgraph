@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Customer } from '../shared/customer';
+import { Customer } from '../shared/interfaces';
 
 @Component({
   selector: 'app-related-content',

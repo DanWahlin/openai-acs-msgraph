@@ -1,8 +1,6 @@
 export interface DialogBase {
   title: string;
-  body: string;
-  toPhone?: string;
-  mode?: DialogMode;
+  message: string;
   action?: (message: string, data: any) => any
 }
 
@@ -11,9 +9,4 @@ export interface TeamsDialogData extends DialogBase {
   teamId: string,
   channelId: string,
   webUrl: string
-}
-
-export enum DialogMode {
-  Default,
-  EmailSms
 }

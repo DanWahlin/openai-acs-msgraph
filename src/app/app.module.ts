@@ -29,6 +29,7 @@ import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { PhoneCallComponent } from './phone-call/phone-call.component';
 import { PhonePipe } from './shared/phone.pipe';
 import { OverlayModule } from './core/overlay/overlay.module';
+import { EmailSmsDialogComponent } from './email-sms-dialog/email-sms-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { OverlayModule } from './core/overlay/overlay.module';
     FilterTextboxComponent,
     ChatsComponent,
     EmailsComponent,
+    EmailSmsDialogComponent,
     CalendarComponent,
     RelatedContentComponent,
     TextAreaDialogComponent,

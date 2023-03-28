@@ -16,7 +16,7 @@ async function getOpenAICompletion(prompt) {
 
         const openai = new OpenAIApi(configuration);
         const completion = await openai.createChatCompletion({
-            model: 'gpt-4', // gpt-3.5-turbo
+            model: 'gpt-3.5-turbo', // 'gpt-4'
             max_tokens: 1024,
             temperature: 0,
             messages: [{ role: 'user', content: prompt }]
@@ -31,7 +31,30 @@ async function getOpenAICompletion(prompt) {
     }
 }
 
-async function getSQL(userQuery) {
+async function completeEmailSMSMessages(userPrompt, company, contactName) {
+    console.log(userPrompt, company, contactName);
+    const prompt =
+    `Create Email and SMS messages from the following data:
+
+    User Prompt: ${userPrompt}
+    Contact Name: ${contactName}
+
+    Rules:
+    - Use the user prompt to generate the messages. 
+    - All messages should have a friendly tone. 
+    - SMS messages should be in plain text format and no more than 160 characters. 
+    - Start the message with "Hi <contact name>,". 
+    - Add carriage returns to the email message to make it easier to read. 
+    - Return a JSON object with the email and SMS messages in it. 
+
+    Example: { "email": "", "sms": "" }
+    `;
+    
+    const content = await getOpenAICompletion(prompt);
+    return content;
+}
+
+async function getSQL(userPrompt) {
     const prompt =
     `Postgres SQL tables, with their properties:
 
@@ -44,7 +67,7 @@ async function getSQL(userQuery) {
     - Only allow SELECT queries. UPDATE, INSERT, DELETE are not allowed.
     - Convert any strings to a Postgresql parameterized query value to avoid SQL injection attacks.
 
-    User query: ${userQuery}
+    User prompt: ${userPrompt}
 
     Return a JSON object with the SQL query and the parameter values in it. 
     Example: { "sql": "", "paramValues": [] } 
@@ -54,4 +77,4 @@ async function getSQL(userQuery) {
     return content;
 }
 
-export { getSQL };
+export { completeEmailSMSMessages, getSQL };

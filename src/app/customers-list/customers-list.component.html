@@ -10,7 +10,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let row of filteredData">
+        <tr *ngFor="let row of filteredData; trackBy: trackBy">
             <td *ngFor="let header of headers">
                 {{ row[header] | dynamic:header }}
             </td>

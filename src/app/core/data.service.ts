@@ -4,7 +4,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { Customer } from '../../app/shared/customer';
+import { Customer } from '../../app/shared/interfaces';
+import { EmailSmsCompletion } from '../shared/interfaces';
 
 declare const API_BASE_URL: string;
 
@@ -47,6 +48,13 @@ export class DataService {
 
   generateSql(query: string): Observable<any> {
     return this.http.post<any>(API_BASE_URL + 'generatesql', { query })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  completeEmailSmsMessages(query: string, company: string, contactName: string): Observable<EmailSmsCompletion> {
+    return this.http.post<EmailSmsCompletion>(API_BASE_URL + 'completeEmailSmsMessages', { query, company, contactName })
       .pipe(
         catchError(this.handleError)
       );

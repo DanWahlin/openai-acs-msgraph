@@ -1,6 +1,7 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { CallClient, CallAgent, Call } from "@azure/communication-calling";
 import { AzureCommunicationTokenCredential } from '@azure/communication-common';
+import { Subscription } from 'rxjs';
 import { DataService } from '../core/data.service';
 
 declare const ACS_PHONE_NUMBER: string;
@@ -10,7 +11,7 @@ declare const ACS_PHONE_NUMBER: string;
   templateUrl: './phone-call.component.html',
   styleUrls: ['./phone-call.component.scss']
 })
-export class PhoneCallComponent implements OnInit {
+export class PhoneCallComponent implements OnInit, OnDestroy {
   inCall = false;
   call: Call | undefined;
   callAgent: CallAgent | undefined;
@@ -18,6 +19,7 @@ export class PhoneCallComponent implements OnInit {
   dialerVisible = false;
   numbers: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', '0', ' '];
   cursorPosition = 0;
+  subscriptions: Subscription[] = [];
 
   @Input() customerPhoneNumber = '';
   @Output() hangup = new EventEmitter();
@@ -28,11 +30,13 @@ export class PhoneCallComponent implements OnInit {
   constructor(private dataService: DataService) { }
 
   async ngOnInit() {
-    this.dataService.getAcsToken().subscribe(async (user: any) => {
+    this.subscriptions.push(
+      this.dataService.getAcsToken().subscribe(async (user: any) => {
       const callClient = new CallClient();
       const tokenCredential = new AzureCommunicationTokenCredential(user.token);
       this.callAgent = await callClient.createCallAgent(tokenCredential);
-    });
+    })
+    );
   }
 
   showDialer() {
@@ -79,4 +83,9 @@ export class PhoneCallComponent implements OnInit {
       this.dialerVisible = false;
     }
   }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
 }

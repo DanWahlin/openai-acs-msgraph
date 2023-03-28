@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { delay, map, of } from 'rxjs';
 import { GraphService } from './core/graph.service';
-import { Customer } from './shared/customer';
+import { Customer } from './shared/interfaces';
 import { PEOPLE_ICON, FILE_ICON, CHAT_ICON, EMAIL_ICON, AGENDA_ICON, PHONE_ICON, CONTENT_ICON, SEARCH_ICON, RESET_ICON, CONTACT_ICON, SMS_ICON } from './shared/svg-icons';
 
 
@@ -11,13 +12,14 @@ import { PEOPLE_ICON, FILE_ICON, CHAT_ICON, EMAIL_ICON, AGENDA_ICON, PHONE_ICON,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  title = 'angular-mgt';
+export class AppComponent implements OnInit, OnDestroy {
   get loggedIn() {
     return this.graphService.loggedIn();
   }
   name = '';
+  signInMessage = '';
   selectedCustomer: Customer | null = null;
+  timer: NodeJS.Timeout | null = null;
 
   constructor(private graphService: GraphService, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) { }
 
@@ -34,6 +36,11 @@ export class AppComponent implements OnInit {
     this.iconRegistry.addSvgIconLiteral('contact', this.sanitizer.bypassSecurityTrustHtml(CONTACT_ICON));
     this.iconRegistry.addSvgIconLiteral('sms', this.sanitizer.bypassSecurityTrustHtml(SMS_ICON));
     this.graphService.init();
+
+    // Update the signInMessage property after 800ms
+    // Option 1: of('Please sign in to continue').pipe(delay(800)).subscribe((msg: string) => this.signInMessage = msg);
+    // Option 2 (yes, opting for simplicity):
+    this.timer = setTimeout(() => this.signInMessage = 'Please sign in to continue', 800);
   }
 
   customerSelected(customer: Customer) {
@@ -42,5 +49,11 @@ export class AppComponent implements OnInit {
 
   userLoggedIn(e: any) {
     this.name = e.displayName;
+  }
+
+  ngOnDestroy() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
   }
 }

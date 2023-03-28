@@ -163,7 +163,7 @@ export class GraphService {
       id: response.id,
       teamId: response.channelIdentity.teamId,
       channelId: response.channelIdentity.channelId,
-      body: response.body.content,
+      message: response.body.content,
       webUrl: response.webUrl,
       title: 'Send Teams Chat'
     };

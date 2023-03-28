@@ -13,15 +13,19 @@ async function createACSToken() {
     return { userId: user.communicationUserId, ...userToken };
 }
 
-async function sendSms(message, toPhoneNumber) {
+async function sendEmail(message, email) {
+
+}
+
+async function sendSms(message, customerPhoneNumber) {
     const smsClient = new SmsClient(connectionString);
 
     const sendResults = await smsClient.send({
         from: process.env.ACS_PHONE_NUMBER,
-        to: [toPhoneNumber],
+        to: [customerPhoneNumber],
         message: message
     });
     return sendResults;
 }
 
-export { sendSms, createACSToken };
+export { createACSToken, sendEmail, sendSms };
