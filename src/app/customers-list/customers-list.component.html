@@ -5,7 +5,7 @@
 <table *ngIf="filteredData.length > 0; else noData" class="table table-hover">
     <thead class="table-dark">
         <tr>
-            <th scope="col" (click)="sort(header)" *ngFor="let header of headers">{{ header | titlecase }}</th>
+            <th scope="col" (click)="sort(header)" *ngFor="let header of headers">{{ header | titleCaseUnderscore }}</th>
             <th scope="col">&nbsp;</th>
         </tr>
     </thead>

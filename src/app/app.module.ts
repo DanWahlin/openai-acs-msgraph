@@ -1,4 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule, CurrencyPipe, DatePipe, DecimalPipe, TitleCasePipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -23,13 +24,13 @@ import { ChatsComponent } from './chats/chats.component';
 import { EmailsComponent } from './emails/emails.component';
 import { CalendarComponent } from './agenda/agenda.component';
 import { RelatedContentComponent } from './related-content/related-content.component';
-import { TextAreaDialogComponent } from './shared/textarea-dialog/textarea-dialog.component';
+import { TextAreaDialogComponent } from './textarea-dialog/textarea-dialog.component';
 import { DynamicPipe } from './shared/dynamic.pipe';
-import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { PhoneCallComponent } from './phone-call/phone-call.component';
 import { PhonePipe } from './shared/phone.pipe';
 import { OverlayModule } from './core/overlay/overlay.module';
 import { EmailSmsDialogComponent } from './email-sms-dialog/email-sms-dialog.component';
+import { TitleCaseUnderscorePipe } from './shared/titlecase-underscore.pipe';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { EmailSmsDialogComponent } from './email-sms-dialog/email-sms-dialog.com
     CalendarComponent,
     RelatedContentComponent,
     TextAreaDialogComponent,
+    TitleCaseUnderscorePipe,
     DynamicPipe,
     PhoneCallComponent,
     PhonePipe
@@ -66,7 +68,7 @@ import { EmailSmsDialogComponent } from './email-sms-dialog/email-sms-dialog.com
     OverlayModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [CurrencyPipe, DatePipe, DecimalPipe, PhonePipe],
+  providers: [CurrencyPipe, DatePipe, DecimalPipe, PhonePipe, TitleCasePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

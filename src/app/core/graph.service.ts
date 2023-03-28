@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Msal2Provider, Providers, ProviderState } from '@microsoft/mgt';
-import { TeamsDialogData } from '../shared/textarea-dialog/dialog-data';
+import { TeamsDialogData } from '../textarea-dialog/dialog-data';
 
 // Retrieved from .env file value by using webpack.partial.js and ngx-build-plus
 declare const AAD_CLIENT_ID: string;

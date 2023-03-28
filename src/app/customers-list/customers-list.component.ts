@@ -4,8 +4,8 @@ import { SorterService } from '../core/sorter.service';
 import { EventBusService, Events } from 'src/app/core/eventbus.service';
 import { DataService } from '../core/data.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogBase } from '../shared/textarea-dialog/dialog-data';
-import { TextAreaDialogComponent } from '../shared/textarea-dialog/textarea-dialog.component';
+import { DialogBase } from '../textarea-dialog/dialog-data';
+import { TextAreaDialogComponent } from '../textarea-dialog/textarea-dialog.component';
 import { AcsService } from '../core/acs.service';
 import { PhonePipe } from '../shared/phone.pipe';
 import { EmailSmsDialogData } from '../email-sms-dialog/email-sms-dialog-data';
@@ -95,7 +95,7 @@ export class CustomersListComponent implements OnInit {
                 prompt: '',
                 title: `Contact ${data.company}`, // `Send SMS Message to ${formattedPhone} at ${data.company}`,
                 customerPhoneNumber: data.phone,
-                contactName: data.first_name + ' ' + data.last_name,
+                contactName: data.first_name,
                 company: data.company,
                 email: data.email
             }

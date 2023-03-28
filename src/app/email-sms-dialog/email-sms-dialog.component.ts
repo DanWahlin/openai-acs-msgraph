@@ -19,6 +19,10 @@ export class EmailSmsDialogComponent implements OnInit, OnDestroy {
   emailMessage = '';
   emailAddress = '';
   smsMessage = '';
+  placeholder = `Example: 
+Order is delayed 2 days. 
+5% discount off order. 
+We're sorry.`
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -29,12 +33,6 @@ export class EmailSmsDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.title = this.data instanceof Error ? '' : this.data.title;
-    this.prompt = this.data instanceof Error ? '' : this.data.prompt;
-  }
-
-  async send() {
-    // this.data = await this.data.action!(this.prompt, this.data);
-    this.dialogRef.close(this.data);
   }
 
   async generateEmailSmsMessages() {

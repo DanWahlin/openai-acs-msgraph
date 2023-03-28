@@ -46,6 +46,7 @@ async function completeEmailSMSMessages(userPrompt, company, contactName) {
     - Start the message with "Hi <contact name>,". 
     - Add carriage returns to the email message to make it easier to read. 
     - Return a JSON object with the email and SMS messages in it. 
+    - End with a signature line that says "Sincerely,\nCustomer Service".
 
     Example: { "email": "", "sms": "" }
     `;
