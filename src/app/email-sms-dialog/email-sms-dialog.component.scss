@@ -4,6 +4,22 @@
 }
 
 textarea {
-    height: 200px;
-    width: 500px;
+    height: 250px;
+    width: 100%;
+}
+
+.tab-group {
+    height: 500px;
+    width: 75vw;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+
+.grid-container > div {
+    padding: 20px;
+    border: 1px solid #ccc;
 }

@@ -4,7 +4,7 @@ dotenv.config();
 
 const apiKey = process.env.OPENAI_API_KEY;
 
-async function getOpenAICompletion(prompt) {
+async function getOpenAICompletion(prompt, temperature = 0) {
 
     if (!apiKey) {
         throw new Error('Missing OpenAI API key in environment variables.');
@@ -18,7 +18,7 @@ async function getOpenAICompletion(prompt) {
         const completion = await openai.createChatCompletion({
             model: 'gpt-3.5-turbo', // 'gpt-4'
             max_tokens: 1024,
-            temperature: 0,
+            temperature,
             messages: [{ role: 'user', content: prompt }]
         });
         const content = completion.data.choices[0].message.content.trim();
@@ -51,7 +51,7 @@ async function completeEmailSMSMessages(userPrompt, company, contactName) {
     Example: { "email": "", "sms": "" }
     `;
     
-    const content = await getOpenAICompletion(prompt);
+    const content = await getOpenAICompletion(prompt, 0.5);
     return content;
 }
 
@@ -74,7 +74,7 @@ async function getSQL(userPrompt) {
     Example: { "sql": "", "paramValues": [] } 
     `;
 
-    const content = await getOpenAICompletion(prompt);
+    const content = await getOpenAICompletion(prompt, 0);
     return content;
 }
 
