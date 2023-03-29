@@ -13,7 +13,6 @@ async function getOpenAICompletion(prompt, temperature = 0) {
     const configuration = new Configuration({ apiKey });
 
     try {
-
         const openai = new OpenAIApi(configuration);
         const completion = await openai.createChatCompletion({
             model: 'gpt-3.5-turbo', // 'gpt-4'
@@ -25,9 +24,9 @@ async function getOpenAICompletion(prompt, temperature = 0) {
         console.log(content);
         return content;
     } 
-    catch (error) {
-        console.error('Error getting data:', error);
-        throw error;
+    catch (e) {
+        console.error('Error getting data:', e);
+        throw e;
     }
 }
 
