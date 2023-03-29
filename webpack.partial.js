@@ -8,6 +8,7 @@ module.exports = {
             "TEAM_ID": JSON.stringify(process.env.TEAM_ID),
             "CHANNEL_ID": JSON.stringify(process.env.CHANNEL_ID),
             "ACS_PHONE_NUMBER": JSON.stringify(process.env.ACS_PHONE_NUMBER),
+            "CUSTOMER_EMAIL_ADDRESS": JSON.stringify(process.env.CUSTOMER_EMAIL_ADDRESS),
             "CUSTOMER_PHONE_NUMBER": JSON.stringify(process.env.CUSTOMER_PHONE_NUMBER),
             "API_BASE_URL": JSON.stringify(process.env.API_BASE_URL)
         })

@@ -5,14 +5,15 @@
         <button mat-dialog-close class="close-button">
             <mat-icon>close</mat-icon>
         </button>
-        <mat-tab-group [animationDuration]="'0ms'" class="tab-group">
+        <mat-tab-group #tabgroup [animationDuration]="'0ms'" class="tab-group">
             <mat-tab label="Message Generator">
                 <div class="message-label">Message Rules:</div>
                 <br />
                 <textarea type="text" [(ngModel)]="prompt" title="Message" [placeholder]="placeholder"></textarea>
                 <div mat-dialog-actions align="end">
-                    <button mat-stroked-button cdkFocusInitial (click)="generateEmailSmsMessages()">Generate
-                        Messages</button>
+                    <button mat-stroked-button cdkFocusInitial (click)="generateEmailSmsMessages()">
+                        Generate Email/SMS Messages
+                    </button>
                 </div>
             </mat-tab>
             <mat-tab label="Email/SMS">
@@ -20,7 +21,9 @@
                     <div>
                         <div class="message-label">Email Message:</div>
                         <br />
-                        <textarea type="text" [(ngModel)]="emailMessage" title="Message"></textarea>
+                        <input type="text" [(ngModel)]="emailSubject" title="Subject" class="email-subject" placeholder="Subject" />
+                        <textarea type="text" [(ngModel)]="emailBody" title="Message" class="email-message"></textarea>
+                        <div *ngIf="emailSent" class="message-sent">Email sent!</div>
                         <div mat-dialog-actions align="end">
                             <button mat-stroked-button cdkFocusInitial (click)="sendEmail()">Send Email</button>
                         </div>
@@ -28,8 +31,8 @@
 
                     <div>
                         <div class="message-label">SMS Message:</div>
-                        <br />
-                        <textarea type="text" [(ngModel)]="smsMessage" title="Message"></textarea>
+                        <textarea type="text" [(ngModel)]="smsMessage" title="Message" class="sms-message"></textarea>
+                        <div *ngIf="smsSent" class="message-sent">SMS message sent!</div>
                         <div mat-dialog-actions align="end">
                             <button mat-stroked-button cdkFocusInitial (click)="sendSMS()">Send SMS</button>
                         </div>

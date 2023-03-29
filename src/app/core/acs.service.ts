@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { SmsResponse } from '../shared/interfaces';
+import { EmailSmsResponse } from '../shared/interfaces';
 
 declare const API_BASE_URL: string;
 
@@ -13,15 +13,15 @@ export class AcsService {
 
   constructor(private http: HttpClient) { }
 
-  sendSms(message: string, customerPhoneNumber: string) : Observable<SmsResponse> {
-    return this.http.post<SmsResponse>(API_BASE_URL + 'sendsms', { message, customerPhoneNumber })
+  sendSms(message: string, customerPhoneNumber: string) : Observable<EmailSmsResponse> {
+    return this.http.post<EmailSmsResponse>(API_BASE_URL + 'sendsms', { message, customerPhoneNumber })
     .pipe(
       catchError(this.handleError)
     );
   }  
 
-  sendEmail(message: string, email: string) {
-    return this.http.post(API_BASE_URL + 'sendemail', { message, email })
+  sendEmail(subject: string, message: string, customerName: string, customerEmailAddress: string) : Observable<EmailSmsResponse> {
+    return this.http.post<EmailSmsResponse>(API_BASE_URL + 'sendemail', { subject, message, customerName, customerEmailAddress })
     .pipe(
       catchError(this.handleError)
     );

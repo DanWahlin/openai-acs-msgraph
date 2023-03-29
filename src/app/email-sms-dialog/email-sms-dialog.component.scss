@@ -1,15 +1,34 @@
 .message-label {
     margin-right: 5px;
     vertical-align: top;
+    font-weight: bold;
 }
 
 textarea {
     height: 250px;
     width: 100%;
+
+    &.email-message {
+        margin-top: 15px;
+    }
+
+    &.sms-message {
+        margin-top:70px;
+    }
+}
+
+.email-subject {
+    width: 100%;
+}
+
+.message-sent {
+    font-weight: bold;
+    color: green;
+    font-size: 1.2em;
 }
 
 .tab-group {
-    height: 500px;
+    height: 550px;
     width: 75vw;
 }
 

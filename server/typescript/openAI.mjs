@@ -40,15 +40,16 @@ async function completeEmailSMSMessages(userPrompt, company, contactName) {
     Contact Name: ${contactName}
 
     Rules:
-    - Use the user prompt to generate the messages. 
+    - Generate a subject line for the email message.
+    - Use the User Prompt to generate the messages. 
     - All messages should have a friendly tone. 
     - SMS messages should be in plain text format and no more than 160 characters. 
-    - Start the message with "Hi <contact name>,". 
+    - Start the message with "Hi <Contact Name>,\n\n". 
     - Add carriage returns to the email message to make it easier to read. 
-    - Return a JSON object with the email and SMS messages in it. 
     - End with a signature line that says "Sincerely,\nCustomer Service".
+    - Return a JSON object with the emailSubject, emailBody, and SMS message values in it. 
 
-    Example: { "email": "", "sms": "" }
+    Example JSON object: { "emailSubject": "", "emailBody": "", "sms": "" }
     `;
     
     const content = await getOpenAICompletion(prompt, 0.5);

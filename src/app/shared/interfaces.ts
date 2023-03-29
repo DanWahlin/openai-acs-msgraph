@@ -1,5 +1,6 @@
 export interface EmailSmsCompletion {
-    email: string;
+    emailSubject: string;
+    emailBody: string;
     sms: string;
     status: boolean;
 }
@@ -11,6 +12,6 @@ export interface Customer {
     email: string;
 }
 
-export interface SmsResponse {
+export interface EmailSmsResponse {
     status: boolean;
 }

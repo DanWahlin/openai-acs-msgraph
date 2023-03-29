@@ -31,6 +31,8 @@ Adding these features reduces the need for the user to switch to Outlook, Teams,
     POSTGRES_PASSWORD=web-password
     ACS_CONNECTION_STRING=<ACS_CONNECTION_STRING>
     ACS_PHONE_NUMBER=<ACS_PHONE_NUMBER>
+    ACS_EMAIL_ADDRESS=<ACS_EMAIL_ADDRESS>
+    CUSTOMER_EMAIL_ADDRESS=<EMAIL_ADDRESS_TO_SEND_EMAIL_TO>
     CUSTOMER_PHONE_NUMBER=<UNITED_STATES_BASED_NUMBER_TO_SEND_SMS_TO>
     API_BASE_URL=http://localhost:3000/api/
     ```
@@ -53,11 +55,26 @@ Adding these features reduces the need for the user to switch to Outlook, Teams,
 
     - Add a phone number and ensure that the phone number has calling capabilities enabled. 
 
-    - Update the **ACS_CONNECTION_STRING**, **ACS_PHONE_NUMBER**, **CUSTOMER_PHONE_NUMBER** in the `.env` file. For the **CUSTOMER_PHONE_NUMBER**, you'll need to provide a United States based phone number (as of today) due to additional verification that is required in other countries.
+    - Create a connected email domain:
+    
+        - Select `Connect your email domains` --> `Connect domain`. 
+        - Select your `Subscription` and `Resource group`. 
+        - Under the `Email Service` dropdown, select `Add an email service`.
+        - Give the email service a name such as `acs-demo-email-service`.
+        - Select `Review + create` followed by `Create`.
+        - Once the deployment completes, select `Go to resource`, and select `1-click add` to add a free Azure subdomain.
+        - After the subdomain is added (it'll take a few moments to be deployed), select it.
+        - On the `Overview` screen you'll see `MailFrom`, `From`, and `Display name` values. You'll use the `MailFrom` value in the next step.
+        - Go back to your Azure Communication Services resource and select `Domains` from the left-hand menu.
+        - Select `Add domain` and enter the `MailFrom` value from the previous step (ensure you select the correct subscription, resource group, and email service). Select the `Connect` button.
+
+    - Update the following keys/values in the `.env` file. For the **CUSTOMER_PHONE_NUMBER**, you'll need to provide a United States based phone number (as of today) due to additional verification that is required in other countries for SMS. For the **CUSTOMER_EMAIL_ADDRESS**, provide an email address you'd like email to be sent from the app.
 
         ```
         ACS_CONNECTION_STRING=<ACS_CONNECTION_STRING>
         ACS_PHONE_NUMBER=<ACS_PHONE_NUMBER>
+        ACS_EMAIL_ADDRESS=<ACS_EMAIL_ADDRESS>
+        CUSTOMER_EMAIL_ADDRESS=<EMAIL_ADDRESS_TO_SEND_EMAIL_TO>
         CUSTOMER_PHONE_NUMBER=<UNITED_STATES_BASED_NUMBER_TO_SEND_SMS_TO>
         ```
 
@@ -80,7 +97,7 @@ Adding these features reduces the need for the user to switch to Outlook, Teams,
 
     ```javascript
     const completion = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo', 
+        model: 'gpt-3.5-turbo', 
     ...
     });
     ```

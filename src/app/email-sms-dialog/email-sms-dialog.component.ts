@@ -1,10 +1,13 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTabGroup } from '@angular/material/tabs';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/core/data.service';
 import { AcsService } from '../core/acs.service';
+import { EmailSmsCompletion, EmailSmsResponse } from '../shared/interfaces';
 import { EmailSmsDialogData } from './email-sms-dialog-data';
 
+declare const CUSTOMER_EMAIL_ADDRESS: string;
 declare const CUSTOMER_PHONE_NUMBER: string;
 
 @Component({
@@ -15,10 +18,12 @@ declare const CUSTOMER_PHONE_NUMBER: string;
 export class EmailSmsDialogComponent implements OnInit, OnDestroy {
   title = '';
   prompt = '';
-  initialMessage = '';
-  emailMessage = '';
+  emailSubject = '';
+  emailBody = '';
   emailAddress = '';
   smsMessage = '';
+  emailSent = false;
+  smsSent = false;
   placeholder = `Example: 
 Order is delayed 2 days. 
 5% discount off order. 
@@ -31,32 +36,51 @@ We're sorry.`
     public dialogRef: MatDialogRef<EmailSmsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: EmailSmsDialogData) { }
 
+  @ViewChild('tabgroup', { static: true }) tabGroup!: MatTabGroup;
+
   ngOnInit() {
     this.title = this.data instanceof Error ? '' : this.data.title;
   }
 
+  getFirstName(customerName: string) {
+    if (customerName && customerName.indexOf(' ') > -1) {
+      return customerName.split(' ')[0];
+    }
+    return customerName;
+  }
+
   async generateEmailSmsMessages() {
     this.subscriptions.push(
-      this.dataService.completeEmailSmsMessages(this.prompt, this.data.company, this.data.contactName)
+      this.dataService.completeEmailSmsMessages(this.prompt, this.data.company, this.getFirstName(this.data.customerName))
         .subscribe((data) => {
-          this.emailMessage = data.email;
+          this.emailSubject = data.emailSubject;
+          this.emailBody = data.emailBody;
           this.smsMessage = data.sms;
+          this.tabGroup.selectedIndex = 1;
         })
     );
   }
 
   sendEmail() {
+    // Using CUSTOMER_EMAIL_ADDRESS instead of this.data.email for testing purposes
     this.subscriptions.push(
-      this.acsService.sendEmail(this.emailMessage, this.data.email).subscribe(res => {
-        console.log('Email sent:', res);
-      })
+      this.acsService.sendEmail(this.emailSubject, this.emailBody, this.getFirstName(this.data.customerName), CUSTOMER_EMAIL_ADDRESS /* this.data.email */)
+        .subscribe(res => {
+          console.log('Email sent:', res);
+          if (res.status) {
+            this.emailSent = true;
+          }
+        })
     );
   }
 
   sendSMS() {
-    this.subscriptions.push(
+    // Using CUSTOMER_PHONE_NUMBER instead of this.data.customerPhoneNumber for testing purposes
+    this.subscriptions.push( 
       this.acsService.sendSms(this.smsMessage, CUSTOMER_PHONE_NUMBER /* this.data.customerPhoneNumber */).subscribe(res => {
-        console.log('SMS sent:', res);
+        if (res.status) {
+          this.smsSent = true;
+        }
       })
     );
   }

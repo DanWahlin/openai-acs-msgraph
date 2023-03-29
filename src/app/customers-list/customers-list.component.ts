@@ -4,9 +4,6 @@ import { SorterService } from '../core/sorter.service';
 import { EventBusService, Events } from 'src/app/core/eventbus.service';
 import { DataService } from '../core/data.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogBase } from '../textarea-dialog/dialog-data';
-import { TextAreaDialogComponent } from '../textarea-dialog/textarea-dialog.component';
-import { AcsService } from '../core/acs.service';
 import { PhonePipe } from '../shared/phone.pipe';
 import { EmailSmsDialogData } from '../email-sms-dialog/email-sms-dialog-data';
 import { EmailSmsDialogComponent } from '../email-sms-dialog/email-sms-dialog.component';
@@ -90,14 +87,14 @@ export class CustomersListComponent implements OnInit {
 
     openEmailSmsDialog(data: any) {
         if (data.phone && data.email) {
-            const formattedPhone = this.phonePipe.transform(data.phone);
+            // const formattedPhone = this.phonePipe.transform(data.phone);
             let dialogData: EmailSmsDialogData = {
                 prompt: '',
-                title: `Contact ${data.company}`, // `Send SMS Message to ${formattedPhone} at ${data.company}`,
-                customerPhoneNumber: data.phone,
-                contactName: data.first_name,
+                title: `Contact ${data.company}`,
                 company: data.company,
-                email: data.email
+                customerName: data.first_name + ' ' + data.last_name,
+                customerEmailAddress: data.email,
+                customerPhoneNumber: data.phone
             }
 
             const dialogRef = this.dialog.open(EmailSmsDialogComponent, {
@@ -105,7 +102,7 @@ export class CustomersListComponent implements OnInit {
             });
 
             this.subscriptions.push(
-                dialogRef.afterClosed().subscribe(response => {
+                dialogRef.afterClosed().subscribe((response: EmailSmsDialogData) => {
                     console.log('SMS dialog result:', response);
                     if (response) {
                         dialogData = response;

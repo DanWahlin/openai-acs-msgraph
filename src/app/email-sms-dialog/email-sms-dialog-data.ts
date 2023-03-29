@@ -5,7 +5,7 @@ export interface EmailSmsDialogData {
   prompt: string;
   customerPhoneNumber: string;
   company: string;
-  contactName: string;
-  email: string;
+  customerName: string;
+  customerEmailAddress: string;
   data?: EmailSmsCompletion;
 }

@@ -51,30 +51,33 @@ router.post('/generatesql', async (req, res) => {
             result = await queryDb(JSON.parse(sqlCommandObject));
         }
         res.json(result);
-    } catch (error) {
+    } catch (e) {
+        console.error(e);
         res.status(500).json({ error: 'Error generating SQL query.' });
     }
 });
 
 router.post('/sendemail', async (req, res) => {
-    const { message, email } = req.body;
+    const { subject, message, customerName, customerEmailAddress } = req.body;
 
-    if (!message || !email) {
+    if (!subject || !message || !customerName || !customerEmailAddress) {
         return res.status(400).json({
             status: false,
-            message: 'The message and email parameters must be provided!'
+            message: 'The subject, message, customerName, and customerEmailAddress parameters must be provided!'
         });
     }
 
     try {
-        const sendResults = await sendEmail(message, email);
+        const sendResults = await sendEmail(subject, message, customerName, customerEmailAddress);
+        console.log(sendResults);
         res.json({
-            status: sendResults[0].successful,
-            messageId: sendResults[0].messageId,
+            status: sendResults.status,
+            messageId: sendResults.id,
             message: ''
         });
     }
     catch (e) {
+        console.error(e);
         res.status(500).json({
             status: false,
             messageId: '',
@@ -103,6 +106,7 @@ router.post('/sendsms', async (req, res) => {
         });
     }
     catch (e) {
+        console.error(e);
         res.status(500).json({
             status: false,
             messageId: '',

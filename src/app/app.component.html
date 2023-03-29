@@ -7,10 +7,10 @@
         <app-related-content [selectedCustomer]="selectedCustomer"></app-related-content>
     </div>
     <div *ngIf="!loggedIn">
-        {{ signInMessage }}
+        <h2>{{ signInMessage }}</h2>
     </div>
     <cm-overlay [delay]="300">
-        <span class="spinner"></span>&nbsp;&nbsp;&nbsp;Loading
+        <span class="spinner"></span>&nbsp;&nbsp;&nbsp;Working...
     </cm-overlay>
 </main>
 
