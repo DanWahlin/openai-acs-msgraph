@@ -12,6 +12,7 @@ export class DynamicPipe implements PipeTransform {
   currencyHeaders = ['price', 'total', 'amount', 'sum', 'balance', 'revenue'];
   dateHeaders = ['date', 'time', 'created', 'updated', 'deleted'];
   phoneHeaders = ['phone', 'mobile', 'phone number', 'mobile number', 'office number'];
+  reviewHeaders = ['review', 'rating', 'avg'];
 
   transform(value: any, header: string): any {
     if (this.currencyHeaders.some(substr => header.includes(substr))) {
@@ -22,12 +23,12 @@ export class DynamicPipe implements PipeTransform {
       return this.datePipe.transform(value);
     }
 
-    if (header.includes('review')) {
-      return this.decimalPipe.transform(value, '1.0-1');
-    }
-
     if (this.phoneHeaders.some(substr => header.includes(substr))) {
       return this.phonePipe.transform(value);
+    }
+
+    if (this.reviewHeaders.some(substr => header.includes(substr))) {
+      return this.decimalPipe.transform(value, '1.0-1');
     }
 
     return value;

@@ -75,8 +75,50 @@ async function getSQL(userPrompt) {
     Example: { "sql": "", "paramValues": [] } 
     `;
 
-    const content = await getOpenAICompletion(prompt, 0);
+    const content = await getOpenAICompletion(prompt);
     return content;
 }
 
 export { completeEmailSMSMessages, getSQL };
+
+
+
+// Version that works with Azure OpenAI (until they update the APIs)
+
+// async function getOpenAICompletion(prompt, temperature = 0) {
+
+//     if (!apiKey) {
+//         throw new Error('Missing OpenAI API key in environment variables.');
+//     }
+
+//     const configuration = new Configuration({ 
+//         basePath: "https://<base>.openai.azure.com/openai/deployments/gpt-35-turbo",
+//         apiKey: ''
+//     });
+
+//     try {
+
+//         const openai = new OpenAIApi(configuration);
+//         const completion = await openai.createChatCompletion({
+//             //model: 'gpt-35-turbo', // 'gpt-4'
+//             //max_tokens: 1024,
+//             //temperature,
+//             messages: [{ role: 'user', content: prompt }]
+//         },
+//         {
+//             headers: {
+//               "api-key": configuration.apiKey,
+//             },
+//             params: {
+//               "api-version": "2023-03-15-preview",
+//             }
+//         });
+//         const content = completion.data.choices[0].message.content.trim();
+//         console.log(content);
+//         return content;
+//     } 
+//     catch (error) {
+//         console.error('Error getting data:', error);
+//         throw error;
+//     }
+// }
