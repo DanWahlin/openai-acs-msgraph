@@ -46,7 +46,7 @@ To start, add an `.env` file to the root of the project with the following value
     API_BASE_URL=http://localhost:3000/api/
     ```
 
-## Enable the AI Feature (Azure OpenAI Service)
+## Enable the AI Feature (OpenAI Service)
 
 1. If you'd like to try the natural language to SQL OpenAI functionality, and email/SMS completions, add your [OpenAI](https://platform.openai.com/account/api-keys) secret key into the `.env` file:
 
@@ -54,7 +54,7 @@ To start, add an `.env` file to the root of the project with the following value
     OPENAI_API_KEY=<OPENAI_SECRET_KEY>
     ```
 
-### Enable the Communication Feature (Azure Communication Services)
+## Enable the Communication Feature (Azure Communication Services)
 
 1. Create an Azure Communication Services (ACS) resource in the [Azure Portal](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Communication%2FCommunicationServices).
 
