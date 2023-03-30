@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { delay, map, of } from 'rxjs';
+import { FeatureFlagsService } from './core/feature-flags.service';
 import { GraphService } from './core/graph.service';
 import { Customer } from './shared/interfaces';
 import { PEOPLE_ICON, FILE_ICON, CHAT_ICON, EMAIL_ICON, AGENDA_ICON, PHONE_ICON, CONTENT_ICON, SEARCH_ICON, RESET_ICON, CONTACT_ICON, SMS_ICON } from './shared/svg-icons';
@@ -21,7 +22,8 @@ export class AppComponent implements OnInit, OnDestroy {
   selectedCustomer: Customer | null = null;
   timer: NodeJS.Timeout | null = null;
 
-  constructor(private graphService: GraphService, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) { }
+  constructor(private graphService: GraphService, private iconRegistry: MatIconRegistry, 
+    private sanitizer: DomSanitizer, public featureFlags: FeatureFlagsService) { }
 
   async ngOnInit() {
     this.iconRegistry.addSvgIconLiteral('people', this.sanitizer.bypassSecurityTrustHtml(PEOPLE_ICON));

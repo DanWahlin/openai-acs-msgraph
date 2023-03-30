@@ -8,6 +8,9 @@ import { PhonePipe } from '../shared/phone.pipe';
 import { EmailSmsDialogData } from '../email-sms-dialog/email-sms-dialog-data';
 import { EmailSmsDialogComponent } from '../email-sms-dialog/email-sms-dialog.component';
 import { Subscription } from 'rxjs';
+import { FeatureFlagsService } from '../core/feature-flags.service';
+
+
 
 @Component({
     selector: 'app-customers-list',
@@ -40,11 +43,12 @@ export class CustomersListComponent implements OnInit {
     dialog: MatDialog = inject(MatDialog);
 
     constructor(private dataService: DataService, private sorterService: SorterService,
-        private eventBus: EventBusService) {
-        this.getData();
+        private eventBus: EventBusService, public featureFlags: FeatureFlagsService) {
     }
 
-    ngOnInit() { }
+    ngOnInit() {
+        this.getData();
+     }
 
     getData() {
         this.subscriptions.push(

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Providers } from '@microsoft/mgt';
 import { EventBusService, Events } from '../core/eventbus.service';
+import { FeatureFlagsService } from '../core/feature-flags.service';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +14,7 @@ export class HeaderComponent implements OnInit {
   callVisible = false;
   callData: any;
 
-  constructor(private eventBus: EventBusService) { }
+  constructor(private eventBus: EventBusService, public featureFlags: FeatureFlagsService) { }
 
   ngOnInit() {
     this.eventBus.on(Events.CustomerCall, (data: any) => {

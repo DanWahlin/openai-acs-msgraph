@@ -6,7 +6,7 @@
             <mat-icon>close</mat-icon>
         </button>
         <mat-tab-group #tabgroup [animationDuration]="'0ms'" class="tab-group">
-            <mat-tab label="Message Generator">
+            <mat-tab label="Message Generator" *ngIf="featureFlags.openAIEnabled">
                 <div class="message-label">Message Rules:</div>
                 <br />
                 <textarea type="text" [(ngModel)]="prompt" title="Message" [placeholder]="placeholder"></textarea>

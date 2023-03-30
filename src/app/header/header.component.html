@@ -3,5 +3,5 @@
     <span class="title">Customers App</span>
     <span class="spacer"></span>
     <app-phone-call [hidden]="!callVisible" [customerPhoneNumber]="callData?.phone" (hangup)="hangup()"></app-phone-call>
-    <mgt-login class="mgt-dark" (loginCompleted)="loginCompleted($event)"></mgt-login>
+    <mgt-login *ngIf="featureFlags.microsoft365Enabled" class="mgt-dark" (loginCompleted)="loginCompleted($event)"></mgt-login>
 </mat-toolbar>

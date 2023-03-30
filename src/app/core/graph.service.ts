@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Msal2Provider, Providers, ProviderState } from '@microsoft/mgt';
 import { TeamsDialogData } from '../textarea-dialog/dialog-data';
+import { FeatureFlagsService } from './feature-flags.service';
 
 // Retrieved from .env file value by using webpack.partial.js and ngx-build-plus
 declare const AAD_CLIENT_ID: string;
@@ -12,9 +13,11 @@ declare const CHANNEL_ID: string;
 })
 export class GraphService {
 
-  constructor() { }
+  constructor(private featureFlags: FeatureFlagsService) { }
 
   init() {
+    if (!this.featureFlags.microsoft365Enabled) return;
+    
     if (!Providers.globalProvider) {
       console.log('Initializing Microsoft Graph global provider...');
       Providers.globalProvider = new Msal2Provider({
