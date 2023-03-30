@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/core/data.service';
 import { AcsService } from '../core/acs.service';
 import { FeatureFlagsService } from '../core/feature-flags.service';
-import { EmailSmsCompletion, EmailSmsResponse } from '../shared/interfaces';
 import { EmailSmsDialogData } from './email-sms-dialog-data';
 
 declare const CUSTOMER_EMAIL_ADDRESS: string;

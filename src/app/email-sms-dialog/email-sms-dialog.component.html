@@ -25,7 +25,7 @@
                         <textarea type="text" [(ngModel)]="emailBody" title="Message" class="email-message"></textarea>
                         <div *ngIf="emailSent" class="message-sent">Email sent!</div>
                         <div mat-dialog-actions align="end">
-                            <button mat-stroked-button cdkFocusInitial (click)="sendEmail()">Send Email</button>
+                            <button mat-stroked-button cdkFocusInitial (click)="sendEmail()" [disabled]="!emailSubject || !emailBody">Send Email</button>
                         </div>
                     </div>
 
@@ -34,7 +34,7 @@
                         <textarea type="text" [(ngModel)]="smsMessage" title="Message" class="sms-message"></textarea>
                         <div *ngIf="smsSent" class="message-sent">SMS message sent!</div>
                         <div mat-dialog-actions align="end">
-                            <button mat-stroked-button cdkFocusInitial (click)="sendSMS()">Send SMS</button>
+                            <button mat-stroked-button cdkFocusInitial (click)="sendSMS()" [disabled]="!smsMessage">Send SMS</button>
                         </div>
                     </div>
                 </div>
