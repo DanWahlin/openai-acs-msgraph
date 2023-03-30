@@ -4,7 +4,7 @@ dotenv.config();
 
 const apiKey = process.env.OPENAI_API_KEY;
 
-async function getOpenAICompletion(prompt, temperature = 0) {
+async function getOpenAICompletion(prompt, temperature=0, model='gpt-3.5-turbo') {
 
     if (!apiKey) {
         throw new Error('Missing OpenAI API key in environment variables.');
@@ -15,13 +15,13 @@ async function getOpenAICompletion(prompt, temperature = 0) {
     try {
         const openai = new OpenAIApi(configuration);
         const completion = await openai.createChatCompletion({
-            model: 'gpt-3.5-turbo', // 'gpt-4'
+            model, // gpt-3.5-turbo, gpt-4
             max_tokens: 1024,
             temperature,
             messages: [{ role: 'user', content: prompt }]
         });
         const content = completion.data.choices[0].message.content.trim();
-        console.log(content);
+        console.log('Output:', content);
         return content;
     } 
     catch (e) {
@@ -31,7 +31,7 @@ async function getOpenAICompletion(prompt, temperature = 0) {
 }
 
 async function completeEmailSMSMessages(userPrompt, company, contactName) {
-    console.log(userPrompt, company, contactName);
+    console.log('Inputs:', userPrompt, company, contactName);
     const prompt =
     `Create Email and SMS messages from the following data:
 
