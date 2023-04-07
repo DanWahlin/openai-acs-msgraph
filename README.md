@@ -29,20 +29,21 @@ This application has 3 main features that can be individually enabled depending 
 
 Enable the features you'd like, ignore those you don't want, and the app will still run.
 
-To start, add an `.env` file to the root of the project with the following values. Optionally, you can rename the provided `.env.example` file to `.env`.
+To start, rename the provided *.env.example* file to *.env* in the *tutorials/openai-msgraph-acs* folder. Note that it has the following values:
 
     ```
-    AAD_CLIENT_ID=<CLIENT_ID>
-    TEAM_ID=<TEAMS_TEAM_ID>
-    CHANNEL_ID=<TEAMS_CHANNEL_ID>
-    OPENAI_API_KEY=<OPENAI_SECRET_KEY>
+    AAD_CLIENT_ID=
+    TEAM_ID=
+    CHANNEL_ID=
+    OPENAI_API_KEY=
+    OPENAI_ENDPOINT=
     POSTGRES_USER=web
     POSTGRES_PASSWORD=web-password
-    ACS_CONNECTION_STRING=<ACS_CONNECTION_STRING>
-    ACS_PHONE_NUMBER=<ACS_PHONE_NUMBER>
-    ACS_EMAIL_ADDRESS=<ACS_EMAIL_ADDRESS>
-    CUSTOMER_EMAIL_ADDRESS=<EMAIL_ADDRESS_TO_SEND_EMAIL_TO>
-    CUSTOMER_PHONE_NUMBER=<UNITED_STATES_BASED_NUMBER_TO_SEND_SMS_TO>
+    ACS_CONNECTION_STRING=
+    ACS_PHONE_NUMBER=
+    ACS_EMAIL_ADDRESS=
+    CUSTOMER_EMAIL_ADDRESS=>
+    CUSTOMER_PHONE_NUMBER=
     API_BASE_URL=http://localhost:3000/api/
     ```
 
@@ -126,9 +127,9 @@ To start, add an `.env` file to the root of the project with the following value
 
 1. Run `docker-compose up` in a console window to start the Postgresql server.
 
-1. Open a separate command window and run `npm start-api` to start the backend API service. This will automatically populate the database with sample data.
+1. Open a 2nd console window and run `npm start-api` to start the backend API service. This will automatically populate the database with sample data.
 
-1. Open a separate command window and run `npm start`.
+1. Open a 3rd console window and run `npm start`.
 
 1. Go to the browser and login using your Microsoft 365 Developer tenant account. 
 
