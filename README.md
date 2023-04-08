@@ -48,7 +48,7 @@ To start, rename the provided *.env.example* file to *.env* in the *tutorials/op
     API_BASE_URL=http://localhost:3000/api/
     ```
 
-1. Assign the following values to `POSTGRES_USER` and `POSTGRES_PASSWORD` (note that we're using a simple password since the database is running locally):
+1. Assign the following values to `POSTGRES_USER` and `POSTGRES_PASSWORD`.
 
     ```
     POSTGRES_USER=web
