@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
@@ -10,7 +10,7 @@ import { TextAreaDialogComponent } from '../textarea-dialog/textarea-dialog.comp
   templateUrl: './chats.component.html',
   styleUrls: ['./chats.component.scss']
 })
-export class ChatsComponent extends RelatedContentBaseComponent implements OnInit, OnDestroy {
+export class ChatsComponent extends RelatedContentBaseComponent implements OnDestroy {
   subscription: Subscription = new Subscription();
   dialog: MatDialog = inject(MatDialog);
   dialogData: TeamsDialogData = {
@@ -22,8 +22,6 @@ export class ChatsComponent extends RelatedContentBaseComponent implements OnIni
     title: 'Send Teams Chat',
     action: this.graphService.sendTeamsChat
   }
-
-  ngOnInit() {}
 
   openDialog() {
     this.dialogData.message = this.searchText;

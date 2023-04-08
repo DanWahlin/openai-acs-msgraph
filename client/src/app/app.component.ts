@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { delay, map, of } from 'rxjs';
 import { FeatureFlagsService } from './core/feature-flags.service';
 import { GraphService } from './core/graph.service';
 import { Customer } from './shared/interfaces';
@@ -41,16 +40,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Update the signInMessage property after 800ms
     // Option 1: of('Please sign in to continue').pipe(delay(800)).subscribe((msg: string) => this.signInMessage = msg);
-    // Option 2 (yes, opting for simplicity):
+    // Option 2 (yes...opting for simplicity):
     this.timer = setTimeout(() => this.signInMessage = 'Please sign in to continue', 800);
   }
 
   customerSelected(customer: Customer) {
-    this.selectedCustomer = customer;
+    this.selectedCustomer = { ...customer };
   }
 
-  userLoggedIn(e: any) {
-    this.name = e.displayName;
+  userLoggedIn(user: { displayName: string}) {
+    this.name = user.displayName;
   }
 
   ngOnDestroy() {

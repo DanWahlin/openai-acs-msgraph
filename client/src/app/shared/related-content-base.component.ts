@@ -19,7 +19,7 @@ export abstract class RelatedContentBaseComponent {
       this.dataLoaded.emit(value);
     }
 
-    private _searchText: string = '';
+    private _searchText = '';
     @Input() get searchText(): string {
       return this._searchText;
     }

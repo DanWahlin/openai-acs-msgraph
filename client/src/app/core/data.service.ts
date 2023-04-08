@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { Customer } from '../../app/shared/interfaces';
+import { AcsToken, Customer } from '../../app/shared/interfaces';
 import { EmailSmsCompletion } from '../shared/interfaces';
 
 declare const API_BASE_URL: string;
@@ -16,7 +16,7 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   getCustomers(): Observable<Customer[]> {
-    return this.http.get<any[]>(API_BASE_URL + 'customers')
+    return this.http.get<Customer[]>(API_BASE_URL + 'customers')
       .pipe(
         map(data => {
           // Sort by name
@@ -46,7 +46,9 @@ export class DataService {
       );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   generateSql(query: string): Observable<any> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return this.http.post<any>(API_BASE_URL + 'generatesql', { query })
       .pipe(
         catchError(this.handleError)
@@ -60,16 +62,18 @@ export class DataService {
       );
   }
 
-  getAcsToken(): Observable<any> {
-    return this.http.get<any>(API_BASE_URL + 'acstoken')
+  getAcsToken(): Observable<AcsToken> {
+    return this.http.get<AcsToken>(API_BASE_URL + 'acstoken')
       .pipe(
         catchError(this.handleError)
       );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   filter(val: string, data: any[]) {
     if (val) {
       val = val.toLowerCase();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const filteredData = data.filter((data: any) => {
         for (const property in data) {
           const propValue = data ? data[property].toString().toLowerCase() : '';

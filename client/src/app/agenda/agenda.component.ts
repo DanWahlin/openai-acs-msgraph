@@ -1,26 +1,26 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MgtAgenda, MgtGet, TemplateHelper } from '@microsoft/mgt';
+import { Component } from '@angular/core';
 import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
 /* Based on the example found at:
   https://github.com/microsoftgraph/microsoft-graph-toolkit/blob/main/samples/angular-app/src/app/angular-agenda/angular-agenda.component.ts
 */
+
+type CalendarEvent = { isAllDay: boolean, start: { dateTime: Date }, end: { dateTime: Date }}
+
 @Component({
   selector: 'app-agenda',
   templateUrl: './agenda.component.html',
   styleUrls: ['./agenda.component.scss']
 })
-export class CalendarComponent extends RelatedContentBaseComponent implements OnInit {
-
-  ngOnInit() { }
+export class CalendarComponent extends RelatedContentBaseComponent {
   
   override async search(query: string) {
     this.data = await this.graphService.searchAgendaEvents(query);
   }
 
   dayFromDateTime(dateTimeString: string) {
-    let date = new Date(dateTimeString);
+    const date = new Date(dateTimeString);
     date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-    let monthNames = [
+    const monthNames = [
       'January',
       'February',
       'March',
@@ -35,31 +35,31 @@ export class CalendarComponent extends RelatedContentBaseComponent implements On
       'December'
     ];
 
-    let monthIndex = date.getMonth();
-    let day = date.getDate();
-    let year = date.getFullYear();
+    const monthIndex = date.getMonth();
+    const day = date.getDate();
+    const year = date.getFullYear();
 
     return monthNames[monthIndex] + ' ' + day + ' ' + year;
   }
 
-  timeRangeFromEvent(event: any) {
+  timeRangeFromEvent(event: CalendarEvent) {
     if (event.isAllDay) {
       return 'ALL DAY';
     }
 
-    let prettyPrintTimeFromDateTime = (date: Date) => {
+    const prettyPrintTimeFromDateTime = (date: Date) => {
       date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
       let hours = date.getHours();
-      let minutes = date.getMinutes();
-      let ampm = hours >= 12 ? 'PM' : 'AM';
+      const minutes = date.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
       hours = hours % 12;
       hours = hours ? hours : 12;
-      let minutesStr = minutes < 10 ? '0' + minutes : minutes;
+      const minutesStr = minutes < 10 ? '0' + minutes : minutes;
       return hours + ':' + minutesStr + ' ' + ampm;
     };
 
-    let start = prettyPrintTimeFromDateTime(new Date(event.start.dateTime));
-    let end = prettyPrintTimeFromDateTime(new Date(event.end.dateTime));
+    const start = prettyPrintTimeFromDateTime(new Date(event.start.dateTime));
+    const end = prettyPrintTimeFromDateTime(new Date(event.end.dateTime));
 
     return start + ' - ' + end;
   }

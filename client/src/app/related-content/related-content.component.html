@@ -1,8 +1,10 @@
-<div *ngIf="selectedCustomer">
-
+<div *ngIf="customer" [hidden]="closed">
     <mat-card>
         <mat-card-header>
             <mat-card-title>    
+                <button class="close-button" (click)="closeCard()">
+                    <mat-icon>close</mat-icon>
+                </button>
                 <app-filter-textbox [filter]="selectedQueryText" [label]="''" (changed)="filter($event)"></app-filter-textbox>
                 <br /><br />
             </mat-card-title>

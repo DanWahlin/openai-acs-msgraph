@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
 
 @Component({
@@ -6,9 +6,7 @@ import { RelatedContentBaseComponent } from '../shared/related-content-base.comp
   templateUrl: './files.component.html',
   styleUrls: ['./files.component.scss']
 })
-export class FilesComponent extends RelatedContentBaseComponent implements OnInit {
-
-  ngOnInit() { }
+export class FilesComponent extends RelatedContentBaseComponent {
 
   override async search(query: string) {
     this.data = await this.graphService.searchFiles(query);
