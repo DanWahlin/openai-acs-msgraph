@@ -1,4 +1,4 @@
-# Angular, Microsoft Graph Toolkit, OpenAI, and Azure Communication Services
+# Angular, OpenAI, Microsoft Graph and Microsoft Graph Toolkit, and Azure Communication Services
 
 This application demonstrates how Microsoft Graph and the Microsoft Graph Toolkit, OpenAI, and Azure Communication Services can be used in Line of Business (LOB) applications to improve the user experience and take LOB apps to the next level.
 
