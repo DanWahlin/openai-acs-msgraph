@@ -13,6 +13,7 @@ This application demonstrates how Microsoft Graph and the Microsoft Graph Toolki
 You'll need the following to run the full version of the sample:
 
 - [Node.js](https://nodejs.org)
+- [VS Code](https://code.visualstudio.com) (while we'll reference VS Code, any editor can be used)
 - [Microsoft 365 developer tenant](https://developer.microsoft.com/microsoft-365/dev-program)
 - [Azure subscription](https://azure.microsoft.com/free/)
 - [Docker Desktop](https://www.docker.com/get-started/) (or an equivalent container runtime environment capable of running `docker-compose up`)
@@ -123,13 +124,21 @@ To start, rename the provided *.env.example* file to *.env* in the *tutorials/op
 
 ## Install App Dependencies and Start the App
 
-1. Run `npm install` to install dependencies.
+1. In the following steps you'll create three terminal windows in Visual Studio code.
 
-1. Run `docker-compose up` in a console window to start the Postgresql server.
+1. Right-click in the Visual Studio Code file list and select **Open in Integrated Terminal**. 
 
-1. Open a 2nd console window and run `npm start-api` to start the backend API service. This will automatically populate the database with sample data.
+1. Enter `docker-compose up` in the window and press <kbd>Enter</kbd> to start the Postgresql server.
 
-1. Open a 3rd console window and run `npm start`.
+1. Press the **+** icon in the **Terminal toolbar** to create a 2nd terminal window. `cd` into the *server/typescript* folder and run the following commands to install the dependencies and start the API server.
+
+    - `npm install`
+    - `npm start`
+
+1. Press the **+** icon in the **Terminal toolbar** to create a 3rd terminal window. `cd` into the *client* folder and run the following commands to install the dependencies and start the client application.
+
+    - `npm install`
+    - `npm start` 
 
 1. Go to the browser and login using your Microsoft 365 Developer tenant account. 
 

@@ -1,13 +1,14 @@
 {
   "name": "angular-mgt",
   "version": "0.0.0",
+  "env-file": "../../.env",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --extra-webpack-config webpack.partial.js -o",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "start-api": "node ./server.mjs"
+    "start-api": "node ./build/api.js"
   },
   "private": true,
   "dependencies": {
@@ -23,17 +24,10 @@
     "@angular/router": "^15.2.2",
     "@azure/communication-calling": "^1.11.1",
     "@azure/communication-common": "^2.2.0",
-    "@azure/communication-email": "^1.0.0-beta.2",
-    "@azure/communication-identity": "^1.2.0",
-    "@azure/communication-sms": "^1.0.0",
     "@azure/identity": "^3.1.3",
     "@microsoft/mgt": "^2.9.2",
-    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2",
     "ngx-build-plus": "^15.0.0",
-    "openai": "^3.2.1",
-    "pg": "^8.10.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"

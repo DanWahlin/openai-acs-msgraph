@@ -1,11 +1,11 @@
-import pgPrg from 'pg';
-const { Pool } = pgPrg;
+import { Pool } from 'pg';
+import './config';
 
 const pool = new Pool({
-  user: 'web',
+  user: process.env.POSTGRES_USER,
   host: 'localhost',
   database: 'CustomersDB',
-  password: 'web-password',
+  password: process.env.POSTGRES_PASSWORD,
   port: 5432,
 });
 

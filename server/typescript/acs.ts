@@ -1,11 +1,9 @@
 import { CommunicationIdentityClient } from '@azure/communication-identity';
-import { EmailClient } from '@azure/communication-email';
-import { SmsClient } from '@azure/communication-sms';
-import dotenv from 'dotenv';
+import { EmailClient, EmailMessage } from '@azure/communication-email';
+import { SmsClient, SmsSendResult } from '@azure/communication-sms';
+import './config';
 
-dotenv.config();
-
-const connectionString = process.env.ACS_CONNECTION_STRING;
+const connectionString = process.env.ACS_CONNECTION_STRING as string;
 
 async function createACSToken() {
     const tokenClient = new CommunicationIdentityClient(connectionString);
@@ -14,11 +12,12 @@ async function createACSToken() {
     return { userId: user.communicationUserId, ...userToken };
 }
 
-async function sendEmail(subject, message, customerName, customerEmailAddress) {
+async function sendEmail(subject: string, message: string, 
+  customerName: string, customerEmailAddress: string) : Promise<{status: boolean, id: string}> {
     const emailClient = new EmailClient(connectionString);
     try {
-        const msgObject = {
-          senderAddress: process.env.ACS_EMAIL_ADDRESS,
+        const msgObject: EmailMessage = {
+          senderAddress: process.env.ACS_EMAIL_ADDRESS as string,
           content: {
             subject: subject,
             plainText: message,
@@ -46,26 +45,26 @@ async function sendEmail(subject, message, customerName, customerEmailAddress) {
           }, 500);
         });
       } 
-      catch (e) {
+      catch (e: unknown) {
         console.log(e);
-        return e;
+        return {status: false, id: ''};
       }
 }
 
-async function sendSms(message, customerPhoneNumber) {
+async function sendSms(message: string, customerPhoneNumber: string): Promise<SmsSendResult[]> {
     const smsClient = new SmsClient(connectionString);
 
     try {
         const sendResults = await smsClient.send({
-            from: process.env.ACS_PHONE_NUMBER,
+            from: process.env.ACS_PHONE_NUMBER as string,
             to: [customerPhoneNumber],
             message: message
         });
         return sendResults;
     }
-    catch (e) {
+    catch (e: unknown) {
         console.log(e);
-        return e;
+        return [];
     }
 }
 

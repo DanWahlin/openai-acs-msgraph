@@ -1,8 +1,5 @@
-import pgPkg from 'pg';
-import dotenv from 'dotenv';
-const { Pool } = pgPkg;
-
-dotenv.config();
+import { Pool } from 'pg';
+import './config';
 
 const pool = new Pool({
     user: process.env.POSTGRES_USER,
@@ -16,7 +13,7 @@ async function getCustomers() {
     return await pool.query('SELECT * FROM get_customers()');
 }
 
-async function queryDb(sqlCommandObject) {
+async function queryDb(sqlCommandObject: { sql: string, paramValues: any[] }): Promise<any[] | { error: string }> {
     if (!sqlCommandObject) {
         return { error: 'Missing SQL command object.' };
     }
@@ -36,10 +33,12 @@ async function queryDb(sqlCommandObject) {
         if (typeof result.rows === 'object') {
             return [result.rows];
         }
+
+        return [];
     }
-    catch (error) {
-        console.error('Error executing query:', error);
-        res.status(500).json({ error: 'Error executing query.' });
+    catch (e) {
+        console.error('Error executing query:', e);
+        return { error: 'Error executing query.' };
     }
 }
 

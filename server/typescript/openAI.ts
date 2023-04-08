@@ -1,10 +1,9 @@
 import { OpenAIApi, Configuration } from 'openai';
-import dotenv from 'dotenv';
-dotenv.config();
+import './config';
 
 const apiKey = process.env.OPENAI_API_KEY;
 
-async function getOpenAICompletion(prompt, temperature=0, model='gpt-3.5-turbo') {
+async function getOpenAICompletion(prompt: string, temperature=0, model='gpt-3.5-turbo') {
 
     if (!apiKey) {
         throw new Error('Missing OpenAI API key in environment variables.');
@@ -20,7 +19,7 @@ async function getOpenAICompletion(prompt, temperature=0, model='gpt-3.5-turbo')
             temperature,
             messages: [{ role: 'user', content: prompt }]
         });
-        const content = completion.data.choices[0].message.content.trim();
+        const content = completion.data?.choices?.[0]?.message?.content?.trim();
         console.log('Output:', content);
         return content;
     } 
@@ -30,7 +29,7 @@ async function getOpenAICompletion(prompt, temperature=0, model='gpt-3.5-turbo')
     }
 }
 
-async function completeEmailSMSMessages(userPrompt, company, contactName) {
+async function completeEmailSMSMessages(userPrompt: string, company: string, contactName: string) {
     console.log('Inputs:', userPrompt, company, contactName);
     const prompt =
     `Create Email and SMS messages from the following data:
@@ -55,7 +54,7 @@ async function completeEmailSMSMessages(userPrompt, company, contactName) {
     return content;
 }
 
-async function getSQL(userPrompt) {
+async function getSQL(userPrompt: string) {
     const prompt =
     `Postgres SQL tables, with their properties:
 

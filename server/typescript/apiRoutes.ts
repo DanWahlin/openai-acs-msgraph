@@ -1,13 +1,10 @@
-import pkg from 'express';
-import dotenv from 'dotenv';
+import { Router } from 'express';
+import './config';
 
-import { createACSToken, sendEmail, sendSms } from './acs.mjs';
-import { initializeDb } from './initDatabase.mjs';
-import { completeEmailSMSMessages, getSQL } from './openai.mjs';
-import { getCustomers, queryDb } from './postgres.mjs';
-
-const { Router } = pkg;
-dotenv.config();
+import { createACSToken, sendEmail, sendSms } from './acs';
+import { initializeDb } from './initDatabase';
+import { completeEmailSMSMessages, getSQL } from './openAI';
+import { getCustomers, queryDb } from './postgres';
 
 const router = Router();
 
@@ -44,11 +41,11 @@ router.post('/generatesql', async (req, res) => {
     try {
         // Call OpenAI to convert the user query into a SQL query
         const sqlCommandObject = await getSQL(userQuery);
-        let result = [];
+        let result: any[] = [];
 
         // Execute the SQL query
         if (sqlCommandObject) {
-            result = await queryDb(JSON.parse(sqlCommandObject));
+            result = await queryDb(JSON.parse(sqlCommandObject)) as any[];
         }
         res.json(result);
     } catch (e) {
@@ -72,16 +69,14 @@ router.post('/sendemail', async (req, res) => {
         console.log(sendResults);
         res.json({
             status: sendResults.status,
-            messageId: sendResults.id,
-            message: ''
+            messageId: sendResults.id
         });
     }
-    catch (e) {
+    catch (e: unknown) {
         console.error(e);
         res.status(500).json({
             status: false,
-            messageId: '',
-            message: e.message
+            messageId: ''
         });
     }
 });
@@ -101,16 +96,14 @@ router.post('/sendsms', async (req, res) => {
         const sendResults = await sendSms(message, customerPhoneNumber);
         res.json({
             status: sendResults[0].successful,
-            messageId: sendResults[0].messageId,
-            message: ''
+            messageId: sendResults[0].messageId
         });
     }
-    catch (e) {
+    catch (e: unknown) {
         console.error(e);
         res.status(500).json({
             status: false,
-            messageId: '',
-            message: e.message
+            messageId: ''
         });
     }
 });
@@ -133,7 +126,7 @@ router.post('/completeEmailSmsMessages', async (req, res) => {
             result = {status: true, ...JSON.parse(content) };
         }
     }
-    catch (e) {
+    catch (e: unknown) {
         console.error('Error parsing JSON:', e);
     }
 
