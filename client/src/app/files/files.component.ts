@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
 
+type FileDetail = { detail: { webUrl: string } };
+
 @Component({
   selector: 'app-files',
   templateUrl: './files.component.html',
@@ -12,7 +14,7 @@ export class FilesComponent extends RelatedContentBaseComponent {
     this.data = await this.graphService.searchFiles(query);
   }
 
-  itemClick(e: any) {
+  itemClick(e: FileDetail) {
     window.open(e.detail.webUrl, '_blank');
   }
 }

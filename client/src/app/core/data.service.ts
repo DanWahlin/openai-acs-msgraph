@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { AcsToken, Customer } from '../../app/shared/interfaces';
+import { AcsUser, Customer } from '../../app/shared/interfaces';
 import { EmailSmsCompletion } from '../shared/interfaces';
 
 declare const API_BASE_URL: string;
@@ -62,8 +62,8 @@ export class DataService {
       );
   }
 
-  getAcsToken(): Observable<AcsToken> {
-    return this.http.get<AcsToken>(API_BASE_URL + 'acstoken')
+  getAcsToken(): Observable<AcsUser> {
+    return this.http.get<AcsUser>(API_BASE_URL + 'acstoken')
       .pipe(
         catchError(this.handleError)
       );

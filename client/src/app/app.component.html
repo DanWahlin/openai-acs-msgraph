@@ -9,9 +9,9 @@
     <div *ngIf="featureFlags.microsoft365Enabled && !loggedIn">
         <h2>{{ signInMessage }}</h2>
     </div>
-    <cm-overlay [delay]="300">
+    <app-overlay [delay]="300">
         <span class="spinner"></span>&nbsp;&nbsp;&nbsp;Working...
-    </cm-overlay>
+    </app-overlay>
 </main>
 
 <router-outlet></router-outlet>

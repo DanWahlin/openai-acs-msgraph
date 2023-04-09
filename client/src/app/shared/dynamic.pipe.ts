@@ -14,7 +14,7 @@ export class DynamicPipe implements PipeTransform {
   phoneHeaders = ['phone', 'mobile', 'phone number', 'mobile number', 'office number'];
   reviewHeaders = ['review', 'rating', 'avg'];
 
-  transform(value: any, header: string): any {
+  transform(value: string, header: string): unknown {
     if (this.currencyHeaders.some(substr => header.includes(substr))) {
       return this.currencyPipe.transform(value);
     }

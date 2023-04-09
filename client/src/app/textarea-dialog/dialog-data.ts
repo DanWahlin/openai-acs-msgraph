@@ -1,12 +1,12 @@
 export interface DialogBase {
   title: string;
   message: string;
-  action?: (message: string, data: any) => any
+  action?: (message: string) => Promise<DialogBase | TeamsDialogData>
 }
 
 export interface TeamsDialogData extends DialogBase {
-  id: string,
-  teamId: string,
-  channelId: string,
-  webUrl: string
+  id: string;
+  teamId: string;
+  channelId: string;
+  webUrl: string;
 }

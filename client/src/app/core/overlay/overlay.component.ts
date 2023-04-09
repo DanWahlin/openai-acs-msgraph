@@ -4,7 +4,7 @@ import { EventBusService, Events } from '../eventbus.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'cm-overlay',
+    selector: 'app-overlay',
     templateUrl: './overlay.component.html',
     styleUrls: ['./overlay.component.scss']
 })
@@ -13,7 +13,7 @@ export class OverlayComponent implements OnInit, OnDestroy {
     httpRequestSub: Subscription = {} as Subscription;
     httpResponseSub: Subscription = {} as Subscription;
     enabled = false;
-    queue: any[] = [];
+    queue: Record<string, never>[] = [];
     timerId = 0;
     timerHideId = 0;
 

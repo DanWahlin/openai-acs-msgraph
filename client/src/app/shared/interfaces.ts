@@ -1,3 +1,7 @@
+export interface Phone {
+    phone: string;
+}
+
 export interface EmailSmsCompletion {
     emailSubject: string;
     emailBody: string;
@@ -16,7 +20,7 @@ export interface EmailSmsResponse {
     status: boolean;
 }
 
-export interface AcsToken {
+export interface AcsUser {
     userId: string;
     token: string;
     expiresOn: Date;
@@ -55,14 +59,14 @@ export interface OneDriveFile {
         siteId: string;
     },
     webUrl: string;
-  };
+  }
   
   export interface ChatMessageInfo {
     teamId: string; 
     channelId: string;  
     messageId: string; 
     summary: string; 
-  };
+  }
   
   export interface ChatMessage {
     id: string;
@@ -73,4 +77,4 @@ export interface OneDriveFile {
     from: string;
     date: Date;
     webUrl: string;
-  };
+  }

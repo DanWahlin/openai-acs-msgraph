@@ -3,6 +3,7 @@ import { CallClient, CallAgent, Call } from "@azure/communication-calling";
 import { AzureCommunicationTokenCredential } from '@azure/communication-common';
 import { Subscription } from 'rxjs';
 import { DataService } from '../core/data.service';
+import { AcsUser } from '../shared/interfaces';
 
 declare const ACS_PHONE_NUMBER: string;
 
@@ -31,7 +32,7 @@ export class PhoneCallComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.subscriptions.push(
-      this.dataService.getAcsToken().subscribe(async (user: any) => {
+      this.dataService.getAcsToken().subscribe(async (user: AcsUser) => {
       const callClient = new CallClient();
       const tokenCredential = new AzureCommunicationTokenCredential(user.token);
       this.callAgent = await callClient.createCallAgent(tokenCredential);

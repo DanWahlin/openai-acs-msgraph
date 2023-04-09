@@ -3,6 +3,15 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Customer } from '../shared/interfaces';
 
+type ContentCounts = {
+  files: number;
+  emails: number;
+  chats: number;
+  agendaEvents: number;
+};
+
+type ContentCountType = keyof ContentCounts;
+
 @Component({
   selector: 'app-related-content',
   templateUrl: './related-content.component.html',
@@ -12,7 +21,7 @@ export class RelatedContentComponent {
 
   closed = true;
   selectedQueryText = '';
-  contentCounts: any = {
+  contentCounts: ContentCounts = {
     files: 0,
     emails: 0,
     chats: 0,
@@ -35,7 +44,7 @@ export class RelatedContentComponent {
     this.selectedQueryText = data.trim();
   }
 
-  dataLoaded(type: string, data: any) {
+  dataLoaded(type: ContentCountType, data: unknown[]) {
     this.contentCounts[type] = data.length;
   }
 

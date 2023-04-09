@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Providers } from '@microsoft/mgt';
 import { EventBusService, Events } from '../core/eventbus.service';
 import { FeatureFlagsService } from '../core/feature-flags.service';
+import { Phone } from '../shared/interfaces';
 
 @Component({
   selector: 'app-header',
@@ -12,18 +13,18 @@ export class HeaderComponent implements OnInit {
 
   @Output() userLoggedIn = new EventEmitter();
   callVisible = false;
-  callData: any;
+  callData = {} as Phone;
 
   constructor(private eventBus: EventBusService, public featureFlags: FeatureFlagsService) { }
 
   ngOnInit() {
-    this.eventBus.on(Events.CustomerCall, (data: any) => {
+    this.eventBus.on(Events.CustomerCall, (data: Phone) => {
       this.callVisible = true;
       this.callData = data;
     });
   }
 
-  async loginCompleted(e: any) {
+  async loginCompleted() {
     const me = await Providers.globalProvider.graph.client.api('me').get();
     this.userLoggedIn.emit(me);
   }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
 
 @Component({
@@ -6,9 +6,7 @@ import { RelatedContentBaseComponent } from '../shared/related-content-base.comp
   templateUrl: './emails.component.html',
   styleUrls: ['./emails.component.scss']
 })
-export class EmailsComponent extends RelatedContentBaseComponent implements OnInit {
-
-  ngOnInit() { }
+export class EmailsComponent extends RelatedContentBaseComponent {
 
   override async search(query: string) {
     this.data = await this.graphService.searchEmail(query);

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 
-import { Observable, of } from 'rxjs';
-import { tap, delay, catchError } from 'rxjs/operators';
+import { Observable, of, /* delay */ } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 
 import { EventBusService, EmitEvent, Events } from '../eventbus.service';
 
@@ -12,8 +13,8 @@ export class OverlayRequestResponseInterceptor implements HttpInterceptor {
   constructor(private eventBus: EventBusService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const randomTime = this.getRandomIntInclusive(0, 1500);
-    const started = Date.now();
+    // const randomTime = this.getRandomIntInclusive(0, 1500);
+    // const started = Date.now();
     this.eventBus.emit(new EmitEvent(Events.HttpRequest));
     return next
           .handle(req)
@@ -21,11 +22,11 @@ export class OverlayRequestResponseInterceptor implements HttpInterceptor {
             // delay(randomTime),  // Simulate random Http call delays
             tap(event => {
               if (event instanceof HttpResponse) {
-                const elapsed = Date.now() - started;
+                // const elapsed = Date.now() - started;
                 this.eventBus.emit(new EmitEvent(Events.HttpResponse));
               }
             }),
-            catchError(err => {
+            catchError(() => {
               this.eventBus.emit(new EmitEvent(Events.HttpResponse));
               return of({}) as Observable<HttpEvent<any>>;
             })

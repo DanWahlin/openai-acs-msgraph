@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
 
 import { SorterService } from '../core/sorter.service';
 import { EventBusService, Events } from 'src/app/core/eventbus.service';
@@ -9,15 +10,14 @@ import { EmailSmsDialogData } from '../email-sms-dialog/email-sms-dialog-data';
 import { EmailSmsDialogComponent } from '../email-sms-dialog/email-sms-dialog.component';
 import { Subscription } from 'rxjs';
 import { FeatureFlagsService } from '../core/feature-flags.service';
-
-
+import { Phone } from '../shared/interfaces';
 
 @Component({
     selector: 'app-customers-list',
     templateUrl: './customers-list.component.html',
     styleUrls: ['./customers-list.component.scss']
 })
-export class CustomersListComponent implements OnInit {
+export class CustomersListComponent implements OnInit, OnDestroy {
     // Due to dynamic OpenAI query we're going with any[] for type of the data property
     private _data: any[] = [];
     get data(): any[] {
@@ -85,7 +85,7 @@ export class CustomersListComponent implements OnInit {
         this.customerSelected.emit(data);
     }
 
-    openCallDialog(data: any) {
+    openCallDialog(data: Phone) {
         this.eventBus.emit({ name: Events.CustomerCall, value: data });
     }
 

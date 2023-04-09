@@ -25,7 +25,7 @@ export class ChatsComponent extends RelatedContentBaseComponent implements OnDes
 
   openDialog() {
     this.dialogData.message = this.searchText;
-    const dialogRef = this.dialog.open(TextAreaDialogComponent<TeamsDialogData>, {
+    const dialogRef = this.dialog.open(TextAreaDialogComponent, {
       data: this.dialogData
     });
 

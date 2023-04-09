@@ -1,22 +1,22 @@
-import { Component, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataService } from 'src/app/core/data.service';
-import { DialogBase } from './dialog-data';
+import { DialogBase, TeamsDialogData } from './dialog-data';
 
 @Component({
   selector: 'app-textarea-dialog',
   templateUrl: './textarea-dialog.component.html',
   styleUrls: ['./textarea-dialog.component.scss']
 })
-export class TextAreaDialogComponent<T extends DialogBase> {
+export class TextAreaDialogComponent implements OnInit {
   title = '';
   message = '';
   initialMessage = '';
 
   constructor(
     private dataService: DataService,
-    public dialogRef: MatDialogRef<TextAreaDialogComponent<T>>,
-    @Inject(MAT_DIALOG_DATA) public data: T) {}
+    public dialogRef: MatDialogRef<TextAreaDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogBase | TeamsDialogData) {}
 
   ngOnInit() {
     this.title = this.data instanceof Error ? '' : this.data.title;
@@ -24,8 +24,10 @@ export class TextAreaDialogComponent<T extends DialogBase> {
   }
 
   async send() {
-    this.data = await this.data.action!(this.message, this.data);
-    this.dialogRef.close(this.data);
+    if (this.data.action) {
+      this.data = await this.data.action(this.message);
+      this.dialogRef.close(this.data);
+    }
   }
 
 }
