@@ -18,10 +18,10 @@ th {
     cursor: pointer;
 }
 
-.table-dark {
-    --bs-table-bg: #e0e0e0;
-    color: #000;
-}
+// .table-dark {
+//     --bs-table-bg: #ccc;
+//     color: #000;
+// }
 
 .scroller {
     max-height: 350px;
@@ -68,4 +68,18 @@ th {
     color: black;
     background: transparent;
     border: none;
+}
+
+ 
+.button-color.mdc-button.mdc-button--outlined:hover {
+    background-color: #3f51b5;
+    color: #fff;
+}
+  
+.button-color.mat-mdc-menu-item:hover {
+    background-color: #3f51b5;
+
+    & .mdc-list-item__primary-text, & mat-icon {
+        color: #fff;
+    }
 }

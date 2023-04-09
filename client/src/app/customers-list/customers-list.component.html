@@ -16,18 +16,22 @@
                 {{ row[header] | dynamic:header }}
             </td>
             <td>
-                <button mat-stroked-button color="basic"
+                <button mat-stroked-button class="button-color"
                     *ngIf="headers.includes('company') && featureFlags.microsoft365Enabled"
                     (click)="getRelatedData(row)"><mat-icon svgIcon="content"></mat-icon> View Related Content</button>
                 &nbsp;&nbsp;
                 <span *ngIf="headers.includes('phone')">
-                    <button mat-stroked-button [matMenuTriggerFor]="menu"><mat-icon svgIcon="contact"></mat-icon>Contact
-                        Customer</button>
+                    <button mat-stroked-button class="button-color" [matMenuTriggerFor]="menu">
+                        <mat-icon svgIcon="contact"></mat-icon>Contact Customer</button>
                     <mat-menu #menu="matMenu">
-                        <button *ngIf="featureFlags.acsPhoneEnabled" mat-menu-item
-                            (click)="openCallDialog(row)"><mat-icon svgIcon="phone"></mat-icon> Call Customer</button>
-                        <button mat-menu-item (click)="openEmailSmsDialog(row)"><mat-icon svgIcon="sms"></mat-icon>
-                            Email/SMS Customer</button>
+                        <button *ngIf="featureFlags.acsPhoneEnabled" 
+                            mat-menu-item class="button-color"
+                            (click)="openCallDialog(row)">
+                            <mat-icon svgIcon="phone"></mat-icon> Call Customer
+                        </button>
+                        <button mat-menu-item class="button-color" (click)="openEmailSmsDialog(row)">
+                            <mat-icon svgIcon="sms"></mat-icon> Email/SMS Customer
+                        </button>
                     </mat-menu>
                 </span>
             </td>
@@ -44,9 +48,9 @@
     <div class="three-column">
         <textarea title="query" [(ngModel)]="queryText"
             placeholder="Query text (example: Get the total revenue for all orders. Group by company and include the city.)"></textarea>
-        <button mat-stroked-button color="basic" (click)="getQueryData()"><mat-icon svgIcon="search"></mat-icon> Run
+        <button mat-stroked-button class="button-color" (click)="getQueryData()"><mat-icon svgIcon="search"></mat-icon> Run
             Query</button>
-        <button mat-stroked-button color="basic" (click)="reset()"><mat-icon svgIcon="reset"></mat-icon> Reset
+        <button mat-stroked-button class="button-color" (click)="reset()"><mat-icon svgIcon="reset"></mat-icon> Reset
             Data</button>
     </div>
 </div>
