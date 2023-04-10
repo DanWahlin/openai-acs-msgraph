@@ -21,8 +21,12 @@ async function getOpenAICompletion(prompt: string, temperature=0, model='gpt-3.5
             temperature,
             messages: [{ role: 'user', content: prompt }]
         });
-        const content = completion.data?.choices?.[0]?.message?.content?.trim();
-        console.log('Output:', content);
+
+        let content = '';
+        if (completion.data.choices.length) {
+            content = completion.data.choices[0].message?.content.trim() as string;
+            console.log('Output:', content);
+        }
         return content;
     } 
     catch (e) {
