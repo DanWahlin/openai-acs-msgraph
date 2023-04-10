@@ -50,7 +50,7 @@ router.post('/generatesql', async (req, res) => {
         res.json(result);
     } catch (e) {
         console.error(e);
-        res.status(500).json({ error: 'Error generating SQL query.' });
+        res.status(500).json({ error: 'Error generating or running SQL query.' });
     }
 });
 
