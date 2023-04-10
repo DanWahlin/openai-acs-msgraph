@@ -4,8 +4,10 @@ import { AzureCommunicationTokenCredential } from '@azure/communication-common';
 import { Subscription } from 'rxjs';
 import { DataService } from '../core/data.service';
 import { AcsUser } from '../shared/interfaces';
+import { AcsService } from '../core/acs.service';
 
 declare const ACS_PHONE_NUMBER: string;
+declare const ACS_CONNECTION_STRING: string;
 
 @Component({
   selector: 'app-phone-call',
@@ -28,16 +30,18 @@ export class PhoneCallComponent implements OnInit, OnDestroy {
   @ViewChild('phoneInput', { static: false }) phoneInput: ElementRef | null = null;
   @ViewChild('dialer', { static: false }) dialer: ElementRef | null = null;
 
-  constructor(private dataService: DataService) { }
+  constructor(private acsService: AcsService) { }
 
   async ngOnInit() {
-    this.subscriptions.push(
-      this.dataService.getAcsToken().subscribe(async (user: AcsUser) => {
-      const callClient = new CallClient();
-      const tokenCredential = new AzureCommunicationTokenCredential(user.token);
-      this.callAgent = await callClient.createCallAgent(tokenCredential);
-    })
-    );
+    if (ACS_CONNECTION_STRING) {
+      this.subscriptions.push(
+        this.acsService.getAcsToken().subscribe(async (user: AcsUser) => {
+          const callClient = new CallClient();
+          const tokenCredential = new AzureCommunicationTokenCredential(user.token);
+          this.callAgent = await callClient.createCallAgent(tokenCredential);
+        })
+      );
+    }
   }
 
   showDialer() {

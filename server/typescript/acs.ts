@@ -6,14 +6,19 @@ import './config';
 const connectionString = process.env.ACS_CONNECTION_STRING as string;
 
 async function createACSToken() {
-    const tokenClient = new CommunicationIdentityClient(connectionString);
-    const user = await tokenClient.createUser();
-    const userToken = await tokenClient.getToken(user, ["voip"]);
-    return { userId: user.communicationUserId, ...userToken };
+  if (!connectionString) return { userId: '', token: '' };
+
+  const tokenClient = new CommunicationIdentityClient(connectionString);
+  const user = await tokenClient.createUser();
+  const userToken = await tokenClient.getToken(user, ["voip"]);
+  return { userId: user.communicationUserId, ...userToken };
+  
 }
 
 async function sendEmail(subject: string, message: string, 
   customerName: string, customerEmailAddress: string) : Promise<{status: boolean, id: string}> {
+    if (!connectionString) return { status: false, id: '' };
+    
     const emailClient = new EmailClient(connectionString);
     try {
         const msgObject: EmailMessage = {

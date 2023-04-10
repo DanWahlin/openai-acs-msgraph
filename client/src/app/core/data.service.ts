@@ -4,14 +4,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { AcsUser, Customer } from '../../app/shared/interfaces';
+import { Customer } from '../../app/shared/interfaces';
 import { EmailSmsCompletion } from '../shared/interfaces';
 
 declare const API_BASE_URL: string;
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
-  customersUrl = 'assets/data.json';
 
   constructor(private http: HttpClient) { }
 
@@ -36,7 +35,7 @@ export class DataService {
   }
 
   getCustomer(id: number): Observable<Customer> {
-    return this.http.get<Customer[]>(this.customersUrl)
+    return this.http.get<Customer[]>(API_BASE_URL + 'customers/' + id)
       .pipe(
         map(customers => {
           const customer = customers.filter((cust: Customer) => cust.id === id);
@@ -57,13 +56,6 @@ export class DataService {
 
   completeEmailSmsMessages(query: string, company: string, contactName: string): Observable<EmailSmsCompletion> {
     return this.http.post<EmailSmsCompletion>(API_BASE_URL + 'completeEmailSmsMessages', { query, company, contactName })
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  getAcsToken(): Observable<AcsUser> {
-    return this.http.get<AcsUser>(API_BASE_URL + 'acstoken')
       .pipe(
         catchError(this.handleError)
       );

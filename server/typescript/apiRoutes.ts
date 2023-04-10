@@ -41,11 +41,11 @@ router.post('/generatesql', async (req, res) => {
     try {
         // Call OpenAI to convert the user query into a SQL query
         const sqlCommandObject = await getSQL(userQuery);
-        let result: any[] = [];
 
+        let result: any[] = [];
         // Execute the SQL query
         if (sqlCommandObject) {
-            result = await queryDb(JSON.parse(sqlCommandObject)) as any[];
+            result = await queryDb(sqlCommandObject) as any[];
         }
         res.json(result);
     } catch (e) {

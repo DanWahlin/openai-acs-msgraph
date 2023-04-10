@@ -1,5 +1,6 @@
 import { Pool } from 'pg';
 import './config';
+import { QueryData } from './interfaces';
 
 const pool = new Pool({
     user: process.env.POSTGRES_USER,
@@ -13,7 +14,7 @@ async function getCustomers() {
     return await pool.query('SELECT * FROM get_customers()');
 }
 
-async function queryDb(sqlCommandObject: { sql: string, paramValues: any[] }): Promise<any[] | { error: string }> {
+async function queryDb(sqlCommandObject: QueryData): Promise<any[] | { error: string }> {
     if (!sqlCommandObject) {
         return { error: 'Missing SQL command object.' };
     }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { EmailSmsResponse } from '../shared/interfaces';
+import { AcsUser, EmailSmsResponse } from '../shared/interfaces';
 
 declare const API_BASE_URL: string;
 
@@ -12,6 +12,13 @@ declare const API_BASE_URL: string;
 export class AcsService {
 
   constructor(private http: HttpClient) { }
+
+  getAcsToken(): Observable<AcsUser> {
+    return this.http.get<AcsUser>(API_BASE_URL + 'acstoken')
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   sendSms(message: string, customerPhoneNumber: string) : Observable<EmailSmsResponse> {
     return this.http.post<EmailSmsResponse>(API_BASE_URL + 'sendsms', { message, customerPhoneNumber })

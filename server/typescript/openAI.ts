@@ -1,7 +1,9 @@
 import { OpenAIApi, Configuration } from 'openai';
 import './config';
+import { QueryData } from './interfaces';
 
 const apiKey = process.env.OPENAI_API_KEY;
+const apiEndpoint = process.env.OPENAI_ENDPOINT;
 
 async function getOpenAICompletion(prompt: string, temperature=0, model='gpt-3.5-turbo') {
 
@@ -29,6 +31,54 @@ async function getOpenAICompletion(prompt: string, temperature=0, model='gpt-3.5
     }
 }
 
+async function getSQL(userPrompt: string) : Promise<QueryData> {
+    const prompt = `
+    PostgreSQL tables, with their properties:
+
+    - customers (id, company, city, email)
+    - orders (id, customer_id, date, total)
+    - order_items (id, order_id, product_id, quantity, price)
+    - reviews (id, customer_id, review, date, comment)
+
+    User prompt: ${userPrompt}
+
+    Rules:
+    - Convert any strings to a PostgreSQL parameterized query value to avoid SQL injection attacks.
+    
+    Return a JSON object with the SQL query and the parameter values in it. 
+    
+    Example: { "sql": "", "paramValues": [] }
+    `;
+    let queryData: QueryData = { sql: '', paramValues: [] };
+    try {
+        const results = await getOpenAICompletion(prompt);
+        if (results) {
+            queryData = JSON.parse(results);
+            if (isProhibitedQuery(queryData.sql)) { 
+                queryData.sql = '';
+            }
+        }
+    }
+    catch (e) {
+        console.log(e);
+    }
+
+    return queryData;
+}
+
+function isProhibitedQuery(query: string): boolean {
+    const prohibitedKeywords = [
+        'insert', 'update', 'delete', 'drop', 'truncate', 'alter', 'create', 'replace',
+        'information_schema', 'pg_catalog', 'pg_tables', 'pg_namespace', 'pg_class',
+        'table_schema', 'table_name', 'column_name', 'column_default', 'is_nullable',
+        'data_type', 'udt_name', 'character_maximum_length', 'numeric_precision',
+        'numeric_scale', 'datetime_precision', 'interval_type', 'collation_name',
+        'grant', 'revoke', 'rollback', 'commit', 'savepoint', 'vacuum', 'analyze'
+    ];
+    const queryLower = query.toLowerCase();
+    return prohibitedKeywords.some(keyword => queryLower.includes(keyword));
+}
+
 async function completeEmailSMSMessages(userPrompt: string, company: string, contactName: string) {
     console.log('Inputs:', userPrompt, company, contactName);
     const prompt =
@@ -51,29 +101,6 @@ async function completeEmailSMSMessages(userPrompt: string, company: string, con
     `;
     
     const content = await getOpenAICompletion(prompt, 0.5);
-    return content;
-}
-
-async function getSQL(userPrompt: string) {
-    const prompt =
-    `Postgres SQL tables, with their properties:
-
-    - customers (id, company, city, email)
-    - orders (id, customer_id, date, total)
-    - order_items (id, order_id, product_id, quantity, price)
-    - reviews (id, customer_id, review, date, comment)
-
-    Rules:
-    - Only allow SELECT queries. UPDATE, INSERT, DELETE are not allowed.
-    - Convert any strings to a Postgresql parameterized query value to avoid SQL injection attacks.
-
-    User prompt: ${userPrompt}
-
-    Return a JSON object with the SQL query and the parameter values in it. 
-    Example: { "sql": "", "paramValues": [] } 
-    `;
-
-    const content = await getOpenAICompletion(prompt);
     return content;
 }
 

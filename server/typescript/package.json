@@ -5,8 +5,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node index.ts",
-    "nodemon": "nodemon --exec ts-node index.ts"
+    "start": "nodemon --exec ts-node index.ts"
   },
   "private": true,
   "dependencies": {
