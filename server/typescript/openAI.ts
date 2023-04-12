@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { OpenAIApi, Configuration } from 'openai';
 import './config';
 import { QueryData } from './interfaces';
@@ -36,13 +37,13 @@ async function getOpenAICompletion(prompt: string, temperature=0, model='gpt-3.5
 }
 
 async function getSQL(userPrompt: string) : Promise<QueryData> {
+    // Get the high-level database schema summary to be used in the prompt (simple example in this case)
+    const dbSchema = await fs.promises.readFile('db.schema', 'utf8');
+
     const prompt = `
     PostgreSQL tables, with their properties:
 
-    - customers (id, company, city, email)
-    - orders (id, customer_id, date, total)
-    - order_items (id, order_id, product_id, quantity, price)
-    - reviews (id, customer_id, review, date, comment)
+    ${dbSchema}
 
     User prompt: ${userPrompt}
 
@@ -53,6 +54,7 @@ async function getSQL(userPrompt: string) : Promise<QueryData> {
     
     Example: { "sql": "", "paramValues": [] }
     `;
+
     let queryData: QueryData = { sql: '', paramValues: [] };
     try {
         const results = await getOpenAICompletion(prompt);
