@@ -67,7 +67,7 @@ To start, rename the provided *.env.example* file to *.env* in the *tutorials/op
 
 1. Create an Azure Communication Services (ACS) resource in the [Azure Portal](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Communication%2FCommunicationServices).
 
-    - Add a phone number and ensure that the phone number has **calling capabilities enabled**. Copy the phone number value into a file for later use.
+    - Add a toll-free phone number and ensure that the phone number has **calling and SMS capabilities enabled**. Copy the phone number value into a file for later use.
 
     - Create a connected email domain for your ACS resource:
     
@@ -82,7 +82,7 @@ To start, rename the provided *.env.example* file to *.env* in the *tutorials/op
         - Go back to your Azure Communication Services resource and select `Domains` from the left-hand menu.
         - Select `Add domain` and enter the `MailFrom` value from the previous step (ensure you select the correct subscription, resource group, and email service). Select the `Connect` button.
 
-    - Update the following keys/values in the `.env` file. For the **CUSTOMER_PHONE_NUMBER**, you'll need to provide a United States based phone number (as of today) due to additional verification that is required in other countries for SMS. If you don't have one, you can leave it empty. For the **CUSTOMER_EMAIL_ADDRESS**, provide an email address you'd like email to be sent from the app (since the data in the app's database is "fake").
+    - Update the following keys/values in the `.env` file. For the **CUSTOMER_PHONE_NUMBER**, you'll need to provide a United States based phone number (as of today) due to additional verification that is required in other countries for SMS. If you don't have one, you can leave it empty. For the **CUSTOMER_EMAIL_ADDRESS**, provide an email address you'd like email to be sent to from the app (since the customer data in the app's database is only sample data).
 
         ```
         ACS_CONNECTION_STRING=<ACS_CONNECTION_STRING>
@@ -98,11 +98,16 @@ To start, rename the provided *.env.example* file to *.env* in the *tutorials/op
 
 1. Create a [Microsoft 365 Developer tenant](https://developer.microsoft.com/en-us/microsoft-365/dev-program) if you don't already have one. 
 
-1. Create a new Azure Active Directory app registration using the [Azure Portal](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps).
+1. Create a new Azure Active Directory (AAD) app registration using the [Azure Portal](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps).
 
-    - Give the app a name such as `ai-comms-orgdata`.
+    - Give the app a name such as `Microsoft Graph App`.
     - Select `Accounts in any organizational directory (Any Azure AD directory - Multitenant)`
     - Redirect URI: Single-page application (SPA) with a redirect URL of http://localhost:4200
+
+1. In the `API permissions` section of the AAD app you'll need to add the following permissions:
+
+    - `Chat.ReadWrite`
+    - `Files.Read.All`
 
 1. After creating the app registration, go to the `Overview` screen and copy the `Application (client) ID` to your clipboard. Replace the <AAD_CLIENT_ID> value in the `.env` file with the value.
 
