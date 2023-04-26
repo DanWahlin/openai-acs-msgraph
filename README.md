@@ -78,7 +78,7 @@ To start, rename the provided *.env.example* file to *.env* in the *tutorials/op
         - Select `Review + create` followed by `Create`.
         - Once the deployment completes, select `Go to resource`, and select `1-click add` to add a free Azure subdomain.
         - After the subdomain is added (it'll take a few moments to be deployed), select it.
-        - On the `Overview` screen you'll see `MailFrom`, `From`, and `Display name` values. You'll use the `MailFrom` value in the next step.
+        - Select `MailFrom addresses` from the sidebar menu. Copy the `MailFrom value` to a file. You'll use it later as you update the `.env` file.
         - Go back to your Azure Communication Services resource and select `Domains` from the left-hand menu.
         - Select `Add domain` and enter the `MailFrom` value from the previous step (ensure you select the correct subscription, resource group, and email service). Select the `Connect` button.
 
