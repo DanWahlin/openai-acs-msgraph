@@ -3,6 +3,7 @@ import { Providers } from '@microsoft/mgt';
 import { EventBusService, Events } from '../core/eventbus.service';
 import { FeatureFlagsService } from '../core/feature-flags.service';
 import { Phone } from '../shared/interfaces';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -14,14 +15,17 @@ export class HeaderComponent implements OnInit {
   @Output() userLoggedIn = new EventEmitter();
   callVisible = false;
   callData = {} as Phone;
+  subscriptions: Subscription[] = [];
 
   constructor(private eventBus: EventBusService, public featureFlags: FeatureFlagsService) { }
 
   ngOnInit() {
-    this.eventBus.on(Events.CustomerCall, (data: Phone) => {
-      this.callVisible = true;
-      this.callData = data;
-    });
+    this.subscriptions.push(
+      this.eventBus.on(Events.CustomerCall, (data: Phone) => {
+        this.callVisible = true;
+        this.callData = data;
+      })
+    );
   }
 
   async loginCompleted() {
@@ -31,6 +35,10 @@ export class HeaderComponent implements OnInit {
 
   hangup() {
     this.callVisible = false;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
 }
