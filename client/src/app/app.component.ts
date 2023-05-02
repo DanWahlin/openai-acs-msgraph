@@ -6,7 +6,6 @@ import { GraphService } from './core/graph.service';
 import { Customer } from './shared/interfaces';
 import { PEOPLE_ICON, FILE_ICON, CHAT_ICON, EMAIL_ICON, AGENDA_ICON, PHONE_ICON, CONTENT_ICON, SEARCH_ICON, RESET_ICON, CONTACT_ICON, SMS_ICON } from './shared/svg-icons';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -20,22 +19,27 @@ export class AppComponent implements OnInit, OnDestroy {
   signInMessage = '';
   selectedCustomer: Customer | null = null;
   timer: NodeJS.Timeout | null = null;
+  iconList = [ 
+    { name: 'people', icon: PEOPLE_ICON }, 
+    { name: 'file', icon: FILE_ICON }, 
+    { name: 'chat', icon: CHAT_ICON },
+    { name: 'email', icon: EMAIL_ICON }, 
+    { name: 'agenda', icon: AGENDA_ICON }, 
+    { name: 'phone', icon: PHONE_ICON },
+    { name: 'content', icon: CONTENT_ICON }, 
+    { name: 'search', icon: SEARCH_ICON },
+    { name: 'reset', icon: RESET_ICON }, 
+    { name: 'contact', icon: CONTACT_ICON }, 
+    { name: 'sms', icon: SMS_ICON }
+  ];
 
   constructor(private graphService: GraphService, private iconRegistry: MatIconRegistry, 
     private sanitizer: DomSanitizer, public featureFlags: FeatureFlagsService) { }
 
   async ngOnInit() {
-    this.iconRegistry.addSvgIconLiteral('people', this.sanitizer.bypassSecurityTrustHtml(PEOPLE_ICON));
-    this.iconRegistry.addSvgIconLiteral('file', this.sanitizer.bypassSecurityTrustHtml(FILE_ICON));
-    this.iconRegistry.addSvgIconLiteral('chat', this.sanitizer.bypassSecurityTrustHtml(CHAT_ICON));
-    this.iconRegistry.addSvgIconLiteral('email', this.sanitizer.bypassSecurityTrustHtml(EMAIL_ICON));
-    this.iconRegistry.addSvgIconLiteral('agenda', this.sanitizer.bypassSecurityTrustHtml(AGENDA_ICON));
-    this.iconRegistry.addSvgIconLiteral('phone', this.sanitizer.bypassSecurityTrustHtml(PHONE_ICON));
-    this.iconRegistry.addSvgIconLiteral('content', this.sanitizer.bypassSecurityTrustHtml(CONTENT_ICON));
-    this.iconRegistry.addSvgIconLiteral('search', this.sanitizer.bypassSecurityTrustHtml(SEARCH_ICON));
-    this.iconRegistry.addSvgIconLiteral('reset', this.sanitizer.bypassSecurityTrustHtml(RESET_ICON));
-    this.iconRegistry.addSvgIconLiteral('contact', this.sanitizer.bypassSecurityTrustHtml(CONTACT_ICON));
-    this.iconRegistry.addSvgIconLiteral('sms', this.sanitizer.bypassSecurityTrustHtml(SMS_ICON));
+    for (const item of this.iconList) {
+      this.iconRegistry.addSvgIconLiteral(item.name, this.sanitizer.bypassSecurityTrustHtml(item.icon));
+    }
     this.graphService.init();
 
     // Update the signInMessage property after 800ms
