@@ -91,7 +91,6 @@ export class CustomersListComponent implements OnInit, OnDestroy {
 
     openEmailSmsDialog(data: any) {
         if (data.phone && data.email) {
-            // const formattedPhone = this.phonePipe.transform(data.phone);
             let dialogData: EmailSmsDialogData = {
                 prompt: '',
                 title: `Contact ${data.company}`,

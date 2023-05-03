@@ -38,7 +38,7 @@ async function sendEmail(subject: string, message: string,
         };
     
         // Going with this approach for now since the poller with
-        // pollUntilDone() is very slow
+        // pollUntilDone() isn't returning very quickly.
 
         const poller = await emailClient.beginSend(msgObject, { updateIntervalInMs: 100 });
         // const response = await poller.pollUntilDone();

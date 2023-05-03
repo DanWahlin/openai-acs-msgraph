@@ -80,7 +80,7 @@ We're sorry.`
     }
   }
 
-  sendSMS() {
+  sendSms() {
     if (this.featureFlags.acsPhoneEnabled) {
       // Using CUSTOMER_PHONE_NUMBER instead of this.data.customerPhoneNumber for testing purposes
       this.subscriptions.push(
