@@ -78,7 +78,7 @@ async function sendSms(message: string, customerPhoneNumber: string): Promise<Sm
   }
 }
 
-async function pollEmailSend(poller: any) {
+async function pollEmailSend(poller: any) : Promise<{ status: boolean, id: string }> {
     const waitTime = 10;
     if (!poller.getOperationState().isStarted) {
       throw "Poller was not started."
