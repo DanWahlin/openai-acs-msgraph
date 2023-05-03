@@ -40,7 +40,7 @@ async function sendEmail(subject: string, message: string,
     const poller = await emailClient.beginSend(msgObject);
 
     /**
-     *  Returning a promise that resolves immediately since we're not using the send Id.
+     **  Returning a promise that resolves immediately since we're not using the send Id.
     **/
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -49,14 +49,11 @@ async function sendEmail(subject: string, message: string,
     });
 
     /**
-     *  Uncomment the following line and comment out the return statement above 
-     *  if you want to wait until the email send operation is officially completed.
-     *  This will take longer, but will allow you to get an Id for the send operation.
-     *  
+     **  Uncomment the following line and comment out the return statement above 
+     **  if you want to wait until the email send operation is officially completed.
+     **  This will take longer, but will allow you to get an Id for the send operation.
     **/
     // return pollEmailSend(poller);
-
-
   }
   catch (e: unknown) {
     console.log(e);
