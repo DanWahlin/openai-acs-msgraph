@@ -1,5 +1,5 @@
 import { CommunicationIdentityClient } from '@azure/communication-identity';
-import { EmailClient, EmailMessage } from '@azure/communication-email';
+import { EmailClient, EmailMessage, KnownEmailSendStatus } from '@azure/communication-email';
 import { SmsClient, SmsSendResult } from '@azure/communication-sms';
 import './config';
 
@@ -12,64 +12,104 @@ async function createACSToken() {
   const user = await tokenClient.createUser();
   const userToken = await tokenClient.getToken(user, ["voip"]);
   return { userId: user.communicationUserId, ...userToken };
-  
+
 }
 
-async function sendEmail(subject: string, message: string, 
-  customerName: string, customerEmailAddress: string) : Promise<{status: boolean, id: string}> {
-    if (!connectionString) return { status: false, id: '' };
-    
-    const emailClient = new EmailClient(connectionString);
-    try {
-        const msgObject: EmailMessage = {
-          senderAddress: process.env.ACS_EMAIL_ADDRESS as string,
-          content: {
-            subject: subject,
-            plainText: message,
-          },
-          recipients: {
-            to: [
-              {
-                address: customerEmailAddress,
-                displayName: customerName,
-              },
-            ],
-          },
-        };
-    
-        // Going with this approach for now since the poller with
-        // pollUntilDone() isn't returning very quickly.
+async function sendEmail(subject: string, message: string,
+  customerName: string, customerEmailAddress: string): Promise<{ status: boolean, id: string }> {
+  if (!connectionString) return { status: false, id: '' };
 
-        const poller = await emailClient.beginSend(msgObject, { updateIntervalInMs: 100 });
-        // const response = await poller.pollUntilDone();
-        // console.log(response);
-        // return response;
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve({status: true, id: '123'});
-          }, 500);
-        });
-      } 
-      catch (e: unknown) {
-        console.log(e);
-        return {status: false, id: ''};
-      }
+  const emailClient = new EmailClient(connectionString);
+  try {
+    const msgObject: EmailMessage = {
+      senderAddress: process.env.ACS_EMAIL_ADDRESS as string,
+      content: {
+        subject: subject,
+        plainText: message,
+      },
+      recipients: {
+        to: [
+          {
+            address: customerEmailAddress,
+            displayName: customerName,
+          },
+        ],
+      },
+    };
+
+    const poller = await emailClient.beginSend(msgObject);
+
+    /**
+     *  Uncomment the following line and comment out the return statement below 
+     *  if you want to wait until the email is officially sent and get the send Id.
+     *  
+    **/
+    // return pollEmailSend(poller);
+
+    /**
+     *  We're going to return a promise that resolves immediately since we're not using the sent Id
+    **/
+    // 
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ status: true, id: '123' });
+      }, 500);
+    });
+  }
+  catch (e: unknown) {
+    console.log(e);
+    return { status: false, id: '' };
+  }
 }
 
 async function sendSms(message: string, customerPhoneNumber: string): Promise<SmsSendResult[]> {
-    const smsClient = new SmsClient(connectionString);
+  const smsClient = new SmsClient(connectionString);
 
-    try {
-        const sendResults = await smsClient.send({
-            from: process.env.ACS_PHONE_NUMBER as string,
-            to: [customerPhoneNumber],
-            message: message
-        });
-        return sendResults;
+  try {
+    const sendResults = await smsClient.send({
+      from: process.env.ACS_PHONE_NUMBER as string,
+      to: [customerPhoneNumber],
+      message: message
+    });
+    return sendResults;
+  }
+  catch (e: unknown) {
+    console.log(e);
+    return [];
+  }
+}
+
+async function pollEmailSend(poller: any) {
+    const waitTime = 10;
+    if (!poller.getOperationState().isStarted) {
+      throw "Poller was not started."
     }
-    catch (e: unknown) {
-        console.log(e);
-        return [];
+
+    let timeElapsed = 0;
+    while (!poller.isDone()) {
+      poller.poll();
+      console.log("Email send polling in progress");
+
+      await new Promise(resolve => setTimeout(resolve, waitTime * 1000));
+      timeElapsed += 10;
+
+      if (timeElapsed > 18 * waitTime) {
+        throw "Polling timed out.";
+      }
+    }
+
+    const result = poller.getResult();
+    if (result) {
+      if (result.status === KnownEmailSendStatus.Succeeded) {
+        console.log(`Successfully sent the email (operation id: ${result.id})`);
+        return { status: true, id: result.id };
+      }
+      else {
+        throw result.error;
+      }
+    }
+    else {
+      throw "Result was null.";
     }
 }
 

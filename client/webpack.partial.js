@@ -11,7 +11,7 @@ module.exports = {
             "ACS_CONNECTION_STRING": (process.env.ACS_CONNECTION_STRING) ? true : false,
             "ACS_PHONE_NUMBER": JSON.stringify(process.env.ACS_PHONE_NUMBER),
             "ACS_EMAIL_ADDRESS": (process.env.ACS_EMAIL_ADDRESS) ? true : false,
-            "CUSTOMER_EMAIL_ADDRESS": JSON.stringify(process.env.ACS_EMAIL_ADDRESS),
+            "CUSTOMER_EMAIL_ADDRESS": JSON.stringify(process.env.CUSTOMER_EMAIL_ADDRESS),
             "CUSTOMER_PHONE_NUMBER": JSON.stringify(process.env.CUSTOMER_PHONE_NUMBER),
             "API_BASE_URL": JSON.stringify(process.env.API_BASE_URL)
         })
