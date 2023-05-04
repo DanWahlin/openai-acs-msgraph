@@ -3,7 +3,8 @@ import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { PhonePipe } from './phone.pipe';
 
 @Pipe({
-  name: 'dynamic'
+    name: 'dynamic',
+    standalone: true
 })
 export class DynamicPipe implements PipeTransform {
   constructor(private currencyPipe: CurrencyPipe, private datePipe: DatePipe, 

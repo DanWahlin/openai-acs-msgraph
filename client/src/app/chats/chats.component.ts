@@ -4,11 +4,16 @@ import { Subscription } from 'rxjs';
 import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
 import { TeamsDialogData } from '../textarea-dialog/dialog-data';
 import { TextAreaDialogComponent } from '../textarea-dialog/textarea-dialog.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-chats',
-  templateUrl: './chats.component.html',
-  styleUrls: ['./chats.component.scss']
+    selector: 'app-chats',
+    templateUrl: './chats.component.html',
+    styleUrls: ['./chats.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgFor, MatButtonModule, MatCardModule]
 })
 export class ChatsComponent extends RelatedContentBaseComponent implements OnDestroy {
   subscription: Subscription = new Subscription();

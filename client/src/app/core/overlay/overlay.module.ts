@@ -8,16 +8,15 @@ import { EnsureModuleLoadedOnceGuard } from '../ensure-module-loaded-once.guard'
 
 
 @NgModule({
-  imports: [CommonModule],
-  exports: [OverlayComponent],
-  declarations: [OverlayComponent],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: OverlayRequestResponseInterceptor,
-      multi: true,
-    }
-  ]
+    imports: [CommonModule, OverlayComponent],
+    exports: [OverlayComponent],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: OverlayRequestResponseInterceptor,
+            multi: true,
+        }
+    ]
 })
 export class OverlayModule extends EnsureModuleLoadedOnceGuard {    // Ensure that OverlayModule is only loaded into AppModule
 

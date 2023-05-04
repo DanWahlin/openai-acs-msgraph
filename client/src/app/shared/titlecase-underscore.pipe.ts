@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 
 @Pipe({
-  name: 'titleCaseUnderscore'
+    name: 'titleCaseUnderscore',
+    standalone: true
 })
 export class TitleCaseUnderscorePipe implements PipeTransform {
 

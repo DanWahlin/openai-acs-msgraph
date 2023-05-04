@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
+import { NgIf, NgFor } from '@angular/common';
 /* Based on the example found at:
   https://github.com/microsoftgraph/microsoft-graph-toolkit/blob/main/samples/angular-app/src/app/angular-agenda/angular-agenda.component.ts
 */
@@ -7,9 +8,12 @@ import { RelatedContentBaseComponent } from '../shared/related-content-base.comp
 type CalendarEvent = { isAllDay: boolean, start: { dateTime: Date }, end: { dateTime: Date }}
 
 @Component({
-  selector: 'app-agenda',
-  templateUrl: './agenda.component.html',
-  styleUrls: ['./agenda.component.scss']
+    selector: 'app-agenda',
+    templateUrl: './agenda.component.html',
+    styleUrls: ['./agenda.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgFor],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CalendarComponent extends RelatedContentBaseComponent {
   

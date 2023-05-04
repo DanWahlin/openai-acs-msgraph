@@ -68,8 +68,9 @@ async function sendSms(message: string, customerPhoneNumber: string): Promise<Sm
     const sendResults = await smsClient.send({
       from: process.env.ACS_PHONE_NUMBER as string,
       to: [customerPhoneNumber],
-      message: message
+      message
     });
+    console.log('SMS message sent successfully', sendResults);
     return sendResults;
   }
   catch (e: unknown) {

@@ -2,17 +2,22 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, On
 import { CallClient, CallAgent, Call } from "@azure/communication-calling";
 import { AzureCommunicationTokenCredential } from '@azure/communication-common';
 import { Subscription } from 'rxjs';
-import { DataService } from '../core/data.service';
 import { AcsUser } from '../shared/interfaces';
 import { AcsService } from '../core/acs.service';
+import { NgFor } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 declare const ACS_PHONE_NUMBER: string;
 declare const ACS_CONNECTION_STRING: string;
 
 @Component({
-  selector: 'app-phone-call',
-  templateUrl: './phone-call.component.html',
-  styleUrls: ['./phone-call.component.scss']
+    selector: 'app-phone-call',
+    templateUrl: './phone-call.component.html',
+    styleUrls: ['./phone-call.component.scss'],
+    standalone: true,
+    imports: [FormsModule, MatButtonModule, MatIconModule, NgFor, ]
 })
 export class PhoneCallComponent implements OnInit, OnDestroy {
   inCall = false;

@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
+import { NgIf } from '@angular/common';
 
 type FileDetail = { detail: { webUrl: string } };
 
 @Component({
-  selector: 'app-files',
-  templateUrl: './files.component.html',
-  styleUrls: ['./files.component.scss']
+    selector: 'app-files',
+    templateUrl: './files.component.html',
+    styleUrls: ['./files.component.scss'],
+    standalone: true,
+    imports: [NgIf],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class FilesComponent extends RelatedContentBaseComponent {
 

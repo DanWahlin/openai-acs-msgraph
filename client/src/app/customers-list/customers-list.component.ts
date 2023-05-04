@@ -11,11 +11,22 @@ import { EmailSmsDialogComponent } from '../email-sms-dialog/email-sms-dialog.co
 import { Subscription } from 'rxjs';
 import { FeatureFlagsService } from '../core/feature-flags.service';
 import { Phone } from '../shared/interfaces';
+import { DynamicPipe } from '../shared/dynamic.pipe';
+import { TitleCaseUnderscorePipe } from '../shared/titlecase-underscore.pipe';
+import { FormsModule } from '@angular/forms';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { NgIf, NgFor } from '@angular/common';
+import { FilterTextboxComponent } from '../shared/filter-textbox.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'app-customers-list',
     templateUrl: './customers-list.component.html',
-    styleUrls: ['./customers-list.component.scss']
+    styleUrls: ['./customers-list.component.scss'],
+    standalone: true,
+    imports: [MatIconModule, FilterTextboxComponent, NgIf, NgFor, MatButtonModule, 
+        MatMenuModule, FormsModule, TitleCaseUnderscorePipe, DynamicPipe]
 })
 export class CustomersListComponent implements OnInit, OnDestroy {
     // Due to dynamic OpenAI query we're going with any[] for type of the data property

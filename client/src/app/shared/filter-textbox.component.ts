@@ -1,10 +1,13 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-filter-textbox',
     template: `
         {{ label }} <input type="text" [(ngModel)]="filter" style="width: 250px" />
-    `
+    `,
+    standalone: true,
+    imports: [FormsModule]
 })
 export class FilterTextboxComponent {
 

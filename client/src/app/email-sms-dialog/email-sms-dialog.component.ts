@@ -1,19 +1,25 @@
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTabGroup } from '@angular/material/tabs';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/core/data.service';
 import { AcsService } from '../core/acs.service';
 import { FeatureFlagsService } from '../core/feature-flags.service';
 import { EmailSmsDialogData } from './email-sms-dialog-data';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 declare const CUSTOMER_EMAIL_ADDRESS: string;
 declare const CUSTOMER_PHONE_NUMBER: string;
 
 @Component({
-  selector: 'app-email-sms-dialog',
-  templateUrl: './email-sms-dialog.component.html',
-  styleUrls: ['./email-sms-dialog.component.scss']
+    selector: 'app-email-sms-dialog',
+    templateUrl: './email-sms-dialog.component.html',
+    styleUrls: ['./email-sms-dialog.component.scss'],
+    standalone: true,
+    imports: [MatDialogModule, MatIconModule, MatTabsModule, NgIf, FormsModule, MatButtonModule]
 })
 export class EmailSmsDialogComponent implements OnInit, OnDestroy {
   title = '';

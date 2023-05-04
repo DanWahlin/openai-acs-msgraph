@@ -5,11 +5,19 @@ import { FeatureFlagsService } from './core/feature-flags.service';
 import { GraphService } from './core/graph.service';
 import { Customer } from './shared/interfaces';
 import { PEOPLE_ICON, FILE_ICON, CHAT_ICON, EMAIL_ICON, AGENDA_ICON, PHONE_ICON, CONTENT_ICON, SEARCH_ICON, RESET_ICON, CONTACT_ICON, SMS_ICON } from './shared/svg-icons';
+import { RouterOutlet } from '@angular/router';
+import { OverlayComponent } from './core/overlay/overlay.component';
+import { RelatedContentComponent } from './related-content/related-content.component';
+import { CustomersListComponent } from './customers-list/customers-list.component';
+import { NgIf } from '@angular/common';
+import { HeaderComponent } from './header/header.component';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: true,
+    imports: [HeaderComponent, NgIf, CustomersListComponent, RelatedContentComponent, OverlayComponent, RouterOutlet]
 })
 export class AppComponent implements OnInit, OnDestroy {
   get loggedIn() {

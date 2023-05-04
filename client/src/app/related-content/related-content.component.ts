@@ -1,7 +1,16 @@
 import { Component, Input } from '@angular/core';
-import { MatIconRegistry } from '@angular/material/icon';
+import { MatIconRegistry, MatIconModule } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Customer } from '../shared/interfaces';
+import { CalendarComponent } from '../agenda/agenda.component';
+import { EmailsComponent } from '../emails/emails.component';
+import { ChatsComponent } from '../chats/chats.component';
+import { FilesComponent } from '../files/files.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTabsModule } from '@angular/material/tabs';
+import { FilterTextboxComponent } from '../shared/filter-textbox.component';
+import { MatCardModule } from '@angular/material/card';
+import { NgIf } from '@angular/common';
 
 type ContentCounts = {
   files: number;
@@ -13,9 +22,12 @@ type ContentCounts = {
 type ContentCountType = keyof ContentCounts;
 
 @Component({
-  selector: 'app-related-content',
-  templateUrl: './related-content.component.html',
-  styleUrls: ['./related-content.component.scss']
+    selector: 'app-related-content',
+    templateUrl: './related-content.component.html',
+    styleUrls: ['./related-content.component.scss'],
+    standalone: true,
+    imports: [NgIf, MatCardModule, MatIconModule, FilterTextboxComponent, MatTabsModule, 
+      MatBadgeModule, FilesComponent, ChatsComponent, EmailsComponent, CalendarComponent]
 })
 export class RelatedContentComponent {
 
