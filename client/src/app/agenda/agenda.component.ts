@@ -15,7 +15,7 @@ type CalendarEvent = { isAllDay: boolean, start: { dateTime: Date }, end: { date
     imports: [NgIf, NgFor],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class CalendarComponent extends RelatedContentBaseComponent {
+export class AgendaComponent extends RelatedContentBaseComponent {
   
   override async search(query: string) {
     this.data = await this.graphService.searchAgendaEvents(query);
