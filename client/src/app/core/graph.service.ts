@@ -19,7 +19,7 @@ export class GraphService {
 
   init() {
     if (!this.featureFlags.microsoft365Enabled) return;
-    
+
     if (!Providers.globalProvider) {
       console.log('Initializing Microsoft Graph global provider...');
       Providers.globalProvider = new Msal2Provider({
@@ -46,17 +46,17 @@ export class GraphService {
 
     const filter = {
       "requests": [
-          {
-              "entityTypes": [
-                  "driveItem"
-              ],
-              "query": {
-                  "queryString": `${query} AND ContentType:Document`
-              }
+        {
+          "entityTypes": [
+            "driveItem"
+          ],
+          "query": {
+            "queryString": `${query} AND ContentType:Document`
           }
+        }
       ]
     };
-    
+
     const searchResults = await Providers.globalProvider.graph.client.api('/search/query').post(filter);
 
     if (searchResults.value.length !== 0) {
@@ -101,8 +101,8 @@ export class GraphService {
         if (hitContainer.hits) {
           for (const hit of hitContainer.hits) {
             chatIds.push({
-              teamId: hit.resource.channelIdentity.teamId, 
-              channelId: hit.resource.channelIdentity.channelId, 
+              teamId: hit.resource.channelIdentity.teamId,
+              channelId: hit.resource.channelIdentity.channelId,
               messageId: hit.resource.id,
               summary: hit.summary
             });
@@ -135,8 +135,8 @@ export class GraphService {
 
     return messages;
   }
-  
-  async searchEmail(query:string) {
+
+  async searchEmail(query: string) {
     if (!query) return [];
     // The $search operator will search the subject, body, and sender fields automatically
     const url = `https://graph.microsoft.com/v1.0/me/messages?$search="${query}"&$select=subject,bodyPreview,from,toRecipients,receivedDateTime,webLink`;
@@ -144,7 +144,7 @@ export class GraphService {
     return response.value;
   }
 
-  async searchAgendaEvents(query:string) {
+  async searchAgendaEvents(query: string) {
     if (!query) return [];
     const startDateTime = new Date();
     const endDateTime = new Date(startDateTime.getTime() + (7 * 24 * 60 * 60 * 1000));
@@ -154,7 +154,7 @@ export class GraphService {
     return response.value;
   }
 
-  async sendTeamsChat(message: string) : Promise<TeamsDialogData> {
+  async sendTeamsChat(message: string): Promise<TeamsDialogData> {
     if (!message) new Error('No message to send.');
     if (!TEAM_ID || !CHANNEL_ID) new Error('Team ID or Channel ID not set in environment variables. Please set TEAM_ID and CHANNEL_ID in the .env file.');
 
