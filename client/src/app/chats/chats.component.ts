@@ -44,7 +44,7 @@ export class ChatsComponent extends RelatedContentBaseComponent implements OnDes
   }
 
   override async search(query: string) {
-    this.data = await this.graphService.searchChats(query);
+    this.data = await this.graphService.searchChatMessages(query);
   }
 
   ngOnDestroy() {

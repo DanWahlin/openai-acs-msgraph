@@ -71,7 +71,7 @@ export class GraphService {
     return files;
   }
 
-  async searchChats(query: string) {
+  async searchChatMessages(query: string) {
     const chatIds: ChatMessageInfo[] = [];
     const promises: Promise<ChatMessage>[] = [];
     const messages: ChatMessage[] = [];
