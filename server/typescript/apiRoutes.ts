@@ -122,6 +122,7 @@ router.post('/completeEmailSmsMessages', async (req, res) => {
     try {
         // Call OpenAI to get the email and SMS message completions
         const content = await completeEmailSMSMessages(query, company, contactName);
+        console.log(content);
         if (content) {
             result = {status: true, ...JSON.parse(content) };
         }
