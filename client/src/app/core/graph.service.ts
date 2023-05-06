@@ -136,7 +136,7 @@ export class GraphService {
     return messages;
   }
 
-  async searchEmails(query: string) {
+  async searchEmailMessages(query: string) {
     if (!query) return [];
     // The $search operator will search the subject, body, and sender fields automatically
     const url = `https://graph.microsoft.com/v1.0/me/messages?$search="${query}"&$select=subject,bodyPreview,from,toRecipients,receivedDateTime,webLink`;

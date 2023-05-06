@@ -14,7 +14,7 @@ import { NgIf, NgFor } from '@angular/common';
 export class EmailsComponent extends RelatedContentBaseComponent {
 
   override async search(query: string) {
-    this.data = await this.graphService.searchEmails(query);
+    this.data = await this.graphService.searchEmailMessages(query);
   }
   
 }
