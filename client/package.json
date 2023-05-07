@@ -5,10 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --extra-webpack-config webpack.partial.js -o",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "start-api": "node ./build/api.js",
+    "build": "ng build --extra-webpack-config webpack.partial.js",
+    "watch": "ng build --watch --extra-webpack-config webpack.partial.js --configuration development",
     "lint": "ng lint"
   },
   "private": true,
