@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
 
 import { EventBusService, Events } from '../eventbus.service';
 import { Subscription } from 'rxjs';
@@ -20,7 +20,7 @@ export class OverlayComponent implements OnInit, OnDestroy {
 
     @Input() delay = 500;
 
-    constructor(private eventBus: EventBusService) { }
+    eventBus = inject(EventBusService);
 
     ngOnInit() {
         // Handle request

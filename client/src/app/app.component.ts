@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ApplicationRef, Component, ComponentRef, EnvironmentInjector, OnDestroy, OnInit, createComponent, inject } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FeatureFlagsService } from './core/feature-flags.service';
@@ -40,9 +40,14 @@ export class AppComponent implements OnInit, OnDestroy {
     { name: 'contact', icon: CONTACT_ICON }, 
     { name: 'sms', icon: SMS_ICON }
   ];
+  relatedContentComponentRef?: ComponentRef<RelatedContentComponent>;
 
-  constructor(private graphService: GraphService, private iconRegistry: MatIconRegistry, 
-    private sanitizer: DomSanitizer, public featureFlags: FeatureFlagsService) { }
+  injector = inject(EnvironmentInjector);
+  appRef = inject(ApplicationRef);
+  graphService = inject(GraphService);
+  iconRegistry = inject(MatIconRegistry);
+  sanitizer = inject(DomSanitizer);
+  featureFlags = inject(FeatureFlagsService);
 
   async ngOnInit() {
     for (const item of this.iconList) {
@@ -58,6 +63,20 @@ export class AppComponent implements OnInit, OnDestroy {
 
   customerSelected(customer: Customer) {
     this.selectedCustomer = { ...customer };
+    this.loadRelatedContentComponent();
+  }
+
+  async loadRelatedContentComponent() {
+    if (!this.relatedContentComponentRef) {
+      const { RelatedContentComponent } = await import('./related-content/related-content.component');
+      this.relatedContentComponentRef = createComponent(RelatedContentComponent, { 
+        hostElement: document.getElementById('related-content')!, 
+        environmentInjector: this.injector 
+      });
+      this.appRef.attachView(this.relatedContentComponentRef.hostView);
+    }
+
+    this.relatedContentComponentRef.setInput('selectedCustomer', this.selectedCustomer);
   }
 
   userLoggedIn(user: { displayName: string}) {

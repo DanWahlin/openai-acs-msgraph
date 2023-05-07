@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 
 import { Observable, of, /* delay */ } from 'rxjs';
@@ -10,7 +10,7 @@ import { EventBusService, EmitEvent, Events } from '../eventbus.service';
 @Injectable({ providedIn: 'root'})
 export class OverlayRequestResponseInterceptor implements HttpInterceptor {
 
-  constructor(private eventBus: EventBusService) { }
+  eventBus = inject(EventBusService);
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // const randomTime = this.getRandomIntInclusive(0, 1500);

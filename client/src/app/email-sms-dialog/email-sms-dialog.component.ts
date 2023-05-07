@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { Subscription } from 'rxjs';
@@ -36,12 +36,11 @@ Order is delayed 2 days.
 We're sorry.`
   private subscriptions: Subscription[] = [];
 
-  constructor(
-    private dataService: DataService,
-    private acsService: AcsService,
-    public dialogRef: MatDialogRef<EmailSmsDialogComponent>,
-    public featureFlags: FeatureFlagsService,
-    @Inject(MAT_DIALOG_DATA) public data: EmailSmsDialogData) { }
+  dataService = inject(DataService);
+  acsService = inject(AcsService);
+  dialogRef = inject(MatDialogRef<EmailSmsDialogComponent>);
+  featureFlags = inject(FeatureFlagsService);
+  data: EmailSmsDialogData = inject(MAT_DIALOG_DATA);
 
   @ViewChild('tabgroup', { static: true }) tabGroup!: MatTabGroup;
 

@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { PhonePipe } from './phone.pipe';
 
@@ -7,8 +7,10 @@ import { PhonePipe } from './phone.pipe';
     standalone: true
 })
 export class DynamicPipe implements PipeTransform {
-  constructor(private currencyPipe: CurrencyPipe, private datePipe: DatePipe, 
-    private decimalPipe: DecimalPipe, private phonePipe: PhonePipe) { }
+  currencyPipe = inject(CurrencyPipe);
+  datePipe = inject(DatePipe);
+  decimalPipe = inject(DecimalPipe);
+  phonePipe = inject(PhonePipe);
 
   currencyHeaders = ['price', 'total', 'amount', 'sum', 'balance', 'revenue'];
   dateHeaders = ['date', 'time', 'created', 'updated', 'deleted'];

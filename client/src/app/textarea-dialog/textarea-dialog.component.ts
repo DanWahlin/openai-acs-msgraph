@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { DataService } from 'src/app/core/data.service';
 import { DialogBase, TeamsDialogData } from './dialog-data';
@@ -18,10 +18,9 @@ export class TextAreaDialogComponent implements OnInit {
   message = '';
   initialMessage = '';
 
-  constructor(
-    private dataService: DataService,
-    public dialogRef: MatDialogRef<TextAreaDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogBase | TeamsDialogData) {}
+  dialogRef = inject(MatDialogRef<TextAreaDialogComponent>);
+  dataService = inject(DataService);
+  data: DialogBase | TeamsDialogData = inject(MAT_DIALOG_DATA);
 
   ngOnInit() {
     this.title = this.data instanceof Error ? '' : this.data.title;

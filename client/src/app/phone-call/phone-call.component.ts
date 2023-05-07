@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { CallClient, CallAgent, Call } from "@azure/communication-calling";
 import { AzureCommunicationTokenCredential } from '@azure/communication-common';
 import { Subscription } from 'rxjs';
@@ -35,7 +35,7 @@ export class PhoneCallComponent implements OnInit, OnDestroy {
   @ViewChild('phoneInput', { static: false }) phoneInput: ElementRef | null = null;
   @ViewChild('dialer', { static: false }) dialer: ElementRef | null = null;
 
-  constructor(private acsService: AcsService) { }
+  acsService = inject(AcsService);
 
   async ngOnInit() {
     if (ACS_CONNECTION_STRING) {

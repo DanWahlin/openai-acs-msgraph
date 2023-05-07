@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
 import { GraphService } from "../core/graph.service";
 
 @Component({
     template: ``
 })
 export abstract class RelatedContentBaseComponent {
-
+    graphService: GraphService = inject(GraphService);
+    
     @Output()
     dataLoaded: EventEmitter<any> = new EventEmitter();
 
@@ -33,6 +34,4 @@ export abstract class RelatedContentBaseComponent {
     }
 
     abstract search(searchText: string) : Promise<any>;
-  
-    constructor(public graphService: GraphService) {}
 }

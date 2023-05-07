@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
@@ -12,7 +12,7 @@ declare const API_BASE_URL: string;
 @Injectable({ providedIn: 'root' })
 export class DataService {
 
-  constructor(private http: HttpClient) { }
+  http = inject(HttpClient);
 
   getCustomers(): Observable<Customer[]> {
     return this.http.get<Customer[]>(API_BASE_URL + 'customers')

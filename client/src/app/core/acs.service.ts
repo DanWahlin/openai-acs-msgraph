@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -11,7 +11,7 @@ declare const API_BASE_URL: string;
 })
 export class AcsService {
 
-  constructor(private http: HttpClient) { }
+  http = inject(HttpClient);
 
   getAcsToken(): Observable<AcsUser> {
     return this.http.get<AcsUser>(API_BASE_URL + 'acstoken')

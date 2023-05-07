@@ -51,11 +51,11 @@ export class CustomersListComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     @Output() customerSelected = new EventEmitter<any>();
 
-    dialog: MatDialog = inject(MatDialog);
-
-    constructor(private dataService: DataService, private sorterService: SorterService,
-        private eventBus: EventBusService, public featureFlags: FeatureFlagsService) {
-    }
+    dialog = inject(MatDialog);
+    dataService = inject(DataService);
+    sorterService = inject(SorterService);
+    eventBus = inject(EventBusService);
+    featureFlags = inject(FeatureFlagsService);
 
     ngOnInit() {
         this.getData();
