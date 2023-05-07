@@ -5,7 +5,7 @@
                 <button class="close-button" (click)="closeCard()">
                     <mat-icon>close</mat-icon>
                 </button>
-                <app-filter-textbox [filter]="selectedQueryText" [label]="''" (changed)="filter($event)"></app-filter-textbox>
+                <app-filter-textbox [filter]="selectedQueryText" [label]="''" (changed)="filter($event)" />
                 <br /><br />
             </mat-card-title>
         </mat-card-header>
@@ -18,7 +18,7 @@
                             <mat-icon svgIcon="file"></mat-icon>
                         </div>
                     </ng-template>
-                    <app-files [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('files', $event)"></app-files>
+                    <app-files [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('files', $event)" />
                 </mat-tab>
 
                 <mat-tab>
@@ -28,7 +28,7 @@
                             <mat-icon svgIcon="chat"></mat-icon>
                         </div>
                     </ng-template>
-                    <app-chats [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('chats', $event)"></app-chats>
+                    <app-chats [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('chats', $event)" />
                 </mat-tab>
 
                 <mat-tab>
@@ -38,7 +38,7 @@
                             <mat-icon svgIcon="email"></mat-icon>
                         </div>
                     </ng-template>
-                    <app-emails [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('emails', $event)"></app-emails>
+                    <app-emails [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('emails', $event)" />
                 </mat-tab>
 
                 <mat-tab>
@@ -48,7 +48,7 @@
                             <mat-icon svgIcon="agenda"></mat-icon>
                         </div>
                     </ng-template>
-                    <app-agenda [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('agendaEvents', $event)"></app-agenda>
+                    <app-calendar-events [searchText]="selectedQueryText" (dataLoaded)="dataLoaded('agendaEvents', $event)" />
                 </mat-tab>
 
             </mat-tab-group>

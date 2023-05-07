@@ -8,17 +8,17 @@ import { NgIf, NgFor } from '@angular/common';
 type CalendarEvent = { isAllDay: boolean, start: { dateTime: Date }, end: { dateTime: Date }}
 
 @Component({
-    selector: 'app-agenda',
-    templateUrl: './agenda.component.html',
-    styleUrls: ['./agenda.component.scss'],
+    selector: 'app-calendar-events',
+    templateUrl: './calendar-events.component.html',
+    styleUrls: ['./calendar-events.component.scss'],
     standalone: true,
     imports: [NgIf, NgFor],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AgendaComponent extends RelatedContentBaseComponent {
+export class CalendarEventsComponent extends RelatedContentBaseComponent {
   
   override async search(query: string) {
-    this.data = await this.graphService.searchAgendaEvents(query);
+    this.data = await this.graphService.searchCalendarEvents(query);
   }
 
   dayFromDateTime(dateTimeString: string) {

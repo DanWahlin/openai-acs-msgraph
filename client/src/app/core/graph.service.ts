@@ -144,7 +144,7 @@ export class GraphService {
     return response.value;
   }
 
-  async searchAgendaEvents(query: string) {
+  async searchCalendarEvents(query: string) {
     if (!query) return [];
     const startDateTime = new Date();
     const endDateTime = new Date(startDateTime.getTime() + (7 * 24 * 60 * 60 * 1000));

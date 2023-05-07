@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { MatIconRegistry, MatIconModule } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Customer } from '../shared/interfaces';
-import { AgendaComponent } from '../agenda/agenda.component';
+import { CalendarEventsComponent } from '../calendarEvents/calendar-events.component';
 import { EmailsComponent } from '../emails/emails.component';
 import { ChatsComponent } from '../chats/chats.component';
 import { FilesComponent } from '../files/files.component';
@@ -27,7 +27,7 @@ type ContentCountType = keyof ContentCounts;
     styleUrls: ['./related-content.component.scss'],
     standalone: true,
     imports: [NgIf, MatCardModule, MatIconModule, FilterTextboxComponent, MatTabsModule, 
-      MatBadgeModule, FilesComponent, ChatsComponent, EmailsComponent, AgendaComponent]
+      MatBadgeModule, FilesComponent, ChatsComponent, EmailsComponent, CalendarEventsComponent]
 })
 export class RelatedContentComponent {
 
