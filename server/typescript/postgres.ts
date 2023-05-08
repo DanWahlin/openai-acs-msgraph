@@ -11,7 +11,14 @@ const pool = new Pool({
 });
 
 async function getCustomers() {
-    return await pool.query('SELECT * FROM get_customers()');
+    try {
+        console.log('Getting customers from database.');
+        return await pool.query('SELECT * FROM get_customers()');
+    }
+    catch (e) {
+        console.error('Error getting customers:', e);
+        return null;
+    }
 }
 
 async function queryDb(sqlCommandObject: QueryData): Promise<any[] | { error: string }> {
