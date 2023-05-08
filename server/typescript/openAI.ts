@@ -126,7 +126,7 @@ export { completeEmailSMSMessages, getSQL };
 
 //     const configuration = new Configuration({ 
 //         basePath: "https://<base>.openai.azure.com/openai/deployments/gpt-35-turbo",
-//         apiKey: ''
+//         apiKey
 //     });
 
 //     try {
