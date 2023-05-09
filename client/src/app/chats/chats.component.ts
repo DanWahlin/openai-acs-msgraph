@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
@@ -6,14 +6,15 @@ import { TeamsDialogData } from '../textarea-dialog/dialog-data';
 import { TextAreaDialogComponent } from '../textarea-dialog/textarea-dialog.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, NgFor } from '@angular/common';
+import { NgIf, NgFor, JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-chats',
     templateUrl: './chats.component.html',
     styleUrls: ['./chats.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor, MatButtonModule, MatCardModule]
+    imports: [NgIf, NgFor, JsonPipe, MatButtonModule, MatCardModule],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ChatsComponent extends RelatedContentBaseComponent implements OnDestroy {
   subscription: Subscription = new Subscription();
@@ -43,8 +44,10 @@ export class ChatsComponent extends RelatedContentBaseComponent implements OnDes
     });
   }
 
+  // Could use the following to retrieve the files via code rather 
+  // than using <mgt-search-results> web component
   override async search(query: string) {
-    this.data = await this.graphService.searchChatMessages(query);
+    // this.data = await this.graphService.searchChatMessages(query);
   }
 
   ngOnDestroy() {

@@ -1,17 +1,24 @@
 <section *ngIf="data">
-    <h2>Email</h2>
-    <div class="scroller">
-        <mat-card *ngFor="let email of data">
-            <mat-card-header>
-              <mat-card-title>{{email.subject}}</mat-card-title>
-              <mat-card-subtitle [innerHTML]="email.bodyPreview"></mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-actions>
-              <a mat-stroked-button color="basic" [href]="email.webLink" target="_blank">View</a>
-            </mat-card-actions>
-        </mat-card>
-    </div>
-    <div *ngIf="!data.length">
-        <h3>No email messages found</h3>
-    </div>
+  <h2>Email</h2>
+  <div class="scroller">
+
+    <mgt-search-results class="search-results" entity-types="message" [queryString]="searchText"
+      (dataChange)="dataChange($any($event))">
+      <template data-type="result-message"></template>
+    </mgt-search-results>
+
+    <mat-card *ngFor="let email of data">
+      <mat-card-header>
+        <mat-card-title>{{email.resource.subject}}</mat-card-title>
+        <mat-card-subtitle [innerHTML]="email.resource.bodyPreview"></mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-actions>
+        <a mat-stroked-button color="basic" [href]="email.resource.webLink" target="_blank">View</a>
+      </mat-card-actions>
+    </mat-card>
+
+  </div>
+  <div *ngIf="!data.length">
+    <h3>No email messages found</h3>
+  </div>
 </section>

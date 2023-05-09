@@ -1,7 +1,11 @@
 <section *ngIf="data">
     <h2>Files</h2>
     <!-- Originally added file-list-query="foo" invalid query so it doesn't display "me" files on first load -->
-    <mgt-file-list (itemClick)="itemClick($any($event))" [files]="data"></mgt-file-list>
+    <!-- <mgt-file-list (itemClick)="itemClick($any($event))" [files]="data"></mgt-file-list> -->
+    <div class="scroller">
+        <mgt-search-results class="search-results" entity-types="driveItem" 
+            [queryString]="searchText" (dataChange)="dataChange($any($event))" />
+    </div>
     <div *ngIf="!data.length">
         <h3>No files found</h3>
     </div>

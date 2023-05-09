@@ -1,8 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
-import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
 import { NgIf } from '@angular/common';
-
-type FileDetail = { detail: { webUrl: string } };
+import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
 
 @Component({
     selector: 'app-files',
@@ -14,11 +12,10 @@ type FileDetail = { detail: { webUrl: string } };
 })
 export class FilesComponent extends RelatedContentBaseComponent {
 
+  // Could use the following to retrieve the files via code rather 
+  // than using <mgt-search-results> web component
   override async search(query: string) {
-    this.data = await this.graphService.searchFiles(query);
+    // this.data = await this.graphService.searchFiles(query);
   }
 
-  itemClick(e: FileDetail) {
-    window.open(e.detail.webUrl, '_blank');
-  }
 }

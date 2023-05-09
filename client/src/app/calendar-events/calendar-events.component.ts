@@ -17,8 +17,10 @@ type CalendarEvent = { isAllDay: boolean, start: { dateTime: Date }, end: { date
 })
 export class CalendarEventsComponent extends RelatedContentBaseComponent {
   
+  // Could use the following to retrieve the files via code rather 
+  // than using <mgt-search-results> web component
   override async search(query: string) {
-    this.data = await this.graphService.searchCalendarEvents(query);
+    // this.data = await this.graphService.searchCalendarEvents(query);
   }
 
   dayFromDateTime(dateTimeString: string) {
