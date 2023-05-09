@@ -1,37 +1,47 @@
 <section *ngIf="data">
     <h2>Agenda Events</h2>
     <div class="scroller">
+        <mgt-search-results class="search-results" entity-types="event" [queryString]="searchText"
+            (dataChange)="dataChange($any($event))">
+            <template data-type="result-event"></template>
+        </mgt-search-results>
+
+        <!-- 
+        mgt-search-results provides the ability to define custom templates (see above).
+        However, the template binding syntax would need to be changed to avoid conflicts with
+        Angular bindings. Instead of using that, we're using the mgt-search-results control to retrieve
+        the data and then render it using standard Angular bindings.
+        -->
         <div class="root" *ngFor='let event of data'>
             <div class="time-container">
-                <div class="date">{{ dayFromDateTime(event.start.dateTime)}}</div>
-                <div class="time">{{ timeRangeFromEvent(event) }}</div>
+                <div class="date">{{ dayFromDateTime(event.resource.start.dateTime)}}</div>
+                <div class="time">{{ timeRangeFromEvent(event.resource) }}</div>
             </div>
 
             <div class="separator">
                 <div class="vertical-line top"></div>
                 <div class="circle">
-                    <div data-if="!event.bodyPreview.includes('Join Microsoft Teams Meeting')" class="inner-circle">
-                    </div>
+                    <div *ngIf="!event.resource.bodyPreview?.includes('Join Microsoft Teams Meeting')" class="inner-circle"></div>
                 </div>
                 <div class="vertical-line bottom"></div>
             </div>
 
             <div class="details">
-                <div class="subject">{{ event.subject }}</div>
-                <div class="location" *ngIf="event.location.displayName">
+                <div class="subject">{{ event.resource.subject }}</div>
+                <div class="location" *ngIf="event.resource.location?.displayName">
                     at
-                    <a href="https://bing.com/maps/default.aspx?where1={{event.location.displayName}}"
-                        target="_blank"><b>{{ event.location.displayName }}</b></a>
+                    <a href="https://bing.com/maps/default.aspx?where1={{event.resource.location.displayName}}"
+                        target="_blank" rel="noopener"><b>{{ event.resource.location.displayName }}</b></a>
                 </div>
-                <div class="attendees" *ngIf="event.attendees.length">
-                    <span class="attendee" *ngFor="let attendee of event.attendees">
+                <div class="attendees" *ngIf="event.resource.attendees?.length">
+                    <span class="attendee" *ngFor="let attendee of event.resource.attendees">
                         <mgt-person person-query="{{attendee.emailAddress.name}}"></mgt-person>
                     </span>
                 </div>
-                <div class="online-meeting" *ngIf="event.bodyPreview.includes('Join Microsoft Teams Meeting')">
+                <div class="online-meeting" *ngIf="event.resource.bodyPreview?.includes('Join Microsoft Teams Meeting')">
                     <img class="online-meeting-icon" src="https://img.icons8.com/color/48/000000/microsoft-teams.png"
                         title="Online Meeting" />
-                    <a class="online-meeting-link" href="{{ event.onlineMeetingUrl }}">Join Teams Meeting</a>
+                    <a class="online-meeting-link" href="{{ event.resource.onlineMeetingUrl }}">Join Teams Meeting</a>
                 </div>
             </div>
         </div>

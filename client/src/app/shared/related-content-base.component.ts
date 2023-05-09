@@ -35,7 +35,6 @@ export abstract class RelatedContentBaseComponent {
 
     dataChange(e: CustomEvent) {
       const value = e.detail.response.value[0];
-      console.log(value);
       const hits: any[] = [];
       if (value.hitsContainers && value.hitsContainers[0].hits) {
         for (const hit of value.hitsContainers[0].hits) {
