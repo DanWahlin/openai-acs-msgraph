@@ -7,16 +7,18 @@
       <template data-type="result-message"></template>
     </mgt-search-results>
 
-    <mat-card *ngFor="let email of data">
-      <mat-card-header>
-        <mat-card-title>{{email.resource.subject}}</mat-card-title>
-        <mat-card-subtitle [innerHTML]="email.resource.bodyPreview"></mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-actions>
-        <a mat-stroked-button color="basic" [href]="email.resource.webLink" target="_blank">View</a>
-      </mat-card-actions>
-    </mat-card>
-
+    <div *ngIf="data.length">
+      <mat-card *ngFor="let email of data">
+        <mat-card-header>
+          <mat-card-title>{{email.resource.subject}}</mat-card-title>
+          <mat-card-subtitle [innerHTML]="email.resource.bodyPreview"></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+          <a mat-stroked-button color="basic" [href]="email.resource.webLink" target="_blank">View</a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    
   </div>
   <div *ngIf="!data.length">
     <h3>No email messages found</h3>
