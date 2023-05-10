@@ -4,26 +4,15 @@
     <button mat-stroked-button color="primary" (click)="openDialog()">New Teams Chat</button>
     <br /><br />
 
-    <mgt-search-results class="search-results" entity-types="chatMessage" [queryString]="searchText"
-      (dataChange)="dataChange($any($event))">
-      <template data-type="result-chatMessage"></template>
-    </mgt-search-results>
-
-    <!-- 
-      mgt-search-results provides the ability to define custom templates (see above).
-      However, the template binding syntax would need to be changed to avoid conflicts with
-      Angular bindings. Instead of using that, we're using the mgt-search-results control to retrieve
-      the data and then render it using standard Angular bindings.
-    -->
     <div *ngIf="data.length">
       <mat-card *ngFor="let chatMessage of data">
         <mat-card-header>
           <mat-card-title [innerHTML]="chatMessage.summary"></mat-card-title>
           <mat-card-subtitle [innerHTML]="chatMessage.body"></mat-card-subtitle>
         </mat-card-header>
-        <!-- <mat-card-actions>
-        <a mat-stroked-button color="basic" [href]="chatMessage.resource.webLink" target="_blank">View</a>
-      </mat-card-actions> -->
+        <mat-card-actions>
+          <a mat-stroked-button color="basic" [href]="chatMessage.webUrl" target="_blank">View Message</a>
+        </mat-card-actions>
       </mat-card>
     </div>
   </div>
