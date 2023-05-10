@@ -19,6 +19,7 @@ export class CalendarEventsComponent extends RelatedContentBaseComponent {
   
   // Could use the following to retrieve the files via code rather 
   // than using <mgt-search-results> web component
+  // In the .html template you'd need to remove the "resource" property though from the bindings
   override async search(query: string) {
     // this.data = await this.graphService.searchCalendarEvents(query);
   }

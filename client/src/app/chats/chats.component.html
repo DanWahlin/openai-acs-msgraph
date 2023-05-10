@@ -8,7 +8,7 @@
       <mat-card *ngFor="let chatMessage of data">
         <mat-card-header>
           <mat-card-title [innerHTML]="chatMessage.summary"></mat-card-title>
-          <mat-card-subtitle [innerHTML]="chatMessage.body"></mat-card-subtitle>
+          <!-- <mat-card-subtitle [innerHTML]="chatMessage.body"></mat-card-subtitle> -->
         </mat-card-header>
         <mat-card-actions>
           <a mat-stroked-button color="basic" [href]="chatMessage.webUrl" target="_blank">View Message</a>
