@@ -1,8 +1,8 @@
 <section *ngIf="data">
     <h2>Files</h2>
-    <!-- Originally added file-list-query="foo" invalid query so it doesn't display "me" files on first load -->
-    <!-- <mgt-file-list (itemClick)="itemClick($any($event))" [files]="data"></mgt-file-list> -->
+
     <div class="scroller">
+        <!-- We'll let the mgt-search-results component handle rendering the file data -->
         <mgt-search-results 
             class="search-results" 
             entity-types="driveItem" 
