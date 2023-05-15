@@ -2,19 +2,12 @@
     "name": "Node.js & PostgreSQL",
     "dockerComposeFile": "docker-compose.yml",
     "service": "app",
-    "features": {
-        "ghcr.io/devcontainers/features/git:1": {
-            "version": "18",
-            "ppa": "false"
-        }
-    },
     "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
     "forwardPorts": [
         3000,
         4200,
         5432
     ],
-    "remoteUser": "node",
     "hostRequirements": {
         "cpus": 8,
         "memory": "8gb",
