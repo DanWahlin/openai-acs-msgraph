@@ -8,6 +8,7 @@
         4200,
         5432
     ],
+    "postAttachCommand": "/bin/bash .devcontainer/setup.sh",
     "hostRequirements": {
         "cpus": 8,
         "memory": "8gb",
