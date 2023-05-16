@@ -40,8 +40,12 @@ async function getAzureOpenAICompletion(systemPrompt: string, userPrompt: string
         const completion = await response.json() as AzureOpenAIResponse;
         let content = '';
         if (completion.choices.length) {
-            content = extractJson(completion.choices[0].message?.content.trim());
-            console.log('Azure OpenAI Output: \n', content);
+            content = completion.choices[0].message?.content.trim() as string;
+            console.log('Azure OpenAI Output: \n', );
+            if (content) {
+                content = extractJson(content);
+            }
+
         }
         return content;
     }
@@ -121,8 +125,8 @@ async function getSQL(userPrompt: string): Promise<QueryData> {
 
     Rules:
     - Convert any strings to a PostgreSQL parameterized query value to avoid SQL injection attacks.
-    - Only return the JSON object and no other text.
     - Return a JSON object with the SQL query and the parameter values in it. 
+    - Do not allow the SELECT query to return table names, function names, or procedure names.
     
         Example JSON object to return: { "sql": "", "paramValues": [] }
     `;
