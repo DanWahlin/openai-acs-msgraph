@@ -40,7 +40,7 @@ async function getAzureOpenAICompletion(systemPrompt: string, userPrompt: string
         const completion = await response.json() as AzureOpenAIResponse;
         let content = '';
         if (completion.choices.length) {
-            content = completion.choices[0].message?.content.trim() as string;
+            content = completion.choices[0].message?.content?.trim() as string;
             console.log('Azure OpenAI Output: \n', );
             if (content) {
                 content = extractJson(content);
