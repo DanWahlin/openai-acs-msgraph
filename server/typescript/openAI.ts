@@ -121,26 +121,23 @@ async function getSQL(userPrompt: string): Promise<QueryData> {
 
     Rules:
     - Convert any strings to a PostgreSQL parameterized query value to avoid SQL injection attacks.
-    - Return a JSON object with the SQL query and the parameter values in it. 
+    - Always return a JSON object with the SQL query and the parameter values in it. 
     
-        Example JSON object to return: { "sql": "", "paramValues": [] }
+    Example JSON object to return: { "sql": "", "paramValues": [] }
     `;
 
     let queryData: QueryData = { sql: '', paramValues: [], error: '' };
     try {
         const results = await callOpenAI(systemPrompt, userPrompt);
-        if (results && results.startsWith('{') && results.endsWith('}')) {
-            queryData = JSON.parse(results);
-            if (isProhibitedQuery(queryData.sql)) {
-                queryData.sql = '';
-                queryData.error = 'Prohibited query.';
-            }
+    
+        queryData = (results && results.startsWith('{') && results.endsWith('}')) ? 
+            JSON.parse(results) : { sql: results, paramValues: [], error: results };
+    
+        if (isProhibitedQuery(queryData.sql) || isProhibitedQuery(queryData.error)) {
+            queryData.sql = '';
+            queryData.error = 'Prohibited query.';
         }
-        else {
-            queryData.error = results;
-        }
-    }
-    catch (e) {
+    } catch (e) {
         console.log(e);
     }
 
