@@ -4,6 +4,13 @@ export interface QueryData {
     error: string;
 }
 
+export interface EmailSmsResponse {
+    status: boolean;
+    email: string;
+    sms: string;
+    error: string;
+}
+
 export interface AzureOpenAIResponse {
     id: string;
     object: string;

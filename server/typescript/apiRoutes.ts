@@ -121,13 +121,10 @@ router.post('/completeEmailSmsMessages', async (req, res) => {
         });
     }
 
-    let result = { status: false, email: '', sms: '' };
+    let result;
     try {
         // Call OpenAI to get the email and SMS message completions
-        const content = await completeEmailSMSMessages(query, company, contactName);
-        if (content) {
-            result = {status: true, ...JSON.parse(content) };
-        }
+       result = await completeEmailSMSMessages(query, company, contactName);
     }
     catch (e: unknown) {
         console.error('Error parsing JSON:', e);

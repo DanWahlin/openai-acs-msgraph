@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { OpenAIApi, Configuration } from 'openai';
-import { QueryData, AzureOpenAIResponse } from './interfaces';
+import { QueryData, AzureOpenAIResponse, EmailSmsResponse } from './interfaces';
 import fetch from 'cross-fetch';
 import './config';
 
@@ -170,7 +170,7 @@ async function completeEmailSMSMessages(prompt: string, company: string, contact
     Rules:
     - Generate a subject line for the email message.
     - Use the User Rules to generate the messages. 
-    - All messages should have a friendly tone. 
+    - All messages should have a friendly tone and never use inappropriate language.
     - SMS messages should be in plain text format and no more than 160 characters. 
     - Start the message with "Hi <Contact Name>,\n\n". Contact Name can be found in the user prompt.
     - Add carriage returns to the email message to make it easier to read. 
@@ -185,7 +185,21 @@ async function completeEmailSMSMessages(prompt: string, company: string, contact
         Contact Name: ${contactName}
     `;
 
-    const content = await callOpenAI(systemPrompt, userPrompt, 0.5);
+    let content: EmailSmsResponse = { status: false, email: '', sms: '', error: '' };
+    try {
+        const results = await callOpenAI(systemPrompt, userPrompt, 0.5);
+        if (results && results.startsWith('{') && results.endsWith('}')) {
+            content = { content, ...JSON.parse(results) };
+            content.status = true;
+        }
+        else {
+            content.error = results;
+        }
+    }
+    catch (e) {
+        console.log(e);
+    }
+
     return content;
 }
 
