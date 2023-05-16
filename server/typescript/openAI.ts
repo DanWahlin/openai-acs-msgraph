@@ -131,7 +131,7 @@ async function getSQL(userPrompt: string): Promise<QueryData> {
         const results = await callOpenAI(systemPrompt, userPrompt);
     
         queryData = (results && results.startsWith('{') && results.endsWith('}')) ? 
-            JSON.parse(results) : { sql: results, paramValues: [], error: results };
+            JSON.parse(results) : { ...queryData, error: results };
     
         if (isProhibitedQuery(queryData.sql) || isProhibitedQuery(queryData.error)) {
             queryData.sql = '';
