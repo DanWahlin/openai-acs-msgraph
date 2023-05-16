@@ -38,14 +38,10 @@ async function getAzureOpenAICompletion(systemPrompt: string, userPrompt: string
         });
 
         const completion = await response.json() as AzureOpenAIResponse;
-        let content = '';
-        if (completion.choices.length) {
-            content = completion.choices[0].message?.content?.trim() as string;
-            console.log('Azure OpenAI Output: \n', );
-            if (content) {
-                content = extractJson(content);
-            }
-
+        let content = (completion.choices[0]?.message?.content?.trim() ?? '') as string;
+        console.log('Azure OpenAI Output: \n', content);
+        if (content && content.includes('{') && content.includes('}')) {
+            content = extractJson(content);
         }
         return content;
     }
@@ -75,10 +71,10 @@ async function getOpenAICompletion(systemPrompt: string, userPrompt: string, tem
             ]
         });
 
-        let content = '';
-        if (completion.data.choices.length) {
-            content = extractJson(completion.data.choices[0].message?.content.trim() as string);
-            console.log('OpenAI Output:', content);
+        let content = extractJson(completion.data.choices[0]?.message?.content?.trim() ?? '') as string;
+        console.log('OpenAI Output: \n', content);
+        if (content && content.includes('{') && content.includes('}')) {
+            content = extractJson(content);
         }
         return content;
     }
@@ -119,26 +115,29 @@ async function getSQL(userPrompt: string): Promise<QueryData> {
     Assistant is a natural language to SQL bot that returns a JSON object with the SQL query and 
     the parameter values in it. The SQL will query a PostgreSQL database.
 
-    PostgreSQL tables, with their properties:
+    PostgreSQL tables, with their columns:
 
     ${dbSchema}
 
     Rules:
     - Convert any strings to a PostgreSQL parameterized query value to avoid SQL injection attacks.
     - Return a JSON object with the SQL query and the parameter values in it. 
-    - Do not allow the SELECT query to return table names, function names, or procedure names.
     
         Example JSON object to return: { "sql": "", "paramValues": [] }
     `;
 
-    let queryData: QueryData = { sql: '', paramValues: [] };
+    let queryData: QueryData = { sql: '', paramValues: [], error: '' };
     try {
         const results = await callOpenAI(systemPrompt, userPrompt);
-        if (results) {
+        if (results && results.startsWith('{') && results.endsWith('}')) {
             queryData = JSON.parse(results);
             if (isProhibitedQuery(queryData.sql)) {
                 queryData.sql = '';
+                queryData.error = 'Prohibited query.';
             }
+        }
+        else {
+            queryData.error = results;
         }
     }
     catch (e) {
@@ -163,6 +162,7 @@ function isProhibitedQuery(query: string): boolean {
 
 async function completeEmailSMSMessages(prompt: string, company: string, contactName: string) {
     console.log('Inputs:', prompt, company, contactName);
+    
     const systemPrompt = `
     Assistant is a bot designed to help users create email and SMS messages from data and 
     return a JSON object with the message information in it.

@@ -44,8 +44,11 @@ router.post('/generatesql', async (req, res) => {
 
         let result: any[] = [];
         // Execute the SQL query
-        if (sqlCommandObject) {
+        if (sqlCommandObject && !sqlCommandObject.error) {
             result = await queryDb(sqlCommandObject) as any[];
+        }
+        else {
+            result = [ { query_error : sqlCommandObject.error } ];
         }
         res.json(result);
     } catch (e) {

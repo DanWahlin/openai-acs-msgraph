@@ -1,6 +1,7 @@
 export interface QueryData {
     sql: string;
     paramValues: any[];
+    error: string;
 }
 
 export interface AzureOpenAIResponse {
