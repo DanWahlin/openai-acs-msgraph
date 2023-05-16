@@ -128,18 +128,29 @@ async function getSQL(userPrompt: string): Promise<QueryData> {
     `;
 
     let queryData: QueryData = { sql: '', paramValues: [], error: '' };
+    let results = '';
     try {
-        const results = await callOpenAI(systemPrompt, userPrompt);
-
-        queryData = (results && results.startsWith('{') && results.endsWith('}')) ?
-            JSON.parse(results) : { ...queryData, error: results };
-
-        if (isProhibitedQuery(queryData.sql) || isProhibitedQuery(queryData.error)) {
+        results = await callOpenAI(systemPrompt, userPrompt);
+        if (results) {
+            const parsedResults = JSON.parse(results);
+            queryData = { ...queryData, ...parsedResults };
+            if (isProhibitedQuery(queryData.sql)) {
+                queryData.sql = '';
+                queryData.error = 'Prohibited query.';
+            }
+        }
+    } 
+    catch (e) {
+        console.log(e);
+        // Completion results may still contain SQL information we don't want to expose.
+        // so check to ensure it's OK to return it to client.
+        if (isProhibitedQuery(results)) {
             queryData.sql = '';
             queryData.error = 'Prohibited query.';
         }
-    } catch (e) {
-        console.log(e);
+        else {
+            queryData.error = results;
+        }
     }
 
     return queryData;
