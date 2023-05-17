@@ -10,11 +10,11 @@
         "version": "18.15.0"
       },
       "ghcr.io/devcontainers-contrib/features/postgres-asdf:1": {},
-      "ghcr.io/devcontainers/features/docker-in-docker:1": {
-        "version": "20.10.23",
-        "moby": "false",
-        "dockerDashComposeVersion": "v2"
-      },
+      // "ghcr.io/devcontainers/features/docker-in-docker:1": {
+      //   "version": "20.10.23",
+      //   "moby": "false",
+      //   "dockerDashComposeVersion": "v2"
+      // },
       "ghcr.io/devcontainers/features/azure-cli:1": {
         "version": "latest",
         "installBicep": true
