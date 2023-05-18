@@ -3,8 +3,17 @@
     "dockerComposeFile": "docker-compose.yml",
     "service": "app",
     "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-    "forwardPorts": [3000, 4200, 5432],
+    "forwardPorts": [
+        3000,
+        4200,
+        5432
+    ],
     "postCreateCommand": "/bin/bash .devcontainer/setup.sh",
+    "features": {
+        "ghcr.io/devcontainers/features/github-cli:1": {
+            "version": "latest"
+        }
+    },
     // Configure tool-specific properties.
     "customizations": {
         "vscode": {
