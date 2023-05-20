@@ -21,15 +21,15 @@ import { OverlayRequestResponseInterceptor } from './app/core/overlay/overlay-re
 bootstrapApplication(AppComponent, {
     providers: [
         importProvidersFrom(BrowserModule, FormsModule, MatBadgeModule, MatButtonModule, MatCardModule, 
-          MatDialogModule, MatExpansionModule, MatMenuModule, MatTabsModule, MatToolbarModule, MatIconModule),
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: OverlayRequestResponseInterceptor,
-            multi: true,
-        },          
+          MatDialogModule, MatExpansionModule, MatMenuModule, MatTabsModule, MatToolbarModule, MatIconModule),       
         CurrencyPipe, DatePipe, DecimalPipe, PhonePipe, TitleCasePipe,
         provideAnimations(),
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withInterceptorsFromDi()),
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: OverlayRequestResponseInterceptor,
+          multi: true,
+        }
     ]
   })
   .catch(err => console.error(err));
