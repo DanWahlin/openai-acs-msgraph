@@ -273,31 +273,31 @@ async function completeEmailSMSMessages(prompt: string, company: string, contact
     console.log('Inputs:', prompt, company, contactName);
 
     const systemPrompt = `
-    Assistant is a bot designed to help users create email and SMS messages from data and 
-    return a JSON object with the email and SMS message information in it.
+      Assistant is a bot designed to help users create email and SMS messages from data and 
+      return a JSON object with the email and SMS message information in it.
 
-    Rules:
-    - Generate a subject line for the email message.
-    - Use the User Rules to generate the messages. 
-    - All messages should have a friendly tone and never use inappropriate language.
-    - SMS messages should be in plain text format and no more than 160 characters. 
-    - Start the message with "Hi <Contact Name>,\n\n". Contact Name can be found in the user prompt.
-    - Add carriage returns to the email message to make it easier to read. 
-    - End with a signature line that says "Sincerely,\nCustomer Service".
-    - Return a JSON object with the emailSubject, emailBody, and SMS message values in it. 
+      Rules:
+      - Generate a subject line for the email message.
+      - Use the User Rules to generate the messages. 
+      - All messages should have a friendly tone and never use inappropriate language.
+      - SMS messages should be in plain text format and no more than 160 characters. 
+      - Start the message with "Hi <Contact Name>,\n\n". Contact Name can be found in the user prompt.
+      - Add carriage returns to the email message to make it easier to read. 
+      - End with a signature line that says "Sincerely,\nCustomer Service".
+      - Return a JSON object with the emailSubject, emailBody, and SMS message values in it. 
 
-    Example JSON object: { "emailSubject": "", "emailBody": "", "sms": "" }
+      Example JSON object: { "emailSubject": "", "emailBody": "", "sms": "" }
 
-    - Only return a JSON object. Do NOT include any text outside of the JSON object. Do not provide any additional explanations or context. 
-    Just the JSON object is needed.
+      - Only return a JSON object. Do NOT include any text outside of the JSON object. Do not provide any additional explanations or context. 
+      Just the JSON object is needed.
     `;
 
     const userPrompt = `
-    User Rules: 
-    ${prompt}
+      User Rules: 
+      ${prompt}
 
-    Contact Name: 
-    ${contactName}
+      Contact Name: 
+      ${contactName}
     `;
 
     let content: EmailSmsResponse = { status: true, email: '', sms: '', error: '' };
