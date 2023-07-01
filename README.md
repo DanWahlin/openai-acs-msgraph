@@ -38,7 +38,7 @@ To start, rename the provided *.env.example* file to *.env* in the *tutorials/op
     CHANNEL_ID=
     OPENAI_API_KEY=
     OPENAI_ENDPOINT=
-    OPENAI_API_VERSION=2023-03-15-preview
+    OPENAI_API_VERSION=2023-06-01-preview
     OPENAI_MODEL=gpt-35-turbo
     POSTGRES_USER=
     POSTGRES_PASSWORD=
@@ -48,6 +48,9 @@ To start, rename the provided *.env.example* file to *.env* in the *tutorials/op
     CUSTOMER_EMAIL_ADDRESS=
     CUSTOMER_PHONE_NUMBER=
     API_PORT=3000
+    AZURE_COGNITIVE_SEARCH_ENDPOINT=
+    AZURE_COGNITIVE_SEARCH_KEY=
+    AZURE_COGNITIVE_SEARCH_INDEX=
     ```
 
 1. Assign the following values to `POSTGRES_USER` and `POSTGRES_PASSWORD`.
@@ -71,6 +74,14 @@ To start, rename the provided *.env.example* file to *.env* in the *tutorials/op
 
     ```
     OPENAI_API_KEY=<OPENAI_SECRET_KEY>
+    ```
+
+1. If you'd like to enable the "bring your own data" feature, go through the [steps in this tutorial](https://learn.microsoft.com/azure/cognitive-services/openai/use-your-data-quickstart) and update the Cognitive Search properties in the `.env` file with your resource's endpoint, key, and index name.
+
+    ```
+    AZURE_COGNITIVE_SEARCH_ENDPOINT=
+    AZURE_COGNITIVE_SEARCH_KEY=
+    AZURE_COGNITIVE_SEARCH_INDEX=
     ```
 
 ## Enable the Communication Feature (Azure Communication Services)
