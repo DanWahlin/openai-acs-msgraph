@@ -181,9 +181,11 @@ function callOpenAI(systemPrompt: string, userPrompt: string, temperature = 0, u
     }
 
     if (isAzureOpenAI) {
+        // Call Azure OpenAI
         return getAzureOpenAICompletion(systemPrompt, userPrompt, temperature);
     }
 
+    // Call OpenAI API directly
     return getOpenAICompletion(systemPrompt, userPrompt, temperature);
 }
 
