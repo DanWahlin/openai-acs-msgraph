@@ -13,18 +13,9 @@ const AZURE_COGNITIVE_SEARCH_KEY = process.env.AZURE_COGNITIVE_SEARCH_KEY as str
 const AZURE_COGNITIVE_SEARCH_INDEX = process.env.AZURE_COGNITIVE_SEARCH_INDEX as string;
 
 async function getAzureOpenAICompletion(systemPrompt: string, userPrompt: string, temperature: number): Promise<string> {
+    checkRequiredEnvVars(['OPENAI_API_KEY', 'OPENAI_ENDPOINT', 'OPENAI_MODEL']);
 
-    const requiredEnvVars = ['OPENAI_API_KEY', 'OPENAI_ENDPOINT', 'OPENAI_MODEL'];
-
-    for (const envVar of requiredEnvVars) {
-        if (!process.env[envVar]) {
-            throw new Error(`Missing ${envVar} in environment variables.`);
-        }
-    }
-
-    // While it's possible to use the OpenAI SDK (as of today) with a little work, we'll use the REST API directly for Azure OpenAI calls.
-    // https://learn.microsoft.com/azure/cognitive-services/openai/reference
-    const chatGptUrl = `${OPENAI_ENDPOINT}/openai/deployments/${OPENAI_MODEL}/chat/completions?api-version=${OPENAI_API_VERSION}`;
+    const fetchUrl = `${OPENAI_ENDPOINT}/openai/deployments/${OPENAI_MODEL}/chat/completions?api-version=${OPENAI_API_VERSION}`;
 
     const messageData: ChatGPTData = {
         max_tokens: 1024,
@@ -44,45 +35,30 @@ async function getAzureOpenAICompletion(systemPrompt: string, userPrompt: string
         body: JSON.stringify(messageData),
     };
 
-    try {
-        const response = await fetch(chatGptUrl, headersBody);
-        const completion: AzureOpenAIResponse = await response.json();
-        console.log(completion);
+    const completion = await fetchAndParse(fetchUrl, headersBody);
+    console.log(completion);
 
-        let content = (completion.choices[0]?.message?.content?.trim() ?? '') as string;
-        console.log('Azure OpenAI Output: \n', content);
+    let content = (completion.choices[0]?.message?.content?.trim() ?? '') as string;
+    console.log('Azure OpenAI Output: \n', content);
 
-        if (content && content.includes('{') && content.includes('}')) {
-            content = extractJson(content);
-        }
-
-        return content;
+    if (content && content.includes('{') && content.includes('}')) {
+        content = extractJson(content);
     }
-    catch (e) {
-        console.error('Error getting data:', e);
-        throw e;
-    }
+
+    return content;
 }
 
 async function getAzureOpenAIBYODCompletion(systemPrompt: string, userPrompt: string, temperature: number): Promise<string> {
-
-    const requiredEnvVars = [
+    checkRequiredEnvVars([ 
         'OPENAI_API_KEY',
         'OPENAI_ENDPOINT',
         'OPENAI_MODEL',
         'AZURE_COGNITIVE_SEARCH_ENDPOINT',
         'AZURE_COGNITIVE_SEARCH_KEY',
         'AZURE_COGNITIVE_SEARCH_INDEX',
-    ];
+    ]);
 
-    for (const envVar of requiredEnvVars) {
-        if (!process.env[envVar]) {
-            throw new Error(`Missing ${envVar} in environment variables.`);
-        }
-    }
-
-    // https://learn.microsoft.com/en-us/azure/cognitive-services/openai/use-your-data-quickstart?tabs=command-line&pivots=rest-api
-    const byodUrl = `${OPENAI_ENDPOINT}/openai/deployments/${OPENAI_MODEL}/extensions/chat/completions?api-version=${OPENAI_API_VERSION}`;
+    const fetchUrl = `${OPENAI_ENDPOINT}/openai/deployments/${OPENAI_MODEL}/extensions/chat/completions?api-version=${OPENAI_API_VERSION}`;
 
     const messageData: ChatGPTData = {
         max_tokens: 1024,
@@ -91,7 +67,6 @@ async function getAzureOpenAIBYODCompletion(systemPrompt: string, userPrompt: st
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
         ],
-        // Adding BYOD data source so that Cognitive Search is used with Azure OpenAI
         dataSources: [
             {
                 type: 'AzureCognitiveSearch',
@@ -109,41 +84,31 @@ async function getAzureOpenAIBYODCompletion(systemPrompt: string, userPrompt: st
         headers: {
             'Content-Type': 'application/json',
             'api-key': OPENAI_API_KEY,
-            chatgpt_url: byodUrl.replace('extensions/', ''),
+            chatgpt_url: fetchUrl.replace('extensions/', ''),
             chatgpt_key: OPENAI_API_KEY
         },
         body: JSON.stringify(messageData),
     };
 
-    try {
-        const response = await fetch(byodUrl, headersBody);
-        const completion = await response.json();
-        console.log(completion);
+    const completion = await fetchAndParse(fetchUrl, headersBody);
+    console.log(completion);
 
-        if (completion.error) {
-            return completion.error.message;
-        }
-
-        const citations = completion.choices[0].messages[0].content.trim();
-        console.log('Azure OpenAI BYOD Citations: \n', citations);
-
-        let content = completion.choices[0].messages[1].content.trim();
-        console.log('Azure OpenAI BYOD Output: \n', content);
-
-        return content;
-
+    if (completion.error) {
+        console.error('Azure OpenAI BYOD Error: \n', completion.error);
+        return completion.error.message;
     }
-    catch (e) {
-        console.error('Error getting BYOD data:', e);
-        throw e;
-    }
+
+    const citations = (completion.choices[0]?.messages[0]?.content?.trim() ?? '') as string;
+    console.log('Azure OpenAI BYOD Citations: \n', citations);
+
+    let content = (completion.choices[0]?.messages[1]?.content?.trim() ?? '') as string;
+    console.log('Azure OpenAI BYOD Output: \n', content);
+
+    return content;
 }
 
 async function getOpenAICompletion(systemPrompt: string, userPrompt: string, temperature = 0): Promise<string> {
-
-    if (!OPENAI_API_KEY) {
-        throw new Error('Missing OpenAI API key in environment variables.');
-    }
+    await checkRequiredEnvVars(['OPENAI_API_KEY']);
 
     const configuration = new Configuration({ apiKey: OPENAI_API_KEY });
 
@@ -172,23 +137,40 @@ async function getOpenAICompletion(systemPrompt: string, userPrompt: string, tem
     }
 }
 
+function checkRequiredEnvVars(requiredEnvVars: string[]) {
+    for (const envVar of requiredEnvVars) {
+        if (!process.env[envVar]) {
+            throw new Error(`Missing ${envVar} in environment variables.`);
+        }
+    }
+}
+
+async function fetchAndParse(url: string, headersBody: Record<string, any>): Promise<any> {
+    try {
+        const response = await fetch(url, headersBody);
+        return await response.json();
+    } catch (error) {
+        console.error(`Error fetching data from ${url}:`, error);
+        throw error;
+    }
+}
+
 function callOpenAI(systemPrompt: string, userPrompt: string, temperature = 0, useBYOD = false) {
     const isAzureOpenAI = OPENAI_API_KEY && OPENAI_ENDPOINT && OPENAI_MODEL;
 
     if (isAzureOpenAI && useBYOD) {
-        // Call endpoint that combines Azure OpenAI with Cognitive Search for custom data sources.
+        // Azure OpenAI + Cognitive Search: Bring Your Own Data
         return getAzureOpenAIBYODCompletion(systemPrompt, userPrompt, temperature);
     }
 
     if (isAzureOpenAI) {
-        // Call Azure OpenAI
+        // Azure OpenAI
         return getAzureOpenAICompletion(systemPrompt, userPrompt, temperature);
     }
 
-    // Call OpenAI API directly
+    // OpenAI
     return getOpenAICompletion(systemPrompt, userPrompt, temperature);
 }
-
 
 function extractJson(content: string) {
     const regex = /\{(?:[^{}]|{[^{}]*})*\}/g;
@@ -224,9 +206,29 @@ async function getSQLFromNLP(userPrompt: string): Promise<QueryData> {
       Rules:
       - Convert any strings to a PostgreSQL parameterized query value to avoid SQL injection attacks.
       - Always return a JSON object with the SQL query and the parameter values in it.
-      - Only return a JSON object. Do NOT include any text outside of the JSON object. Do not provide any additional explanations or context. 
-        Just the JSON object is needed.
+      - Return a JSON object. Do NOT include any text outside of the JSON object.
       - Example JSON object to return: { "sql": "", "paramValues": [] }
+
+      User: "Display all company reviews. Group by company."      
+      Assistant: { "sql": "SELECT * FROM reviews", "paramValues": [] }
+
+      User: "Display all reviews for companies located in cities that start with 'L'."
+      Assistant: { "sql": "SELECT r.* FROM reviews r INNER JOIN customers c ON r.customer_id = c.id WHERE c.city LIKE 'L%'", "paramValues": [] }
+
+      User: "Display revenue for companies located in London. Include the company name and city."
+      Assistant: { 
+        "sql": "SELECT c.company, c.city, SUM(o.total) AS revenue FROM customers c INNER JOIN orders o ON c.id = o.customer_id WHERE c.city = $1 GROUP BY c.company, c.city", 
+        "paramValues": ["London"] 
+      }
+
+      User: "Get the total revenue for Adventure Works Cycles. Include the contact information as well."
+      Assistant: { 
+        "sql": "SELECT c.company, c.city, c.email, SUM(o.total) AS revenue FROM customers c INNER JOIN orders o ON c.id = o.customer_id WHERE c.company = $1 GROUP BY c.company, c.city, c.email", 
+        "paramValues": ["Adventure Works Cycles"] 
+      }
+
+      - Convert any strings to a PostgreSQL parameterized query value to avoid SQL injection attacks.
+      - Do NOT include any text outside of the JSON object. Do not provide any additional explanations or context. Just the JSON object is needed.
     `;
 
     let queryData: QueryData = { sql: '', paramValues: [], error: '' };
@@ -282,14 +284,22 @@ async function completeEmailSMSMessages(prompt: string, company: string, contact
       - Generate a subject line for the email message.
       - Use the User Rules to generate the messages. 
       - All messages should have a friendly tone and never use inappropriate language.
-      - SMS messages should be in plain text format and no more than 160 characters. 
+      - SMS messages should be in plain text format and NO MORE than 160 characters. 
       - Start the message with "Hi <Contact Name>,\n\n". Contact Name can be found in the user prompt.
       - Add carriage returns to the email message to make it easier to read. 
       - End with a signature line that says "Sincerely,\nCustomer Service".
-      - Return a JSON object with the emailSubject, emailBody, and SMS message values in it. 
+      - Return a JSON object with the emailSubject, emailBody, and SMS message values in it:
 
-      Example JSON object: { "emailSubject": "", "emailBody": "", "sms": "" }
+      { "emailSubject": "", "emailBody": "", "sms": "" }
 
+      User: "Order delayed 2 days. Give a 5% discount."
+      Assistant:  {
+        "emailSubject": "Your Order has been Delayed",
+        "emailBody": "Hi [Customer Name], We wanted to inform you that there has been a delay in processing your order. We apologize for any inconvenience this may have caused. Your order will now be delivered in 2 days. As a token of our appreciation for your patience, we would like to offer you a 5% discount on your next purchase. Please use the code 'DELAY5' at checkout to redeem your discount. If you have any further questions or concerns, please don't hesitate to reach out to our customer service team. Sincerely, Customer Service",
+        "sms": "Hi [Customer Name], we apologize but your order is delayed 2 days. Use code 'DELAY5' for 5% off your next purchase. Contact us for any questions. Thanks!"
+      }
+
+      - The sms property value should be in plain text format and NO MORE than 160 characters. 
       - Only return a JSON object. Do NOT include any text outside of the JSON object. Do not provide any additional explanations or context. 
       Just the JSON object is needed.
     `;
