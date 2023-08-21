@@ -124,7 +124,7 @@ async function getOpenAICompletion(systemPrompt: string, userPrompt: string, tem
             ]
         });
 
-        let content = extractJson(completion.data.choices[0]?.message?.content?.trim() ?? '');
+        let content = completion.data.choices[0]?.message?.content?.trim() ?? '';
         console.log('OpenAI Output: \n', content);
         if (content && content.includes('{') && content.includes('}')) {
             content = extractJson(content);
