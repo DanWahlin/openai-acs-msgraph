@@ -111,7 +111,8 @@ async function getOpenAICompletion(systemPrompt: string, userPrompt: string, tem
     await checkRequiredEnvVars(['OPENAI_API_KEY']);
 
     try {
-        // v4+ OpenAI API. On v3? View the migration guide here: https://github.com/openai/openai-node/discussions/217
+        // v4+ OpenAI API. 
+        // On v3? View the migration guide here: https://github.com/openai/openai-node/discussions/217
         const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
         const completion = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo', // gpt-3.5-turbo, gpt-4
