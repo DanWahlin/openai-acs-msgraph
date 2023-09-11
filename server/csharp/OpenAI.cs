@@ -37,6 +37,10 @@ public class OpenAI
             var completion = await client.GetChatCompletionsAsync(OPENAI_MODEL, options);
             var content = completion.Value.Choices[0].Message.Content;
             Console.WriteLine($"Azure OpenAI Output: \n{content}");
+            if (!string.IsNullOrWhiteSpace(content) && content.Contains("{") && content.Contains("}"))
+            {
+                content = ExtractJson(content);
+            }
             return content;
         }
         catch (RequestFailedException e)
@@ -156,10 +160,10 @@ public class OpenAI
         //     return getAzureOpenAIBYODCompletion(systemPrompt, userPrompt, temperature);
         // }
 
-        // if (isAzureOpenAI) {
-        //     // Azure OpenAI
-        //     return getAzureOpenAICompletion(systemPrompt, userPrompt, temperature);
-        // }
+        if (isAzureOpenAI) {
+            // Azure OpenAI
+            return await GetAzureOpenAICompletion(systemPrompt, userPrompt, temperature);
+        }
 
         // OpenAI
         return await GetOpenAICompletion(systemPrompt, userPrompt, temperature);

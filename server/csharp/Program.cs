@@ -9,6 +9,7 @@ builder.Services.Configure<JsonSerializerOptions>(options =>
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSingleton<OpenAI>();
+builder.Services.AddSingleton<Acs>();
 
 var app = builder.Build();
 app.UseCors();
