@@ -6,7 +6,6 @@ using Azure.Communication.Sms;
 using Azure.Communication.Email;
 using Azure;
 public class Acs {
-
     string connectionString = Environment.GetEnvironmentVariable("ACS_CONNECTION_STRING") ?? "";
 
     async Task<AcsToken> CreateACSToken()
