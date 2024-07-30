@@ -3,7 +3,8 @@ import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
 import { GraphService } from "@core/graph.service";
 
 @Component({
-    template: ``
+    template: ``,
+    standalone: true
 })
 export abstract class RelatedContentBaseComponent {
     graphService: GraphService = inject(GraphService);

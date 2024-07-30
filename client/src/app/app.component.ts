@@ -3,10 +3,10 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FeatureFlagsService } from '@core/feature-flags.service';
 import { GraphService } from '@core/graph.service';
-import { Customer } from '@shared/interfaces';
+import { Customer } from './shared/interfaces';
 import { PEOPLE_ICON, FILE_ICON, CHAT_ICON, EMAIL_ICON, AGENDA_ICON, PHONE_ICON, CONTENT_ICON, SEARCH_ICON, RESET_ICON, CONTACT_ICON, SMS_ICON } from '@shared/svg-icons';
 import { RouterOutlet } from '@angular/router';
-import { OverlayComponent } from '@core/overlay/overlay.component';
+import { OverlayComponent } from './core/overlay/overlay.component';
 import { RelatedContentComponent } from './related-content/related-content.component';
 import { CustomersListComponent } from './customers-list/customers-list.component';
 import { NgIf } from '@angular/common';
@@ -49,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
   iconRegistry = inject(MatIconRegistry);
   sanitizer = inject(DomSanitizer);
   featureFlags = inject(FeatureFlagsService);
+
 
   async ngOnInit() {
     for (const item of this.iconList) {
