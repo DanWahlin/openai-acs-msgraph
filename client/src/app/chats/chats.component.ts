@@ -1,7 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
+import { RelatedContentBaseComponent } from '@shared/related-content-base.component';
 import { TeamsDialogData } from '../textarea-dialog/dialog-data';
 import { TextAreaDialogComponent } from '../textarea-dialog/textarea-dialog.component';
 import { MatCardModule } from '@angular/material/card';

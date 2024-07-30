@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
+import { RelatedContentBaseComponent } from '@shared/related-content-base.component';
 
 @Component({
     selector: 'app-files',

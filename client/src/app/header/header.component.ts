@@ -1,8 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { Providers } from '@microsoft/mgt';
-import { EventBusService, Events } from '../core/eventbus.service';
-import { FeatureFlagsService } from '../core/feature-flags.service';
-import { Phone } from '../shared/interfaces';
+import { EventBusService, Events } from '@core/eventbus.service';
+import { FeatureFlagsService } from '@core/feature-flags.service';
+import { Phone } from '@shared/interfaces';
 import { Subscription } from 'rxjs';
 import { NgIf } from '@angular/common';
 import { PhoneCallComponent } from '../phone-call/phone-call.component';

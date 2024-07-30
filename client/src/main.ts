@@ -13,9 +13,9 @@ import { withInterceptorsFromDi, provideHttpClient, withInterceptors, HTTP_INTER
 import { FormsModule } from '@angular/forms';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { PhonePipe } from './app/shared/phone.pipe';
+import { PhonePipe } from '@shared/phone.pipe';
 import { CurrencyPipe, DatePipe, DecimalPipe, TitleCasePipe } from '@angular/common';
-import { OverlayRequestResponseInterceptor } from './app/core/overlay/overlay-request-response.interceptor';
+import { OverlayRequestResponseInterceptor } from '@core/overlay/overlay-request-response.interceptor';
 
 
 bootstrapApplication(AppComponent, {

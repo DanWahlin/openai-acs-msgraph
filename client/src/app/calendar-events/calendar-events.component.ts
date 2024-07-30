@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
-import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
+import { RelatedContentBaseComponent } from '@shared/related-content-base.component';
 import { NgIf, NgFor } from '@angular/common';
 /* Based on the example found at:
   https://github.com/microsoftgraph/microsoft-graph-toolkit/blob/main/samples/angular-app/src/app/angular-agenda/angular-agenda.component.ts

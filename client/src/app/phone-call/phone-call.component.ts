@@ -2,8 +2,8 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, On
 import { CallClient, CallAgent, Call } from "@azure/communication-calling";
 import { AzureCommunicationTokenCredential } from '@azure/communication-common';
 import { Subscription } from 'rxjs';
-import { AcsUser } from '../shared/interfaces';
-import { AcsService } from '../core/acs.service';
+import { AcsUser } from '@shared/interfaces';
+import { AcsService } from '@core/acs.service';
 import { NgFor } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';

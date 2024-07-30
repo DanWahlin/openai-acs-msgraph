@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
-import { RelatedContentBaseComponent } from '../shared/related-content-base.component';
+import { RelatedContentBaseComponent } from '@shared/related-content-base.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor } from '@angular/common';
