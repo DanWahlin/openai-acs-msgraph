@@ -70,6 +70,15 @@ export class PhoneCallComponent implements OnInit, OnDestroy {
     console.log('Calling: ', this.customerPhoneNumber);
     console.log('Call id: ', this.call?.id);
     this.inCall = true;
+
+    // Adding event handlers to monitor call state
+    this.call?.on('stateChanged', () => {
+      console.log('Call state changed: ', this.call?.state);
+      if (this.call?.state === 'Disconnected') {
+        console.log('Call ended. Reason: ', this.call.callEndReason);
+        this.inCall = false;
+      }
+    });
   }
 
   endCall() {
