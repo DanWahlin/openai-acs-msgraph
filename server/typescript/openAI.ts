@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { OpenAI } from 'openai';
+import { OpenAI, AzureOpenAI } from 'openai';
 import { QueryData, AzureOpenAIResponse, EmailSmsResponse, OpenAIHeadersBody, ChatGPTData } from './interfaces';
 import fetch from 'cross-fetch';
 import './config';
@@ -13,40 +13,26 @@ const AZURE_COGNITIVE_SEARCH_KEY = process.env.AZURE_COGNITIVE_SEARCH_KEY as str
 const AZURE_COGNITIVE_SEARCH_INDEX = process.env.AZURE_COGNITIVE_SEARCH_INDEX as string;
 
 async function getAzureOpenAICompletion(systemPrompt: string, userPrompt: string, temperature: number): Promise<string> {
-    checkRequiredEnvVars(['OPENAI_API_KEY', 'OPENAI_ENDPOINT', 'OPENAI_MODEL']);
-
-    const fetchUrl = `${OPENAI_ENDPOINT}/openai/deployments/${OPENAI_MODEL}/chat/completions?api-version=${OPENAI_API_VERSION}`;
-
-    const messageData: ChatGPTData = {
+    checkRequiredEnvVars(['OPENAI_API_KEY', 'OPENAI_ENDPOINT', 'OPENAI_MODEL', 'OPENAI_API_VERSION']);
+    const config = { apiKey: OPENAI_API_KEY, endpoint: OPENAI_ENDPOINT, apiVersion: OPENAI_API_VERSION, deployment: OPENAI_MODEL };
+    const aoai = new AzureOpenAI(config);
+    const completion = await aoai.chat.completions.create({
+        model: OPENAI_MODEL, // gpt-4o, gpt-3.5-turbo, etc. Pulled from .env file
         max_tokens: 1024,
         temperature,
+        response_format: {
+            type: "json_object",
+        },
         messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
         ]
-    };
-
-    const headersBody: OpenAIHeadersBody = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'api-key': OPENAI_API_KEY
-        },
-        body: JSON.stringify(messageData),
-    };
-
-    const completion = await fetchAndParse(fetchUrl, headersBody);
-    console.log(completion);
-
-    let content = (completion.choices[0]?.message?.content?.trim() ?? '') as string;
+    });
+    let content = completion.choices[0]?.message?.content?.trim() ?? '';
     console.log('Azure OpenAI Output: \n', content);
-
     if (content && content.includes('{') && content.includes('}')) {
         content = extractJson(content);
     }
-
-    console.log('After parse: \n', content);
-
     return content;
 }
 
@@ -113,13 +99,14 @@ async function getOpenAICompletion(systemPrompt: string, userPrompt: string, tem
     await checkRequiredEnvVars(['OPENAI_API_KEY']);
 
     try {
-        // v4+ OpenAI API. 
-        // On v3? View the migration guide here: https://github.com/openai/openai-node/discussions/217
         const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
         const completion = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo', // gpt-3.5-turbo, gpt-4
+            model: 'gpt-4o', // gpt-4o, gpt-3.5-turbo, etc. Note that this can be retrieve from OPENAI_MODEL env var
             max_tokens: 1024,
             temperature,
+            response_format: {
+                type: "json_object",
+            },
             messages: [
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userPrompt }
@@ -199,7 +186,7 @@ async function getSQLFromNLP(userPrompt: string): Promise<QueryData> {
     const dbSchema = await fs.promises.readFile('db.schema', 'utf8');
 
     const systemPrompt = `
-      Assistant is a natural language to SQL bot that returns only a JSON object with the SQL query and 
+      Assistant is a natural language to SQL bot that returns a JSON object with the SQL query and 
       the parameter values in it. The SQL will query a PostgreSQL database.
       
       PostgreSQL tables, with their columns:    
@@ -208,9 +195,7 @@ async function getSQLFromNLP(userPrompt: string): Promise<QueryData> {
   
       Rules:
       - Convert any strings to a PostgreSQL parameterized query value to avoid SQL injection attacks.
-      - Always return a JSON object with the SQL query and the parameter values in it.
-      - Return a valid JSON object. Do NOT include any text outside of the JSON object.
-      - Example JSON object to return: { "sql": "", "paramValues": [] }
+      - Return a JSON object with the following structure: { "sql": "", "paramValues": [] }
 
       User: "Display all company reviews. Group by company."      
       Assistant: { "sql": "SELECT * FROM reviews", "paramValues": [] }
@@ -229,9 +214,6 @@ async function getSQLFromNLP(userPrompt: string): Promise<QueryData> {
         "sql": "SELECT c.company, c.city, c.email, SUM(o.total) AS revenue FROM customers c INNER JOIN orders o ON c.id = o.customer_id WHERE c.company = $1 GROUP BY c.company, c.city, c.email", 
         "paramValues": ["Adventure Works Cycles"] 
       }
-
-      - Convert any strings to a PostgreSQL parameterized query value to avoid SQL injection attacks.
-      - Do NOT include any text outside of the JSON object. Do not provide any additional explanations or context. Just the JSON object is needed.
     `;
 
     let queryData: QueryData = { sql: '', paramValues: [], error: '' };
@@ -295,9 +277,7 @@ async function completeEmailSMSMessages(prompt: string, company: string, contact
 
       { "emailSubject": "", "emailBody": "", "sms": "" }
 
-      - The sms property value should be in plain text format and NO MORE than 160 characters. 
-      - Only return a valid JSON object. Do NOT include any text outside of the JSON object. Do not provide any additional explanations or context. 
-      Just the JSON object is needed.
+      - The sms property value should be in plain text format and NO MORE than 160 characters.
     `;
 
     const userPrompt = `

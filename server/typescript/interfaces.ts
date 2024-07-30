@@ -41,6 +41,9 @@ export interface ChatGPTData {
     max_tokens: number,
     temperature: number,
     dataSources?: CognitiveSearchDataSource[],
+    response_format?: {
+        type: string,
+    },
     messages: ChatGPTMessage[]
 }
 
