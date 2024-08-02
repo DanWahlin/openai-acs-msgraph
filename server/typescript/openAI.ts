@@ -1,19 +1,33 @@
 import fs from 'fs';
 import { OpenAI, AzureOpenAI } from 'openai';
-import { QueryData, AzureOpenAIResponse, EmailSmsResponse, OpenAIHeadersBody, ChatGPTData, AzureOpenAIYourDataResponse } from './interfaces';
-import fetch from 'cross-fetch';
+import { QueryData, EmailSmsResponse, AzureOpenAIYourDataResponse } from './interfaces';
 import './config';
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY as string;
-const OPENAI_ENDPOINT = process.env.OPENAI_ENDPOINT as string;
-const OPENAI_MODEL = process.env.OPENAI_MODEL as string;
-const OPENAI_API_VERSION = process.env.OPENAI_API_VERSION as string;
-const AZURE_AI_SEARCH_ENDPOINT = process.env.AZURE_AI_SEARCH_ENDPOINT as string;
-const AZURE_AI_SEARCH_KEY = process.env.AZURE_AI_SEARCH_KEY as string;
-const AZURE_AI_SEARCH_INDEX = process.env.AZURE_AI_SEARCH_INDEX as string;
+const {
+    OPENAI_API_KEY,
+    OPENAI_ENDPOINT,
+    OPENAI_MODEL,
+    OPENAI_API_VERSION,
+    AZURE_AI_SEARCH_ENDPOINT,
+    AZURE_AI_SEARCH_KEY,
+    AZURE_AI_SEARCH_INDEX
+} = process.env as Record<string, string>;
+
+function callOpenAI(systemPrompt: string, userPrompt: string, temperature = 0, useBYOD = false) {
+    const isAzureOpenAI = OPENAI_API_KEY && OPENAI_ENDPOINT && OPENAI_MODEL;
+
+    if (isAzureOpenAI) {
+        if (useBYOD) {
+            return getAzureOpenAIBYODCompletion(systemPrompt, userPrompt, temperature);
+        }
+        return getAzureOpenAICompletion(systemPrompt, userPrompt, temperature);
+    }
+
+    return getOpenAICompletion(systemPrompt, userPrompt, temperature);
+}
 
 async function createAzureOpenAICompletion(systemPrompt: string, userPrompt: string, temperature: number, dataSources?: any[]): Promise<any> {
-    const baseEnvVars = ['OPENAI_API_KEY', 'OPENAI_ENDPOINT', 'OPENAI_MODEL', 'OPENAI_API_VERSION'];
+    const baseEnvVars = ['OPENAI_API_KEY', 'OPENAI_ENDPOINT', 'OPENAI_MODEL'];
     const byodEnvVars = ['AZURE_AI_SEARCH_ENDPOINT', 'AZURE_AI_SEARCH_KEY', 'AZURE_AI_SEARCH_INDEX'];
     const requiredEnvVars = dataSources ? [...baseEnvVars, ...byodEnvVars] : baseEnvVars;
     checkRequiredEnvVars(requiredEnvVars);
@@ -106,56 +120,8 @@ async function getOpenAICompletion(systemPrompt: string, userPrompt: string, tem
     }
 }
 
-function checkRequiredEnvVars(requiredEnvVars: string[]) {
-    for (const envVar of requiredEnvVars) {
-        if (!process.env[envVar]) {
-            throw new Error(`Missing ${envVar} in environment variables.`);
-        }
-    }
-}
-
-async function fetchAndParse(url: string, headersBody: Record<string, any>): Promise<any> {
-    try {
-        const response = await fetch(url, headersBody);
-        return await response.json();
-    } catch (error) {
-        console.error(`Error fetching data from ${url}:`, error);
-        throw error;
-    }
-}
-
-function callOpenAI(systemPrompt: string, userPrompt: string, temperature = 0, useBYOD = false) {
-    const isAzureOpenAI = OPENAI_API_KEY && OPENAI_ENDPOINT && OPENAI_MODEL;
-
-    if (isAzureOpenAI && useBYOD) {
-        // Azure OpenAI + Cognitive Search: Bring Your Own Data
-        return getAzureOpenAIBYODCompletion(systemPrompt, userPrompt, temperature);
-    }
-
-    if (isAzureOpenAI) {
-        // Azure OpenAI
-        return getAzureOpenAICompletion(systemPrompt, userPrompt, temperature);
-    }
-
-    // OpenAI
-    return getOpenAICompletion(systemPrompt, userPrompt, temperature);
-}
-
-function extractJson(content: string) {
-    const regex = /\{(?:[^{}]|{[^{}]*})*\}/g;
-    const match = content.match(regex);
-
-    if (match) {
-        // If we get back pure text it can have invalid carriage returns
-        return match[0].replace(/"([^"]*)"/g, (match) => match.replace(/\n/g, "\\n"));
-    } else {
-        return '';
-    }
-}
-
 async function completeBYOD(userPrompt: string): Promise<string> {
-    const systemPrompt = 'You are an AI assistant that helps people find information.';
-    // Pass that we're using Cognitive Search along with Azure OpenAI.
+    const systemPrompt = 'You are an AI assistant that helps people find information in documents.';
     return await callOpenAI(systemPrompt, userPrompt, 0, true);
 }
 
@@ -169,13 +135,15 @@ async function getSQLFromNLP(userPrompt: string): Promise<QueryData> {
       Assistant is a natural language to SQL bot that returns a JSON object with the SQL query and 
       the parameter values in it. The SQL will query a PostgreSQL database.
       
-      PostgreSQL tables, with their columns:    
+      PostgreSQL tables with their columns:    
   
       ${dbSchema}
   
       Rules:
       - Convert any strings to a PostgreSQL parameterized query value to avoid SQL injection attacks.
       - Return a JSON object with the following structure: { "sql": "", "paramValues": [] }
+
+      Examples:
 
       User: "Display all company reviews. Group by company."      
       Assistant: { "sql": "SELECT * FROM reviews", "paramValues": [] }
@@ -284,6 +252,26 @@ async function completeEmailSMSMessages(prompt: string, company: string, contact
     }
 
     return content;
+}
+
+function checkRequiredEnvVars(requiredEnvVars: string[]) {
+    for (const envVar of requiredEnvVars) {
+        if (!process.env[envVar]) {
+            throw new Error(`Missing ${envVar} in environment variables.`);
+        }
+    }
+}
+
+function extractJson(content: string) {
+    const regex = /\{(?:[^{}]|{[^{}]*})*\}/g;
+    const match = content.match(regex);
+
+    if (match) {
+        // If we get back pure text it can have invalid carriage returns
+        return match[0].replace(/"([^"]*)"/g, (match) => match.replace(/\n/g, "\\n"));
+    } else {
+        return '';
+    }
 }
 
 export { completeBYOD, completeEmailSMSMessages, getSQLFromNLP as getSQL };
