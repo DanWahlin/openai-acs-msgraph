@@ -56,9 +56,8 @@ async function getAzureOpenAIBYODCompletion(systemPrompt: string, userPrompt: st
         }[];
     };
     const baseURL = `${OPENAI_ENDPOINT}/openai/deployments/${OPENAI_MODEL}`;
-    console.log('Add your data URL', baseURL);
-    const config = { baseURL, apiKey: OPENAI_API_KEY, apiVersion: OPENAI_API_VERSION };
-    const aoai = new AzureOpenAI(config);
+    console.log('Azure OpenAI Add your data URL: ', baseURL);
+    const aoai = new AzureOpenAI({ baseURL, apiKey: OPENAI_API_KEY, apiVersion: OPENAI_API_VERSION });
     const completion = await aoai.chat.completions.create({
         model: OPENAI_MODEL, // gpt-4o, gpt-3.5-turbo, etc. Pulled from .env file
         max_tokens: 1024,
