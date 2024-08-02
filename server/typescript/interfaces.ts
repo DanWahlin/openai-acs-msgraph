@@ -71,3 +71,14 @@ export interface OpenAIHeadersBody {
     },
     body: string;
 }
+
+export type AzureOpenAIYourDataResponse = {
+    choices: {
+        message: {
+            content?: string;
+            context?: {
+                citations?: any[];
+            };
+        };
+    }[];
+};
