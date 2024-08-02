@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,7 +15,7 @@ import { PhoneCallComponent } from '../phone-call/phone-call.component';
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
     standalone: true,
-    imports: [MatToolbarModule, MatIconModule, PhoneCallComponent, NgIf],
+    imports: [MatToolbarModule, MatIconModule, PhoneCallComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HeaderComponent implements OnInit {

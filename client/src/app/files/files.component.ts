@@ -1,5 +1,4 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { RelatedContentBaseComponent } from '@shared/related-content-base.component';
 
 @Component({
@@ -7,7 +6,6 @@ import { RelatedContentBaseComponent } from '@shared/related-content-base.compon
     templateUrl: './files.component.html',
     styleUrls: ['./files.component.scss'],
     standalone: true,
-    imports: [NgIf],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class FilesComponent extends RelatedContentBaseComponent {

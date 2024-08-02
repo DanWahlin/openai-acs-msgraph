@@ -16,7 +16,6 @@ import { TitleCaseUnderscorePipe } from '../shared/titlecase-underscore.pipe';
 import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, NgFor } from '@angular/common';
 import { FilterTextboxComponent } from '../shared/filter-textbox.component';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -25,7 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
     templateUrl: './customers-list.component.html',
     styleUrls: ['./customers-list.component.scss'],
     standalone: true,
-    imports: [MatIconModule, FilterTextboxComponent, NgIf, NgFor, MatButtonModule, 
+    imports: [MatIconModule, FilterTextboxComponent, MatButtonModule, 
         MatMenuModule, FormsModule, TitleCaseUnderscorePipe, DynamicPipe]
 })
 export class CustomersListComponent implements OnInit, OnDestroy {

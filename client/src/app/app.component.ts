@@ -9,7 +9,6 @@ import { RouterOutlet } from '@angular/router';
 import { OverlayComponent } from './core/overlay/overlay.component';
 import { RelatedContentComponent } from './related-content/related-content.component';
 import { CustomersListComponent } from './customers-list/customers-list.component';
-import { NgIf } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 
 @Component({
@@ -17,7 +16,7 @@ import { HeaderComponent } from './header/header.component';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     standalone: true,
-    imports: [HeaderComponent, NgIf, CustomersListComponent, RelatedContentComponent, OverlayComponent, RouterOutlet]
+    imports: [HeaderComponent, CustomersListComponent, RelatedContentComponent, OverlayComponent, RouterOutlet]
 })
 export class AppComponent implements OnInit, OnDestroy {
   get loggedIn() {

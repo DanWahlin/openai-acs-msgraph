@@ -6,14 +6,13 @@ import { TeamsDialogData } from '../textarea-dialog/dialog-data';
 import { TextAreaDialogComponent } from '../textarea-dialog/textarea-dialog.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, NgFor } from '@angular/common';
 
 @Component({
     selector: 'app-chats',
     templateUrl: './chats.component.html',
     styleUrls: ['./chats.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor, MatButtonModule, MatCardModule],
+    imports: [MatButtonModule, MatCardModule],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ChatsComponent extends RelatedContentBaseComponent implements OnDestroy {

@@ -10,7 +10,6 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatTabsModule } from '@angular/material/tabs';
 import { FilterTextboxComponent } from '../shared/filter-textbox.component';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf } from '@angular/common';
 
 type ContentCounts = {
   files: number;
@@ -26,7 +25,7 @@ type ContentCountType = keyof ContentCounts;
     templateUrl: './related-content.component.html',
     styleUrls: ['./related-content.component.scss'],
     standalone: true,
-    imports: [NgIf, MatCardModule, MatIconModule, FilterTextboxComponent, MatTabsModule, 
+    imports: [MatCardModule, MatIconModule, FilterTextboxComponent, MatTabsModule, 
       MatBadgeModule, FilesComponent, ChatsComponent, EmailsComponent, CalendarEventsComponent],
     schemas: [ NO_ERRORS_SCHEMA ]
 })

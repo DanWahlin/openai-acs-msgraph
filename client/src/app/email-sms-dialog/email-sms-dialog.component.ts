@@ -8,7 +8,6 @@ import { FeatureFlagsService } from '@core/feature-flags.service';
 import { EmailSmsDialogData } from './email-sms-dialog-data';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 declare const CUSTOMER_EMAIL_ADDRESS: string;
@@ -19,7 +18,7 @@ declare const CUSTOMER_PHONE_NUMBER: string;
     templateUrl: './email-sms-dialog.component.html',
     styleUrls: ['./email-sms-dialog.component.scss'],
     standalone: true,
-    imports: [MatDialogModule, MatIconModule, MatTabsModule, NgIf, FormsModule, MatButtonModule]
+    imports: [MatDialogModule, MatIconModule, MatTabsModule, FormsModule, MatButtonModule]
 })
 export class EmailSmsDialogComponent implements OnInit, OnDestroy {
   title = '';
