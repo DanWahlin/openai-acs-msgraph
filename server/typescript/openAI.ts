@@ -13,6 +13,11 @@ const AZURE_AI_SEARCH_KEY = process.env.AZURE_AI_SEARCH_KEY as string;
 const AZURE_AI_SEARCH_INDEX = process.env.AZURE_AI_SEARCH_INDEX as string;
 
 async function createAzureOpenAICompletion(systemPrompt: string, userPrompt: string, temperature: number, dataSources?: any[]): Promise<any> {
+    const baseEnvVars = ['OPENAI_API_KEY', 'OPENAI_ENDPOINT', 'OPENAI_MODEL', 'OPENAI_API_VERSION'];
+    const byodEnvVars = ['AZURE_AI_SEARCH_ENDPOINT', 'AZURE_AI_SEARCH_KEY', 'AZURE_AI_SEARCH_INDEX'];
+    const requiredEnvVars = dataSources ? [...baseEnvVars, ...byodEnvVars] : baseEnvVars;
+    checkRequiredEnvVars(requiredEnvVars);
+
     const config = { 
         apiKey: OPENAI_API_KEY,
         endpoint: OPENAI_ENDPOINT,
@@ -31,38 +36,23 @@ async function createAzureOpenAICompletion(systemPrompt: string, userPrompt: str
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
         ],
-        // @ts-expect-error data_sources is a custom property used with "Azure Add Your Data" feature
+        // @ts-expect-error data_sources is a custom property used with the "Azure Add Your Data" feature
         data_sources: dataSources
     });
-
     return completion;
 }
 
 async function getAzureOpenAICompletion(systemPrompt: string, userPrompt: string, temperature: number): Promise<string> {
-    checkRequiredEnvVars(['OPENAI_API_KEY', 'OPENAI_ENDPOINT', 'OPENAI_MODEL', 'OPENAI_API_VERSION']);
-
     const completion = await createAzureOpenAICompletion(systemPrompt, userPrompt, temperature);
-
     let content = completion.choices[0]?.message?.content?.trim() ?? '';
     console.log('Azure OpenAI Output: \n', content);
-
     if (content && content.includes('{') && content.includes('}')) {
         content = extractJson(content);
     }
-
     return content;
 }
 
 async function getAzureOpenAIBYODCompletion(systemPrompt: string, userPrompt: string, temperature: number): Promise<string> {
-    checkRequiredEnvVars([
-        'OPENAI_API_KEY',
-        'OPENAI_ENDPOINT',
-        'OPENAI_MODEL',
-        'AZURE_AI_SEARCH_ENDPOINT',
-        'AZURE_AI_SEARCH_KEY',
-        'AZURE_AI_SEARCH_INDEX',
-    ]);
-
     const dataSources = [
         {
             type: 'azure_search',
@@ -82,87 +72,8 @@ async function getAzureOpenAIBYODCompletion(systemPrompt: string, userPrompt: st
     for (let citation of completion.choices[0]?.message?.context?.citations ?? []) {
         console.log('Citation Path:', citation.filepath);
     }
-    let content = completion.choices[0]?.message?.content?.trim() ?? '';
-    return content;
+    return completion.choices[0]?.message?.content?.trim() ?? '';
 }
-
-// async function getAzureOpenAICompletion(systemPrompt: string, userPrompt: string, temperature: number): Promise<string> {
-//     checkRequiredEnvVars(['OPENAI_API_KEY', 'OPENAI_ENDPOINT', 'OPENAI_MODEL', 'OPENAI_API_VERSION']);
-//     const config = { apiKey: OPENAI_API_KEY, endpoint: OPENAI_ENDPOINT, apiVersion: OPENAI_API_VERSION, deployment: OPENAI_MODEL };
-//     const aoai = new AzureOpenAI(config);
-//     const completion = await aoai.chat.completions.create({
-//         model: OPENAI_MODEL, // gpt-4o, gpt-3.5-turbo, etc. Pulled from .env file
-//         max_tokens: 1024,
-//         temperature,
-//         response_format: {
-//             type: "json_object",
-//         },
-//         messages: [
-//             { role: 'system', content: systemPrompt },
-//             { role: 'user', content: userPrompt }
-//         ]
-//     });
-//     let content = completion.choices[0]?.message?.content?.trim() ?? '';
-//     console.log('Azure OpenAI Output: \n', content);
-//     if (content && content.includes('{') && content.includes('}')) {
-//         content = extractJson(content);
-//     }
-//     return content;
-// }
-
-// async function getAzureOpenAIBYODCompletion(systemPrompt: string, userPrompt: string, temperature: number): Promise<string> {
-//     checkRequiredEnvVars([ 
-//         'OPENAI_API_KEY',
-//         'OPENAI_ENDPOINT',
-//         'OPENAI_MODEL',
-//         'AZURE_AI_SEARCH_ENDPOINT',
-//         'AZURE_AI_SEARCH_KEY',
-//         'AZURE_AI_SEARCH_INDEX',
-//     ]);
-//     type AzureOpenAIYourDataResponse = {
-//         choices: {
-//             message: {
-//                 content?: string;
-//                 context?: {
-//                     citations?: any[];
-//                 };
-//             };
-//         }[];
-//     };
-//     const baseURL = `${OPENAI_ENDPOINT}/openai/deployments/${OPENAI_MODEL}`;
-//     console.log('Azure OpenAI Add your data URL: ', baseURL);
-//     const aoai = new AzureOpenAI({ baseURL, apiKey: OPENAI_API_KEY, apiVersion: OPENAI_API_VERSION });
-//     const completion = await aoai.chat.completions.create({
-//         model: OPENAI_MODEL, // gpt-4o, gpt-3.5-turbo, etc. Pulled from .env file
-//         max_tokens: 1024,
-//         temperature,
-//         messages: [
-//             { role: 'system', content: systemPrompt },
-//             { role: 'user', content: userPrompt }
-//         ],
-//         // @ts-expect-error data_sources is a custom property used with "Azure Add Your Data" feature
-//         data_sources: [
-//             {
-//                 type: 'azure_search',
-//                 parameters: {
-//                     authentication: {
-//                         type: 'api_key',
-//                         key: AZURE_AI_SEARCH_KEY
-//                     },
-//                     endpoint: AZURE_AI_SEARCH_ENDPOINT,
-//                     index_name: AZURE_AI_SEARCH_INDEX
-//                 }
-//             }
-//         ]
-//     }) as AzureOpenAIYourDataResponse;
-
-//     console.log('Azure OpenAI Add Your Own Data Output: \n', completion.choices[0]?.message);
-//     for (let citation of completion.choices[0]?.message?.context?.citations ?? []) {
-//         console.log('Citation Path:', citation.filepath);
-//     }
-//     let content = completion.choices[0]?.message?.content?.trim() ?? '';
-//     return content;
-// }
 
 async function getOpenAICompletion(systemPrompt: string, userPrompt: string, temperature = 0): Promise<string> {
     await checkRequiredEnvVars(['OPENAI_API_KEY']);
