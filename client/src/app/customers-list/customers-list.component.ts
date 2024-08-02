@@ -88,10 +88,6 @@ export class CustomersListComponent implements OnInit, OnDestroy {
         this.sorterService.sort(this.filteredData, prop);
     }
 
-    trackBy(index: number, data: any) {
-        return data.id;
-    }
-
     getRelatedData(data: any) {
         this.customerSelected.emit(data);
     }

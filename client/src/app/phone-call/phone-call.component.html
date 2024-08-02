@@ -13,8 +13,10 @@
 </div>
 <div class="dialer" [hidden]="!dialerVisible" #dialer>  
     <div class="dialer-buttons">
-      <button *ngFor="let num of numbers" (click)="addNumber(num)" class="dialer-button">
-        {{ num }}
+      @for (number of this.numbers;track number) {
+      <button (click)="addNumber(number)" class="dialer-button">
+        {{ number }}
       </button>
+      }
     </div>
 </div>
