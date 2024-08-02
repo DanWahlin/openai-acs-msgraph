@@ -8,9 +8,9 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY as string;
 const OPENAI_ENDPOINT = process.env.OPENAI_ENDPOINT as string;
 const OPENAI_MODEL = process.env.OPENAI_MODEL as string;
 const OPENAI_API_VERSION = process.env.OPENAI_API_VERSION as string;
-const AZURE_COGNITIVE_SEARCH_ENDPOINT = process.env.AZURE_COGNITIVE_SEARCH_ENDPOINT as string;
-const AZURE_COGNITIVE_SEARCH_KEY = process.env.AZURE_COGNITIVE_SEARCH_KEY as string;
-const AZURE_COGNITIVE_SEARCH_INDEX = process.env.AZURE_COGNITIVE_SEARCH_INDEX as string;
+const AZURE_AI_SEARCH_ENDPOINT = process.env.AZURE_AI_SEARCH_ENDPOINT as string;
+const AZURE_AI_SEARCH_KEY = process.env.AZURE_AI_SEARCH_KEY as string;
+const AZURE_AI_SEARCH_INDEX = process.env.AZURE_AI_SEARCH_INDEX as string;
 
 async function getAzureOpenAICompletion(systemPrompt: string, userPrompt: string, temperature: number): Promise<string> {
     checkRequiredEnvVars(['OPENAI_API_KEY', 'OPENAI_ENDPOINT', 'OPENAI_MODEL', 'OPENAI_API_VERSION']);
@@ -41,57 +41,53 @@ async function getAzureOpenAIBYODCompletion(systemPrompt: string, userPrompt: st
         'OPENAI_API_KEY',
         'OPENAI_ENDPOINT',
         'OPENAI_MODEL',
-        'AZURE_COGNITIVE_SEARCH_ENDPOINT',
-        'AZURE_COGNITIVE_SEARCH_KEY',
-        'AZURE_COGNITIVE_SEARCH_INDEX',
+        'AZURE_AI_SEARCH_ENDPOINT',
+        'AZURE_AI_SEARCH_KEY',
+        'AZURE_AI_SEARCH_INDEX',
     ]);
-
-    const fetchUrl = `${OPENAI_ENDPOINT}/openai/deployments/${OPENAI_MODEL}/extensions/chat/completions?api-version=${OPENAI_API_VERSION}`;
-
-    const messageData: ChatGPTData = {
+    type AzureOpenAIYourDataResponse = {
+        choices: {
+            message: {
+                content?: string;
+                context?: {
+                    citations?: any[];
+                };
+            };
+        }[];
+    };
+    const baseURL = `${OPENAI_ENDPOINT}/openai/deployments/${OPENAI_MODEL}`;
+    console.log('Add your data URL', baseURL);
+    const config = { baseURL, apiKey: OPENAI_API_KEY, apiVersion: OPENAI_API_VERSION };
+    const aoai = new AzureOpenAI(config);
+    const completion = await aoai.chat.completions.create({
+        model: OPENAI_MODEL, // gpt-4o, gpt-3.5-turbo, etc. Pulled from .env file
         max_tokens: 1024,
         temperature,
         messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
         ],
-        dataSources: [
+        // @ts-expect-error data_sources is a custom property used with "Azure Add Your Data" feature
+        data_sources: [
             {
-                type: 'AzureCognitiveSearch',
+                type: 'azure_search',
                 parameters: {
-                    endpoint: AZURE_COGNITIVE_SEARCH_ENDPOINT,
-                    key: AZURE_COGNITIVE_SEARCH_KEY,
-                    indexName: AZURE_COGNITIVE_SEARCH_INDEX
+                    authentication: {
+                        type: 'api_key',
+                        key: AZURE_AI_SEARCH_KEY
+                    },
+                    endpoint: AZURE_AI_SEARCH_ENDPOINT,
+                    index_name: AZURE_AI_SEARCH_INDEX
                 }
             }
         ]
-    };
+    }) as AzureOpenAIYourDataResponse;
 
-    const headersBody: OpenAIHeadersBody = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'api-key': OPENAI_API_KEY,
-            chatgpt_url: fetchUrl.replace('extensions/', ''),
-            chatgpt_key: OPENAI_API_KEY
-        },
-        body: JSON.stringify(messageData),
-    };
-
-    const completion = await fetchAndParse(fetchUrl, headersBody);
-    console.log(completion);
-
-    if (completion.error) {
-        console.error('Azure OpenAI BYOD Error: \n', completion.error);
-        return completion.error.message;
+    console.log('Azure OpenAI Add Your Own Data Output: \n', completion.choices[0]?.message);
+    for (let citation of completion.choices[0]?.message?.context?.citations ?? []) {
+        console.log('Citation Path:', citation.filepath);
     }
-
-    const citations = (completion.choices[0]?.messages[0]?.content?.trim() ?? '') as string;
-    console.log('Azure OpenAI BYOD Citations: \n', citations);
-
-    let content = (completion.choices[0]?.messages[1]?.content?.trim() ?? '') as string;
-    console.log('Azure OpenAI BYOD Output: \n', content);
-
+    let content = completion.choices[0]?.message?.content?.trim() ?? '';
     return content;
 }
 
