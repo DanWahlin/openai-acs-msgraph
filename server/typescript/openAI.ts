@@ -274,4 +274,4 @@ function extractJson(content: string) {
     }
 }
 
-export { completeBYOD, completeEmailSMSMessages, getSQLFromNLP as getSQL };
+export { completeBYOD, completeEmailSMSMessages, getSQLFromNLP };
