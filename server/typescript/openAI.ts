@@ -196,7 +196,7 @@ function isProhibitedQuery(query: string): boolean {
 
     const prohibitedKeywords = [
         'insert', 'update', 'delete', 'drop', 'truncate', 'alter', 'create', 'replace',
-        'information_schema', 'pg_catalog', 'pg_tables', 'pg_namespace', 'pg_class',
+        'information_schema', 'pg_catalog', 'pg_tables', 'pg_proc', 'pg_namespace', 'pg_class',
         'table_schema', 'table_name', 'column_name', 'column_default', 'is_nullable',
         'data_type', 'udt_name', 'character_maximum_length', 'numeric_precision',
         'numeric_scale', 'datetime_precision', 'interval_type', 'collation_name',
