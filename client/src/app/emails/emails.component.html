@@ -20,7 +20,7 @@
       -->
       @if (this.data.length) {
         <div>
-          @for (email of this.data;track email.id) {
+          @for (email of this.data;track $index) {
             <mat-card>
               <mat-card-header>
                 <mat-card-title>{{email.resource.subject}}</mat-card-title>

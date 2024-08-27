@@ -20,7 +20,7 @@
             -->
             @if (this.data.length) {
                 <div>
-                    @for (event of this.data;track event.id) {
+                    @for (event of this.data;track $index) {
                         <div class="root">
                             <div class="time-container">
                                 <div class="date">{{ dayFromDateTime(event.resource.start.dateTime)}}</div>
