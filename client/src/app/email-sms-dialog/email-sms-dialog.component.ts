@@ -97,10 +97,11 @@ We're sorry.`
     if (this.featureFlags.acsPhoneEnabled) {
       // Using CUSTOMER_PHONE_NUMBER instead of this.data.customerPhoneNumber for testing purposes
       this.subscription.add(
-        this.acsService.sendSms(this.smsMessage, CUSTOMER_PHONE_NUMBER /* this.data.customerPhoneNumber */).subscribe(res => {
-          if (res.status) {
-            this.smsSent = true;
-          }
+        this.acsService.sendSms(this.smsMessage, CUSTOMER_PHONE_NUMBER /* this.data.customerPhoneNumber */)
+          .subscribe(res => {
+            if (res.status) {
+              this.smsSent = true;
+            }
         })
       );
     }
