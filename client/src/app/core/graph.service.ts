@@ -42,7 +42,6 @@ export class GraphService {
 
   async searchFiles(query: string) {
     const files: DriveItem[] = [];
-
     if (!query) return files;
 
     const filter = {
